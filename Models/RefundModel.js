@@ -6,10 +6,10 @@ const refundSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'Refund must belong to a user']
     },
-    Food: {
+    Cloth: {
         type: mongoose.Schema.ObjectId,
-        ref: 'Foods',
-        required: [true, 'Refund must belong to a Food.']
+        ref: 'Cloths',
+        required: [true, 'Refund must belong to a Cloth.']
     },
     price: {
         type: Number,
@@ -35,10 +35,10 @@ const refundSchema = new mongoose.Schema({
         default: false
     }
 });
-refundSchema.index({ Food: 1 });
+refundSchema.index({ Cloth: 1 });
 refundSchema.pre(/^find/, function (next) {
     this.populate({
-        path: 'Food',
+        path: 'Cloth',
         select: 'name coverImg img description'
     }).populate({
         path: 'user',
