@@ -1,6 +1,6 @@
 const multer = require('multer');
 const sharp = require('sharp');
-const FoodHutModel = require('./../Models/FoodHutModel');
+const ClothHutModel = require('./../Models/ClothHutModel');
 const multerStorage = multer.memoryStorage();
 const User = require('../Models/userModel');
 const errorController = require('./errorController');
@@ -18,7 +18,7 @@ const upload = multer({
   fileFilter: multerFilter
 });
 
-exports.uploadFoodHutImages = upload.fields([
+exports.uploadClothHutImages = upload.fields([
   { name: 'imageCover', maxCount: 1 },
   { name: 'images', maxCount: 3 }
 ]);
@@ -29,12 +29,12 @@ exports.resizeTourImages = async (req, res, next) => {
   if (req.files) {
     // 1) Cover image
     if (req.files.imageCover) {
-      req.body.imageCover = `foodHut-${id}-${Date.now()}-cover.jpeg`;
+      req.body.imageCover = `ClothHut-${id}-${Date.now()}-cover.jpeg`;
       await sharp(req.files.imageCover[0].buffer)
         .resize(2000, 1333)
         .toFormat('jpeg')
         .jpeg({ quality: 90 })
-        .toFile(`public/img/foodHut/${req.body.imageCover}`);
+        .toFile(`public/img/ClothHut/${req.body.imageCover}`);
 
     }
     // 2) Images
@@ -43,13 +43,13 @@ exports.resizeTourImages = async (req, res, next) => {
       await Promise.all(
         req.files.images.map(async (file, i) => {
           const id = req.params.id || req.user._id
-          const filename = `foodHut-${id}-${Date.now()}-${i + 1}.jpeg`;
+          const filename = `ClothHut-${id}-${Date.now()}-${i + 1}.jpeg`;
 
           await sharp(file.buffer)
             .resize(2000, 1333)
             .toFormat('jpeg')
             .jpeg({ quality: 90 })
-            .toFile(`public/img/foodHut/${filename}`);
+            .toFile(`public/img/ClothHut/${filename}`);
 
           req.body.images.push(filename);
         })
@@ -59,7 +59,7 @@ exports.resizeTourImages = async (req, res, next) => {
   next();
 }
 
-exports.addOneFoodHut = async (req, res, next) => {
+exports.addOneClothHut = async (req, res, next) => {
   try {
     if (!req.body.name || !req.body.summary || !req.body.openAt ||
       !req.body.description || !req.body.imageCover) {
@@ -88,10 +88,10 @@ exports.addOneFoodHut = async (req, res, next) => {
         message: 'Make Sure Only Chef IDS'
       })
     }
-    const foodHut = await FoodHutModel.create(req.body);
+    const ClothHut = await ClothHutModel.create(req.body);
     return res.status(201).json({
       status: 'success',
-      data: foodHut,
+      data: ClothHut,
     })
   } catch (err) {
     errorController(req, res, err)
@@ -99,13 +99,13 @@ exports.addOneFoodHut = async (req, res, next) => {
   }
 }
 
-exports.updateOneFoodHut = async (req, res, next) => {
+exports.updateOneClothHut = async (req, res, next) => {
   try {
    
-    const foodHut = await FoodHutModel.findByIdAndUpdate(req.params.id, req.body);
+    const ClothHut = await ClothHutModel.findByIdAndUpdate(req.params.id, req.body);
     return res.status(200).json({
       status: 'success',
-      data: foodHut,
+      data: ClothHut,
     })
   } catch (err) {
     errorController(req, res, err)
@@ -113,13 +113,13 @@ exports.updateOneFoodHut = async (req, res, next) => {
   }
 }
 
-exports.getOneFoodHut = async (req, res, next) => {
+exports.getOneClothHut = async (req, res, next) => {
   try {
-    const foodHut =
-      await FoodHutModel.findById(req.params.id).populate({ path: 'foods' }).populate({ path: 'reviews' }).populate({ path: 'chefs' })
+    const ClothHut =
+      await ClothHutModel.findById(req.params.id).populate({ path: 'Cloths' }).populate({ path: 'reviews' }).populate({ path: 'chefs' })
     return res.status(200).json({
       status: 'success',
-      data: foodHut,
+      data: ClothHut,
     })
   } catch (err) {
     errorController(req, res, err)
@@ -127,13 +127,13 @@ exports.getOneFoodHut = async (req, res, next) => {
   }
 }
 
-exports.getAllFoodHuts = async (req, res, next) => {
+exports.getAllClothHuts = async (req, res, next) => {
   try {
-    const foodHuts = await FoodHutModel.find();
+    const ClothHuts = await ClothHutModel.find();
     return res.status(200).json({
       status: 'success',
-      data: foodHuts,
-      size: foodHuts.length
+      data: ClothHuts,
+      size: ClothHuts.length
     })
   } catch (err) {
     errorController(req, res, err)
@@ -144,7 +144,7 @@ exports.getAllFoodHuts = async (req, res, next) => {
 exports.getMonthlyPlan = async (req, res, next) => {
   const year = req.params.year * 1; // 2021
 
-  const plan = await FoodHutModel.aggregate([
+  const plan = await ClothHutModel.aggregate([
     {
       $unwind: '$startDates'
     },
@@ -160,7 +160,7 @@ exports.getMonthlyPlan = async (req, res, next) => {
       $group: {
         _id: { $month: '$startDates' },
         numTourStarts: { $sum: 1 },
-        foodHut: { $push: '$name' }
+        ClothHut: { $push: '$name' }
       }
     },
     {
@@ -189,12 +189,12 @@ exports.getMonthlyPlan = async (req, res, next) => {
 
 exports.disable = async (req, res, nex) => {
   try {
-    const foodHut = await FoodHutModel.findById(req.params.id);
-    foodHut.isOffer = false;
-    foodHut.save();
+    const ClothHut = await ClothHutModel.findById(req.params.id);
+    ClothHut.isOffer = false;
+    ClothHut.save();
     return res.status(200).json({
       status: 'done',
-      data: foodHut
+      data: ClothHut
     })
   } catch (err) {
     errorController(req, res, err)
@@ -203,7 +203,7 @@ exports.disable = async (req, res, nex) => {
 }
 
 
-exports.getFoodHutWithin = async (req, res, next) => {
+exports.getClothHutWithin = async (req, res, next) => {
   try {
     const { distance, latlng, unit } = req.params;
     const [lat, lng] = latlng.split(',');
@@ -217,14 +217,14 @@ exports.getFoodHutWithin = async (req, res, next) => {
       })
     }
 
-    const foodHut = await FoodHutModel.find({
+    const ClothHut = await ClothHutModel.find({
       startLocation: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
     });
 
     return res.status(200).json({
       status: 'success',
-      results: foodHut.length,
-      data: foodHut
+      results: ClothHut.length,
+      data: ClothHut
 
     });
   } catch (err) {
@@ -247,7 +247,7 @@ exports.getDistances = async (req, res, next) => {
       })
     }
 
-    const distances = await FoodHutModel.aggregate([
+    const distances = await ClothHutModel.aggregate([
       {
         $geoNear: {
           near: {

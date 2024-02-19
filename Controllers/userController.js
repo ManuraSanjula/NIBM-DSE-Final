@@ -4,7 +4,7 @@ const User = require('./../Models/userModel');
 const RefundModel = require('./../Models/refundModle');
 const factory = require('./handlerFactory');
 const Email = require('./../utils/email');
-const Food = require('../Models/foodModel');
+const Cloth = require('../Models/ClothModel');
 const errorController = require('./errorController');
 
 exports.refunds = async (req, res, next) => {
@@ -38,8 +38,8 @@ exports.requestRefunds = async (req, res, next) => {
       });
     }
     req.body.user = user._id;
-    const food = await Food.findById(req.body.Food);
-    req.body.price = Number(food.price);
+    const Cloth = await Cloth.findById(req.body.Cloth);
+    req.body.price = Number(Cloth.price);
     const resetURL = `${req.protocol}://${req.get(
       'host'
     )}/api/v1/user/refunds`;

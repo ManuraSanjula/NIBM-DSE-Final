@@ -1,5 +1,5 @@
 const express = require('express');
-const FoodHutreview = require('./../Controllers/FoodHutReviewController');
+const ClothHutreview = require('./../Controllers/ClothHutReviewController');
 const authController = require('./../Controllers/authController');
 
 const router = express.Router({ mergeParams: true });
@@ -9,20 +9,20 @@ router.use(authController.protect);
 router
   .post('/',
     authController.restrictTo('user','admin','chef'),
-    FoodHutreview.setTourUserIds,
-    FoodHutreview.createReview
+    ClothHutreview.setTourUserIds,
+    ClothHutreview.createReview
   );
 
 router
   .route('/:id')
-  .get(FoodHutreview.getReview)
+  .get(ClothHutreview.getReview)
   .patch(
     authController.restrictTo('user', 'admin','chef'),
-    FoodHutreview.updateReview
+    ClothHutreview.updateReview
   )
   .delete(
     authController.restrictTo('user', 'admin','chef'),
-    FoodHutreview.deleteReview
+    ClothHutreview.deleteReview
   );
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Food = require('./foodModel');
+const Cloth = require('./ClothModel');
 const User = require('./UserModel');
 
 const reviewSchema = new mongoose.Schema(
@@ -18,10 +18,10 @@ const reviewSchema = new mongoose.Schema(
       type: Date,
       default: Date.now
     },
-    Food: {
+    Cloth: {
       type: mongoose.Schema.ObjectId,
-      ref: 'Foods',
-      required: [true, 'Review must belong to a Food.']
+      ref: 'Cloths',
+      required: [true, 'Review must belong to a Cloth.']
     },
     user: {
       type: mongoose.Schema.ObjectId,
@@ -35,11 +35,11 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
-reviewSchema.index({ Food: 1, user: 1 }, { unique: true });
+reviewSchema.index({ Cloth: 1, user: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function (next) {
   // this.populate({
-  //   path: 'Food',
+  //   path: 'Cloth',
   //   select: 'name'
   // }).populate({
   //   path: 'user',
@@ -53,14 +53,14 @@ reviewSchema.pre(/^find/, function (next) {
   next();
 });
 
-reviewSchema.statics.calcAverageRatings = async function (FoodId) {
+reviewSchema.statics.calcAverageRatings = async function (ClothId) {
   const stats = await this.aggregate([
     {
-      $match: { Food: FoodId }
+      $match: { Cloth: ClothId }
     },
     {
       $group: {
-        _id: '$Food',
+        _id: '$Cloth',
         nRating: { $sum: 1 },
         avgRating: { $avg: '$rating' }
       }
@@ -69,12 +69,12 @@ reviewSchema.statics.calcAverageRatings = async function (FoodId) {
   // (stats);
 
   if (stats.length > 0) {
-    await Food.findByIdAndUpdate(FoodId, {
+    await Cloth.findByIdAndUpdate(ClothId, {
       ratingsQuantity: stats[0].nRating,
       ratingsAverage: stats[0].avgRating
     });
   } else {
-    await Food.findByIdAndUpdate(FoodId, {
+    await Cloth.findByIdAndUpdate(ClothId, {
       ratingsQuantity: 0,
       ratingsAverage: 4.5
     });
@@ -83,12 +83,12 @@ reviewSchema.statics.calcAverageRatings = async function (FoodId) {
 
 reviewSchema.post('save',async function () {
   // this points to current review
-  const food = await Food.findById(this.Food);
-  const arry = food['review'];
+  const Cloth = await Cloth.findById(this.Cloth);
+  const arry = Cloth['review'];
   arry.push(this._id);
-  food['review'] = arry
-  food.save()
-  this.constructor.calcAverageRatings(this.Food);
+  Cloth['review'] = arry
+  Cloth.save()
+  this.constructor.calcAverageRatings(this.Cloth);
 });
 
 reviewSchema.post('save',async function () {
@@ -103,7 +103,7 @@ reviewSchema.post('save',async function () {
 
 reviewSchema.post(/^findOneAnd/, async function () {
   // await this.findOne(); does NOT work here, query has already executed
-  await this.r.constructor.calcAverageRatings(this.r.Food);
+  await this.r.constructor.calcAverageRatings(this.r.Cloth);
 });
 
 reviewSchema.post(/^find/, function (docs, next) {

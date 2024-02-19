@@ -1,5 +1,5 @@
 const express = require('express');
-const FoodHutController = require('./../Controllers/FoodHutController');
+const ClothHutController = require('./../Controllers/ClothHutController');
 const authController = require('./../Controllers/authController');
 //const reviewRouter = require('./../routes/reviewRoutes');
 
@@ -12,42 +12,42 @@ router
   .get(
     authController.protect,
     authController.restrictTo('admin', 'chef'),
-    FoodHutController.getMonthlyPlan
+    ClothHutController.getMonthlyPlan
   );
 
 router
   .route('/tours-within/:distance/center/:latlng/unit/:unit')
-  .get(FoodHutController.getFoodHutWithin);
+  .get(ClothHutController.getClothHutWithin);
 // /tours-within?distance=233&center=-40,45&unit=mi
 // /tours-within/233/center/-40,45/unit/mi
 
-router.route('/distances/:latlng/unit/:unit').get(FoodHutController.getDistances);
+router.route('/distances/:latlng/unit/:unit').get(ClothHutController.getDistances);
 
 router
   .route('/')
-  .get(FoodHutController.getAllFoodHuts)
+  .get(ClothHutController.getAllClothHuts)
   .post(
     authController.protect,
     authController.restrictTo('admin', 'chef'),
-    FoodHutController.uploadFoodHutImages,
-    FoodHutController.resizeTourImages,
-    FoodHutController.addOneFoodHut
+    ClothHutController.uploadClothHutImages,
+    ClothHutController.resizeTourImages,
+    ClothHutController.addOneClothHut
   );
 
 router
   .route('/:id')
-  .get(FoodHutController.getOneFoodHut)
+  .get(ClothHutController.getOneClothHut)
   .patch(
     authController.protect,
     authController.restrictTo('admin', 'chef'),
-    FoodHutController.uploadFoodHutImages,
-    FoodHutController.resizeTourImages,
-    FoodHutController.updateOneFoodHut
+    ClothHutController.uploadClothHutImages,
+    ClothHutController.resizeTourImages,
+    ClothHutController.updateOneClothHut
   )
   .delete(
     authController.protect,
     authController.restrictTo('admin', 'chef'),
-    FoodHutController.disable
+    ClothHutController.disable
   );
 
 module.exports = router;

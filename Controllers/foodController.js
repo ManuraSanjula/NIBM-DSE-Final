@@ -1,11 +1,11 @@
-const foodModel = require('../Models/foodModel');
+const ClothModel = require('../Models/ClothModel');
 const multer = require('multer');
 const sharp = require('sharp');
 const multerStorage = multer.memoryStorage();
 const User = require('../Models/userModel');
 const errorController = require('./errorController');
 
-exports.deleteOneFood = async (req, res, next) => {
+exports.deleteOneCloth = async (req, res, next) => {
     try {
         if (!req.params.id) {
             return res.status(400).json({
@@ -13,7 +13,7 @@ exports.deleteOneFood = async (req, res, next) => {
                 message: 'Id not defined'
             })
         }
-        const newData = await foodModel.findById(req.params.id);
+        const newData = await ClothModel.findById(req.params.id);
         newData.offer = false;
         newData.save();
         return res.status(400).json({
@@ -52,24 +52,24 @@ exports.resizeTourImages = async (req, res, next) => {
 
         if (req.files) {
             if (req.files.coverImg) {
-                req.body.coverImg = `food-${Math.floor(Date.now() + Date.now() + Math.random() * 8892829229)}-${Date.now()}-cover.jpeg`;
+                req.body.coverImg = `Cloth-${Math.floor(Date.now() + Date.now() + Math.random() * 8892829229)}-${Date.now()}-cover.jpeg`;
                 await sharp(req.files.coverImg[0].buffer)
                     .resize(2000, 1333)
                     .toFormat('jpeg')
                     .jpeg({ quality: 90 })
-                    .toFile(`public/img/foods/${req.body.coverImg}`);
+                    .toFile(`public/img/Cloths/${req.body.coverImg}`);
             }
             if (req.files.img) {
                 req.body.img = [];
                 await Promise.all(
                     req.files.img.map(async (file, i) => {
-                        const filename = `food-${Math.floor(Date.now() + Date.now() + Math.random() * 8892829229)}-${Date.now()}-${i + 1}.jpeg`;
+                        const filename = `Cloth-${Math.floor(Date.now() + Date.now() + Math.random() * 8892829229)}-${Date.now()}-${i + 1}.jpeg`;
 
                         await sharp(file.buffer)
                             .resize(2000, 1333)
                             .toFormat('jpeg')
                             .jpeg({ quality: 90 })
-                            .toFile(`public/img/foods/${filename}`);
+                            .toFile(`public/img/Cloths/${filename}`);
 
                         req.body.img.push(filename);
                     })
@@ -85,9 +85,9 @@ exports.resizeTourImages = async (req, res, next) => {
     }
 };
 
-exports.insertOneFood = async (req, res, next) => {
+exports.insertOneCloth = async (req, res, next) => {
     try {
-        const newData = await foodModel.create(req.body);
+        const newData = await ClothModel.create(req.body);
         return res.status(201).json({
             status: 'success',
             data: newData,
@@ -101,13 +101,13 @@ exports.insertOneFood = async (req, res, next) => {
     }
 }
 
-exports.updateOneFood = async (req, res, next) => {
+exports.updateOneCloth = async (req, res, next) => {
 
     try {
-        const updateFood = await foodModel.findByIdAndUpdate(req.params.id, req.body);
+        const updateCloth = await ClothModel.findByIdAndUpdate(req.params.id, req.body);
         return res.status(200).json({
             status: 'success',
-            data: updateFood,
+            data: updateCloth,
         })
     } catch (err) {
         errorController(req, res, err)
@@ -206,23 +206,23 @@ const select = (req, data) => {
     return data;
 }
 
-exports.getAllFoods = async (req, res, next) => {
+exports.getAllCloths = async (req, res, next) => {
     try {
 
-        const newData = await foodModel.find()
+        const newData = await ClothModel.find()
         const result = select(req.query, newData);
 
         if (req.query.userId) {
             const user = await User.findById(req.query.userId);
-            result.forEach((food, i) => {
+            result.forEach((Cloth, i) => {
                 user.Likes.forEach((item, i) => {
-                    if (food._id.toString() === item) {
-                        food.like = true;
+                    if (Cloth._id.toString() === item) {
+                        Cloth.like = true;
                     } else {
-                        food.like = false;
+                        Cloth.like = false;
                     }
                 })
-                console.log(food.like)
+                console.log(Cloth.like)
             })
         }
         return res.status(200).json({
@@ -235,7 +235,7 @@ exports.getAllFoods = async (req, res, next) => {
     }
 }
 
-exports.getOneFood = async (req, res, next) => {
+exports.getOneCloth = async (req, res, next) => {
     try {
         if (!req.params.id) {
             return res.status(400).json({
@@ -243,7 +243,7 @@ exports.getOneFood = async (req, res, next) => {
                 message: 'Id not defined'
             })
         }
-        const newData = await foodModel.findById(req.params.id).populate({ path: 'foodHuts' }).populate({ path: 'review' })
+        const newData = await ClothModel.findById(req.params.id).populate({ path: 'ClothHuts' }).populate({ path: 'review' })
         if (req.query.userId) {
             const user = await User.findById(req.query.userId);
             user.Likes.forEach((item, i) => {
@@ -265,7 +265,7 @@ exports.getOneFood = async (req, res, next) => {
 }
 
 
-exports.getOneFoodBySlug = async (req, res, next) => {
+exports.getOneClothBySlug = async (req, res, next) => {
     try {
         if (!req.params.id) {
             return res.status(400).json({
@@ -273,7 +273,7 @@ exports.getOneFoodBySlug = async (req, res, next) => {
                 message: 'Id not defined'
             })
         }
-        const newData = await foodModel.findOne({ slug: req.params.slugName }).populate({ path: 'foodHuts' }).populate({ path: 'review' })
+        const newData = await ClothModel.findOne({ slug: req.params.slugName }).populate({ path: 'ClothHuts' }).populate({ path: 'review' })
         if (req.query.userId) {
             const user = await User.findById(req.query.userId);
             user.Likes.forEach((item, i) => {

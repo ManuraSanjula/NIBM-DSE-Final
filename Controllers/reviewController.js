@@ -1,7 +1,7 @@
 const Review = require('./../Models/review');
 const errorController = require('./errorController');
 const UserModel = require('../Models/userModel');
-const FoodModel = require('../Models/foodModel')
+const ClothModel = require('../Models/ClothModel')
 
 exports.setTourUserIds = (req, res, next) => {
   // Allow nested routes
@@ -34,16 +34,16 @@ exports.getReview = async (req, res, next) => {
 }
 exports.createReview = async (req, res, next) => {
   try {
-    if (!req.body.review || !req.body.rating || !req.body.Food) {
+    if (!req.body.review || !req.body.rating || !req.body.Cloth) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Major Fileds Review , Rating , Food Missing.',
+        message: 'Major Fileds Review , Rating , Cloth Missing.',
       })
     }
     req.body.user = req.user._id;
     
     const user = await UserModel.findById(req.body.user._id);
-    const food =  await FoodModel.findById(req.body.Food);
+    const Cloth =  await ClothModel.findById(req.body.Cloth);
   
     if (!user) {
       return res.status(401).json({
@@ -52,10 +52,10 @@ exports.createReview = async (req, res, next) => {
       })
     }
 
-    if (!food) {
+    if (!Cloth) {
       return res.status(400).json({
         status: 'fail',
-        message:'No Food Found Given Id'
+        message:'No Cloth Found Given Id'
       })
     }
 
@@ -70,10 +70,10 @@ exports.createReview = async (req, res, next) => {
 }
 exports.updateReview = async (req, res, next) => {
   try {
-    if (!req.body.review || !req.body.rating || !req.body.Food) {
+    if (!req.body.review || !req.body.rating || !req.body.Cloth) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Major Fileds Review , Rating , Food Missing.',
+        message: 'Major Fileds Review , Rating , Cloth Missing.',
       })
     }
     const review = await Review.findOneAndUpdate(req.params.id, req.body);

@@ -1,9 +1,9 @@
 const crypto = require('crypto');
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
-const User = require('./../Models/userModel');
-const Email = require('./../utils/email');
-const FoodModel = require('../Models/foodModel');
+const User = require('../Models/userModel');
+const Email = require('../utils/email');
+const Cloth = require('../Models/ClothModel');
 const errorController = require('./errorController');
 
 exports.conEmail = async (req, res, next) => {
@@ -186,24 +186,24 @@ exports.addLikes = async (req, res) => {
     if (!currentUser) {
       return res.status(401).json({ status: 'fail', message: 'No User Found' });
     }
-    const foodId = req.query.foodId;
-    const food = await FoodModel.findById(foodId);
-    if (!food) {
-      return res.status(400).json({ status: 'fail', message: 'No Food Found give foodId' });
+    const ClothId = req.query.ClothId;
+    const Cloth = await Cloth.findById(ClothId);
+    if (!Cloth) {
+      return res.status(400).json({ status: 'fail', message: 'No Cloth Found give ClothId' });
     }
-    if (!currentUser.Likes.includes(foodId)) {
-      currentUser.Likes.push(foodId);
+    if (!currentUser.Likes.includes(ClothId)) {
+      currentUser.Likes.push(ClothId);
       currentUser.save({ validateBeforeSave: false });
-      food.likes++;
-      food.save({ validateBeforeSave: false });
+      Cloth.likes++;
+      Cloth.save({ validateBeforeSave: false });
     } else {
-      currentUser.Likes.pop(foodId);
+      currentUser.Likes.pop(ClothId);
       currentUser.save({ validateBeforeSave: false });
-      food.likes--;
-      if (food.likes < 0) {
-        food.likes = 0
+      Cloth.likes--;
+      if (Cloth.likes < 0) {
+        Cloth.likes = 0
       }
-      food.save({ validateBeforeSave: false });
+      Cloth.save({ validateBeforeSave: false });
     }
 
     return res.status(200).json({ status: 'success' });

@@ -1,13 +1,13 @@
 const CartModel = require('../Models/cartModel');
 const errorController = require('./errorController');
 const UserModel = require('../Models/userModel');
-const FoodModel = require('../Models/foodModel')
+const ClothModel = require('../Models/ClothModel')
 
 exports.checkData = (req, res, next) => {
-    if (!req.body.hasOwnProperty('Food')) {
+    if (!req.body.hasOwnProperty('Cloth')) {
         return res.status(400).json({
             status: 'failed',
-            message: 'Food Id Missing '
+            message: 'Cloth Id Missing '
         })
     }
     return next();
@@ -18,7 +18,7 @@ exports.createCart = async (req, res, next) => {
         req.body.user = req.user._id;
 
         const user = await UserModel.findById(req.body.user._id);
-        const food = await FoodModel.findById(req.body.Food);
+        const Cloth = await ClothModel.findById(req.body.Cloth);
 
         if (!user) {
             return res.status(401).json({
@@ -27,10 +27,10 @@ exports.createCart = async (req, res, next) => {
             })
         }
 
-        if (!food) {
+        if (!Cloth) {
             return res.status(400).json({
                 status: 'fail',
-                message: 'No Food Found Given Id'
+                message: 'No Cloth Found Given Id'
             })
         }
         const cartItem = await CartModel.findOne(req.body);

@@ -1,24 +1,24 @@
 const express = require('express')
 const Router = express.Router();
 const authController = require('./../Controllers/authController');
-const foodControler = require('../Controllers/foodController');
+const ClothControler = require('../Controllers/ClothController');
 
-Router.route('/foods').
+Router.route('/Cloths').
     post(authController.protect, authController.restrictTo('admin','chef'),
-        foodControler.uploadTourImages,
-        foodControler.resizeTourImages,
-        foodControler.insertOneFood
+        ClothControler.uploadTourImages,
+        ClothControler.resizeTourImages,
+        ClothControler.insertOneCloth
     )
-Router.get('/foods/slug/:slugName',foodControler.getOneFoodBySlug)
+Router.get('/Cloths/slug/:slugName',ClothControler.getOneClothBySlug)
 
-Router.route('/foods/:id').
-    get(foodControler.getOneFood)
+Router.route('/Cloths/:id').
+    get(ClothControler.getOneCloth)
     .put(authController.protect, authController.restrictTo('admin','chef'),
-        foodControler.uploadTourImages,
-        foodControler.resizeTourImages,
-        foodControler.updateOneFood
-    ).delete(authController.protect, authController.restrictTo('admin','chef'),foodControler.deleteOneFood);
+        ClothControler.uploadTourImages,
+        ClothControler.resizeTourImages,
+        ClothControler.updateOneCloth
+    ).delete(authController.protect, authController.restrictTo('admin','chef'),ClothControler.deleteOneCloth);
 
-Router.route('/foods').get(foodControler.getAllFoods)
+Router.route('/Cloths').get(ClothControler.getAllCloths)
 
 module.exports = Router;

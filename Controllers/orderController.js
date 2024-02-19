@@ -79,10 +79,10 @@ exports.confrimRecive = async (req, res, next) => {
 }
 
 exports.checkData = (req, res, next) => {
-    if (!req.body.hasOwnProperty('user') || !req.body.hasOwnProperty('Food')) {
+    if (!req.body.hasOwnProperty('user') || !req.body.hasOwnProperty('Cloth')) {
         return res.status(400).json({
             status: 'failed',
-            message: 'major fields are missing Ex - Food , User '
+            message: 'major fields are missing Ex - Cloth , User '
         })
     }
     return next();

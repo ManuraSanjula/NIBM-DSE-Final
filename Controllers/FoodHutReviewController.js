@@ -1,7 +1,7 @@
-const FoodHutReview = require('./../Models/FoodHutReviewModel');
+const ClothHutReview = require('./../Models/ClothHutReviewModel');
 const errorController = require('./errorController');
 const UserModel = require('../Models/userModel');
-const FoodHutModel = require('../Models/FoodHutModel')
+const ClothHutModel = require('../Models/ClothHutModel')
 
 exports.setTourUserIds = (req, res, next) => {
   // Allow nested routes
@@ -12,7 +12,7 @@ exports.setTourUserIds = (req, res, next) => {
 
 exports.getAllReviews = async (req, res, next) => {
   try {
-    const review = await FoodHutReview.find();
+    const review = await ClothHutReview.find();
     return res.status(200).json({
       status: 'success',
       data: review
@@ -24,7 +24,7 @@ exports.getAllReviews = async (req, res, next) => {
 }
 exports.getReview = async (req, res, next) => {
   try {
-    const review = await FoodHutReview.findById(req.params.id);
+    const review = await ClothHutReview.findById(req.params.id);
     return res.status(200).json({
       status: 'success',
       data: review
@@ -35,16 +35,16 @@ exports.getReview = async (req, res, next) => {
 }
 exports.createReview = async (req, res, next) => {
   try {
-    if (!req.body.FoodHutReview || !req.body.rating || !req.body.FoodHut) {
+    if (!req.body.ClothHutReview || !req.body.rating || !req.body.ClothHut) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Major Fileds FoodHutReview , Rating , FoodHut Missing.',
+        message: 'Major Fileds ClothHutReview , Rating , ClothHut Missing.',
       })
     }
     req.body.user = req.user._id;
     const user = await UserModel.findById(req.body.user._id);
-    console.log(req.body.FoodHut)
-    const foodHut =  await FoodHutModel.findById(req.body.FoodHut);
+    console.log(req.body.ClothHut)
+    const ClothHut =  await ClothHutModel.findById(req.body.ClothHut);
   
     if (!user) {
       return res.status(401).json({
@@ -53,13 +53,13 @@ exports.createReview = async (req, res, next) => {
       })
     }
 
-    if (!foodHut) {
+    if (!ClothHut) {
       return res.status(400).json({
         status: 'fail',
-        message:'No Food Found Given Id'
+        message:'No Cloth Found Given Id'
       })
     }
-    const review = await FoodHutReview.create(req.body);
+    const review = await ClothHutReview.create(req.body);
     return res.status(201).json({
       status: 'success',
       data: review
@@ -70,13 +70,13 @@ exports.createReview = async (req, res, next) => {
 }
 exports.updateReview = async (req, res, next) => {
   try {
-    if (req.body.FoodHutReview || req.body.rating || !req.body.FoodHut) {
+    if (req.body.ClothHutReview || req.body.rating || !req.body.ClothHut) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Major Fileds FoodHutReview , Rating , FoodHut Missing.',
+        message: 'Major Fileds ClothHutReview , Rating , ClothHut Missing.',
       })
     }
-    const review = await FoodHutReview.findOneAndUpdate(req.params.id, req.body);
+    const review = await ClothHutReview.findOneAndUpdate(req.params.id, req.body);
     return res.status(200).json({
       status: 'success',
       data: review
@@ -87,7 +87,7 @@ exports.updateReview = async (req, res, next) => {
 }
 exports.deleteReview = async (req, res, next) => {
   try {
-    const review = await FoodHutReview.findByIdAndDelete(req.params.id);
+    const review = await ClothHutReview.findByIdAndDelete(req.params.id);
     return res.status(200).json({
       status: 'success',
     })

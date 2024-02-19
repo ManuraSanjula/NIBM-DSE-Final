@@ -11,13 +11,13 @@ const path = require('path');
 const cluster = require('cluster');
 const os = require('os');
 
-const foodRoute = require('./Routes/foodRoute');
+const ClothRoute = require('./Routes/ClothRoute');
 const userRouter = require('./Routes/userRoute');
 const reviewRouter = require('./Routes/reviewRoute');
 const cartRouter = require('./Routes/cartRoute');
 const orderRouter = require('./Routes/orderRoute');
-const foodHutRouter = require('./Routes/FoodHutRoute');
-const foodHutReviewRouter = require('./Routes/FoodHutreviewRoute');
+const ClothHutRouter = require('./Routes/ClothHutRoute');
+const ClothHutReviewRouter = require('./Routes/ClothHutreviewRoute');
 
 const init = () => {
     
@@ -48,11 +48,11 @@ const init = () => {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         next();
     });
-    app.use('/api/v1/shop', foodRoute);
-    app.use('/api/v1/foodHut', foodHutRouter);
-    app.use('/api/v1/foodHut/review', foodHutReviewRouter);
+    app.use('/api/v1/shop', ClothRoute);
+    app.use('/api/v1/ClothHut', ClothHutRouter);
+    app.use('/api/v1/ClothHut/review', ClothHutReviewRouter);
     app.use('/api/v1/user', userRouter);
-    app.use('/api/v1/shop/food/review', reviewRouter);
+    app.use('/api/v1/shop/Cloth/review', reviewRouter);
     app.use('/api/v1/user/cart', cartRouter);
     app.use('/api/v1/user/order', orderRouter);
 

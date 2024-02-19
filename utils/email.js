@@ -55,7 +55,7 @@ module.exports = class Email {
   }
 
   async sendWelcome() {
-    await this.send('welcome', 'Welcome to the Food Hut Example App!');
+    await this.send('welcome', 'Welcome to the Cloth Hut Example App!');
   }
 
   async refund() {
