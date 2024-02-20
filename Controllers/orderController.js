@@ -1,7 +1,46 @@
-const orderModel = require('../Models/orderModel');
+const orderModel = require('../Models/OrderModel');
 const PDFDocument = require('pdfkit');
 const Email = require('../utils/email');
 const errorController = require('./errorController');
+const EmployeeModel = require('../Models/EmployeesModel');
+
+exports.success_fully_confirm_order = async (req, res, next)=>{
+    const orderItem = await orderModel.findOne({ user: req.user, _id: req.params.id });
+    if (!orderItem) {
+        return res.status(400).json({
+            status: 'fail',
+            message: 'No found Order'
+        })
+    }
+    if(!orderItem.orderIsConfirmed){
+        return res.status(400).json({
+            status: 'fail',
+            message: 'Your Order have not confirmed by management yet'
+        })
+    }
+    orderItem.paymentOnline = req.params.paymentOnline;
+    if(orderItem.paymentOnline)
+        /* handle the payment online and rest of it*/
+        // Clue is this if user did not pay online
+
+    orderItem.HomeDelivery = reeq.params.HomeDelivery;
+    orderItem.orderIsSuccesfullyConfirmed = true;
+
+    orderItem = await orderModel.findByIdAndUpdate(orderItem._id, orderItem);
+
+    if(orderItem.HomeDelivery){
+        const emp = EmployeeModel.find({isDeliveryPerson : true})
+        const oneDEmp =  emp[Math.floor(Math.random()*emp.length)]
+        if(oneDEmp.toTargetOrder == undefined || oneDEmp.toTargetOrder == null || oneDEmp.toTargetOrder.length <= 0){
+            oneDEmp.toTargetOrder = []
+            oneDEmp.toTargetOrder.push(orderItem)
+        }else{
+            oneDEmp.toTargetOrder.push(orderItem)
+        }
+    }
+
+}
+
 
 exports.getInvoice = async (req, res, next) => {
     try {
@@ -10,6 +49,12 @@ exports.getInvoice = async (req, res, next) => {
             return res.status(400).json({
                 status: 'fail',
                 message: 'No found Order'
+            })
+        }
+        if(!orderItem.orderIsConfirmed){
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Your Order have not confirmed by management yet'
             })
         }
         const invoiceName = 'invoice-' + req.params.id + '.pdf';
@@ -54,7 +99,12 @@ exports.confrimRecive = async (req, res, next) => {
             })
         }
         const orderItem = await orderModel.findOne({ user: req.user, _id: req.params.id });
-
+        if(!orderItem.orderIsConfirmed){
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Your Order have not confirmed by management yet'
+            })
+        }
         if (!orderItem) {
             return res.status(400).json({
                 status: 'fail',

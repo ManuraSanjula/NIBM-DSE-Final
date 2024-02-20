@@ -40,12 +40,6 @@ const ClothSchema = new Schema({
         type: Number
     },
     like: Boolean,
-    ClothHuts: [
-        {
-            type: mongoose.Schema.ObjectId,
-            ref: 'ClothHuts'
-        }
-    ],
     review: [
         {
             type: mongoose.Schema.ObjectId,

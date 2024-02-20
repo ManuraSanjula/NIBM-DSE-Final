@@ -15,6 +15,14 @@ const shipmentSchema = new mongoose.Schema({
     dilivered: {
         type: Boolean,
         default: false
+    },
+    user:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+    },
+    dilverPerson:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
     }
 });
 

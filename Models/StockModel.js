@@ -8,12 +8,13 @@ const stockSchema = new mongoose.Schema({
     prerequisites:{
         type: [{
             name: String,
-            values: Object
+            values: Object,
+            fullied: Boolean
         }]
     }
 });
 
 
-const stock = mongoose.model('Stocks', stockSchema);
+const stock = mongoose.model('InventoryStocks', stockSchema);
 
 module.exports = stock;

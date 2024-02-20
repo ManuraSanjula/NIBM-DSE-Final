@@ -11,6 +11,10 @@ const orderSchema = new mongoose.Schema({
         ref: 'Cloths',
         required: [true, 'Order must belong to a Cloth.']
     },
+    Shipement:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Shipments',
+    },
     price: {
         type: Number,
     },
@@ -26,7 +30,27 @@ const orderSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    orderIsConfirmed: {
+        type: Boolean,
+        default: false
+    },
+    orderIsSuccesfullyConfirmed: {
+        type: Boolean,
+        default: false
+    },
     confrimRecive: {
+        type: Boolean,
+        default: false
+    },
+    HomeDelivery:{
+        type: Boolean,
+    },
+    paymentOnline:
+    {
+        type: Boolean,
+        default: false
+    },
+    successfullyPayed:{
         type: Boolean,
         default: false
     }
