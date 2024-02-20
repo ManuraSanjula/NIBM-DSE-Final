@@ -1,9 +1,9 @@
 const multer = require('multer');
 const sharp = require('sharp');
-const User = require('./../Models/userModel');
+const User = require('../Models/userModel');
 const RefundModel = require('./../Models/refundModle');
 const factory = require('./handlerFactory');
-const Email = require('./../utils/email');
+const Email = require('../utils/email');
 const Cloth = require('../Models/ClothModel');
 const errorController = require('./errorController');
 

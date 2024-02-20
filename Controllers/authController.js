@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../Models/userModel');
 const Email = require('../utils/email');
 const Cloth = require('../Models/ClothModel');
-const errorController = require('./errorController');
+const errorController = require('./ErrorController');
 
 exports.conEmail = async (req, res, next) => {
   let token;

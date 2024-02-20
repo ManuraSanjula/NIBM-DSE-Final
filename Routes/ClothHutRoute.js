@@ -1,6 +1,6 @@
 const express = require('express');
-const ClothHutController = require('./../Controllers/ClothHutController');
-const authController = require('./../Controllers/authController');
+const ClothHutController = require('../Controllers/ClothHutController');
+const authController = require('../Controllers/authController');
 //const reviewRouter = require('./../routes/reviewRoutes');
 
 const router = express.Router();
@@ -11,7 +11,7 @@ router
   .route('/monthly-plan/:year')
   .get(
     authController.protect,
-    authController.restrictTo('admin', 'chef'),
+    authController.restrictTo('admin', 'sub-admin'),
     ClothHutController.getMonthlyPlan
   );
 
@@ -28,7 +28,7 @@ router
   .get(ClothHutController.getAllClothHuts)
   .post(
     authController.protect,
-    authController.restrictTo('admin', 'chef'),
+    authController.restrictTo('admin', 'sub-admin'),
     ClothHutController.uploadClothHutImages,
     ClothHutController.resizeTourImages,
     ClothHutController.addOneClothHut
@@ -39,14 +39,14 @@ router
   .get(ClothHutController.getOneClothHut)
   .patch(
     authController.protect,
-    authController.restrictTo('admin', 'chef'),
+    authController.restrictTo('admin', 'sub-admin'),
     ClothHutController.uploadClothHutImages,
     ClothHutController.resizeTourImages,
     ClothHutController.updateOneClothHut
   )
   .delete(
     authController.protect,
-    authController.restrictTo('admin', 'chef'),
+    authController.restrictTo('admin', 'sub-admin'),
     ClothHutController.disable
   );
 

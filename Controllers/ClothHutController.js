@@ -1,9 +1,9 @@
 const multer = require('multer');
 const sharp = require('sharp');
-const ClothHutModel = require('./../Models/ClothHutModel');
+const ClothHutModel = require('../Models/ClothHutModel');
 const multerStorage = multer.memoryStorage();
 const User = require('../Models/userModel');
-const errorController = require('./errorController');
+const errorController = require('./ErrorController');
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
@@ -68,8 +68,8 @@ exports.addOneClothHut = async (req, res, next) => {
         message: 'major fields are missing Ex - name , imageCover , description, summary  '
       })
     }
-    const arry = [...req.body.chefs];
-    let isChef = true
+    const arry = [...req.body.sub-admins];
+    let issub-admin = true
     for (let item = 0; item < arry.length; item++) {
       const user = await User.findById(arry[item]);
       if(!user){
@@ -77,15 +77,15 @@ exports.addOneClothHut = async (req, res, next) => {
           status: 'fail',
           message: 'No UserFound given ID'
         })       }
-      if (user.role !== 'chef') {
-        isChef = false;
+      if (user.role !== 'sub-admin') {
+        issub-admin = false;
         break;
       }
     }
-    if (isChef === false) {
+    if (issub-admin === false) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Make Sure Only Chef IDS'
+        message: 'Make Sure Only sub-admin IDS'
       })
     }
     const ClothHut = await ClothHutModel.create(req.body);
@@ -116,7 +116,7 @@ exports.updateOneClothHut = async (req, res, next) => {
 exports.getOneClothHut = async (req, res, next) => {
   try {
     const ClothHut =
-      await ClothHutModel.findById(req.params.id).populate({ path: 'Cloths' }).populate({ path: 'reviews' }).populate({ path: 'chefs' })
+      await ClothHutModel.findById(req.params.id).populate({ path: 'Cloths' }).populate({ path: 'reviews' }).populate({ path: 'sub-admins' })
     return res.status(200).json({
       status: 'success',
       data: ClothHut,

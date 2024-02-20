@@ -1,5 +1,5 @@
 const CartModel = require('../Models/cartModel');
-const errorController = require('./errorController');
+const errorController = require('./ErrorController');
 const UserModel = require('../Models/userModel');
 const ClothModel = require('../Models/ClothModel')
 

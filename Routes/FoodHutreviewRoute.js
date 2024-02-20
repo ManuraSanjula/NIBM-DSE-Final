@@ -8,7 +8,7 @@ router.use(authController.protect);
 
 router
   .post('/',
-    authController.restrictTo('user','admin','chef'),
+    authController.restrictTo('admin','sub-admin'),
     ClothHutreview.setTourUserIds,
     ClothHutreview.createReview
   );
@@ -17,11 +17,11 @@ router
   .route('/:id')
   .get(ClothHutreview.getReview)
   .patch(
-    authController.restrictTo('user', 'admin','chef'),
+    authController.restrictTo('admin','sub-admin'),
     ClothHutreview.updateReview
   )
   .delete(
-    authController.restrictTo('user', 'admin','chef'),
+    authController.restrictTo('admin','sub-admin'),
     ClothHutreview.deleteReview
   );
 

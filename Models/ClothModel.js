@@ -43,7 +43,7 @@ const ClothSchema = new Schema({
     ClothHuts: [
         {
             type: mongoose.Schema.ObjectId,
-            ref: 'ClothHut'
+            ref: 'ClothHuts'
         }
     ],
     review: [

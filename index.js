@@ -12,10 +12,10 @@ const cluster = require('cluster');
 const os = require('os');
 
 const ClothRoute = require('./Routes/ClothRoute');
-const userRouter = require('./Routes/userRoute');
-const reviewRouter = require('./Routes/reviewRoute');
-const cartRouter = require('./Routes/cartRoute');
-const orderRouter = require('./Routes/orderRoute');
+const userRouter = require('./Routes/UserRoute');
+const reviewRouter = require('./Routes/ReviewRoute');
+const cartRouter = require('./Routes/CartRoute');
+const orderRouter = require('./Routes/OrderRoute');
 const ClothHutRouter = require('./Routes/ClothHutRoute');
 const ClothHutReviewRouter = require('./Routes/ClothHutreviewRoute');
 

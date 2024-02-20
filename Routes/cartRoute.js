@@ -6,11 +6,11 @@ const authController = require('../Controllers/authController');
 router.use(authController.protect);
 
 router.route('/').
-    post(authController.restrictTo('user','admin', 'chef'), cartController.checkData, cartController.createCart).
-    get(authController.restrictTo('user','admin', 'chef'), cartController.getAllCart)
+    post(authController.restrictTo('user','admin', 'sub-admin'), cartController.checkData, cartController.createCart).
+    get(authController.restrictTo('user','admin', 'sub-admin'), cartController.getAllCart)
     
 router.route('/:id').
-    get(authController.restrictTo('user','admin', 'chef'), cartController.getOneCart)
-    .delete(authController.restrictTo('user','admin', 'chef'), cartController.deleteCart);
+    get(authController.restrictTo('user','admin', 'sub-admin'), cartController.getOneCart)
+    .delete(authController.restrictTo('user','admin', 'sub-admin'), cartController.deleteCart);
 
 module.exports = router
