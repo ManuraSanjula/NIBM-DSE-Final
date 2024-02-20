@@ -18,6 +18,10 @@ const EmployeesSchema = new mongoose.Schema({
             ref: 'Orders'
         }
     ],
+    totalShipments: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Shipments'
+    }],
     isNew:{
         type: Boolean,
         default: true

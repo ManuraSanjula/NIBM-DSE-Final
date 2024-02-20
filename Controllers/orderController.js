@@ -3,42 +3,67 @@ const PDFDocument = require('pdfkit');
 const Email = require('../utils/email');
 const errorController = require('./errorController');
 const EmployeeModel = require('../Models/EmployeesModel');
+const ShipementModel = require('../Models/ShipmentModel');
+
+async function setDeliveryJob(orderItem, req) {
+
+    const emp = EmployeeModel.find({ isDeliveryPerson: true });
+    const oneDEmp = emp[Math.floor(Math.random() * emp.length)];
+    if (oneDEmp.toTargetOrder == undefined || oneDEmp.toTargetOrder == null || oneDEmp.toTargetOrder.length <= 0) {
+        oneDEmp.toTargetOrder = [];
+        oneDEmp.toTargetOrder.push(orderItem._id);
+    } else {
+        oneDEmp.toTargetOrder.push(orderItem._id);
+    }
+    const shipment = await ShipementModel.create({
+        user: req.user._id,
+        order : orderItem._id,
+        status:"pending",
+        dilverPerson: oneDEmp._d
+    })
+
+    if (oneDEmp.totalShipments == undefined || oneDEmp.totalShipments == null || oneDEmp.totalShipments.length <= 0) {
+        oneDEmp.totalShipments = [];
+        oneDEmp.totalShipments.push(shipment._id);
+    } else {
+        oneDEmp.totalShipments.push(shipment._id);
+    }
+
+    await EmployeeModel.findByIdAndUpdate(oneDEmp._id, oneDEmp);
+}
 
 exports.success_fully_confirm_order = async (req, res, next)=>{
-    const orderItem = await orderModel.findOne({ user: req.user, _id: req.params.id });
-    if (!orderItem) {
-        return res.status(400).json({
-            status: 'fail',
-            message: 'No found Order'
-        })
-    }
-    if(!orderItem.orderIsConfirmed){
-        return res.status(400).json({
-            status: 'fail',
-            message: 'Your Order have not confirmed by management yet'
-        })
-    }
-    orderItem.paymentOnline = req.params.paymentOnline;
-    if(orderItem.paymentOnline)
-        /* handle the payment online and rest of it*/
-        // Clue is this if user did not pay online
-
-    orderItem.HomeDelivery = reeq.params.HomeDelivery;
-    orderItem.orderIsSuccesfullyConfirmed = true;
-
-    orderItem = await orderModel.findByIdAndUpdate(orderItem._id, orderItem);
-
-    if(orderItem.HomeDelivery){
-        const emp = EmployeeModel.find({isDeliveryPerson : true})
-        const oneDEmp =  emp[Math.floor(Math.random()*emp.length)]
-        if(oneDEmp.toTargetOrder == undefined || oneDEmp.toTargetOrder == null || oneDEmp.toTargetOrder.length <= 0){
-            oneDEmp.toTargetOrder = []
-            oneDEmp.toTargetOrder.push(orderItem)
-        }else{
-            oneDEmp.toTargetOrder.push(orderItem)
+    try{
+        const orderItem = await orderModel.findOne({ user: req.user, _id: req.params.id });
+        if (!orderItem) {
+            return res.status(400).json({
+                status: 'fail',
+                message: 'No found Order'
+            })
         }
-    }
+        if(!orderItem.orderIsConfirmed){
+            return res.status(400).json({
+                status: 'fail',
+                message: 'Your Order have not confirmed by management yet'
+            })
+        }
+        if(orderItem.paymentOnline){
+            orderItem.paymentOnline = true;
+            orderItem.successfullyPayed = true;
+        }
 
+        if(orderItem.HomeDelivery)
+            await setDeliveryJob(orderItem, req);
+
+        orderItem.orderIsSuccesfullyConfirmed = true;
+        orderItem = await orderModel.findByIdAndUpdate(orderItem._id, orderItem);
+
+        return res.status(200).json({
+            status: 'success',
+        })
+    }catch(err){
+        errorController(req, res, err)
+    }
 }
 
 
