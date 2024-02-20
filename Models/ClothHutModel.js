@@ -70,7 +70,7 @@ const ClothHutModel = new mongoose.Schema(
                 ref: 'Cloths'
             }
         ],
-        sub-admins: [
+        subAdmins: [
             {
                 type: mongoose.Schema.ObjectId,
                 ref: 'User'

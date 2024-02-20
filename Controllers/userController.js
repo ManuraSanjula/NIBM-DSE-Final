@@ -1,7 +1,7 @@
 const multer = require('multer');
 const sharp = require('sharp');
-const User = require('../Models/userModel');
-const RefundModel = require('./../Models/refundModle');
+const User = require('../Models/UserModel');
+const RefundModel = require('./../Models/RefundModel');
 const factory = require('./handlerFactory');
 const Email = require('../utils/email');
 const Cloth = require('../Models/ClothModel');
@@ -181,6 +181,5 @@ exports.createUser = (req, res) => {
 exports.getUser = factory.getOne(User);
 exports.getAllUsers = factory.getAll(User);
 
-// Do NOT update passwords with this!
 exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);

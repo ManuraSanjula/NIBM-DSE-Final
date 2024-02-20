@@ -1,6 +1,6 @@
 const CartModel = require('../Models/cartModel');
 const errorController = require('./ErrorController');
-const UserModel = require('../Models/userModel');
+const UserModel = require('../Models/UserModel');
 const ClothModel = require('../Models/ClothModel')
 
 exports.checkData = (req, res, next) => {

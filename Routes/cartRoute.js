@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const cartController = require('../Controllers/cartController');
-const authController = require('../Controllers/authController');
+const cartController = require('../Controllers/CartController');
+const authController = require('../Controllers/AuthController');
 
 router.use(authController.protect);
 

@@ -2,7 +2,7 @@ const multer = require('multer');
 const sharp = require('sharp');
 const ClothHutModel = require('../Models/ClothHutModel');
 const multerStorage = multer.memoryStorage();
-const User = require('../Models/userModel');
+const User = require('../Models/UserModel');
 const errorController = require('./ErrorController');
 
 const multerFilter = (req, file, cb) => {
@@ -69,7 +69,7 @@ exports.addOneClothHut = async (req, res, next) => {
       })
     }
     const arry = [...req.body.sub-admins];
-    let issub-admin = true
+    let isSubAdmin = true
     for (let item = 0; item < arry.length; item++) {
       const user = await User.findById(arry[item]);
       if(!user){
@@ -78,11 +78,11 @@ exports.addOneClothHut = async (req, res, next) => {
           message: 'No UserFound given ID'
         })       }
       if (user.role !== 'sub-admin') {
-        issub-admin = false;
+        isSubAdmin = false;
         break;
       }
     }
-    if (issub-admin === false) {
+    if (isSubAdmin === false) {
       return res.status(400).json({
         status: 'fail',
         message: 'Make Sure Only sub-admin IDS'

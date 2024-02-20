@@ -1,6 +1,6 @@
-const Review = require('./../Models/review');
+const Review = require('./../Models/ReviewModel');
 const errorController = require('./errorController');
-const UserModel = require('../Models/userModel');
+const UserModel = require('../Models/UserModel');
 const ClothModel = require('../Models/ClothModel')
 
 exports.setTourUserIds = (req, res, next) => {

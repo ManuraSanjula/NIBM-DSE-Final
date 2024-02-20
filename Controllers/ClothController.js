@@ -2,7 +2,7 @@ const ClothModel = require('../Models/ClothModel');
 const multer = require('multer');
 const sharp = require('sharp');
 const multerStorage = multer.memoryStorage();
-const User = require('../Models/userModel');
+const User = require('../Models/UserModel');
 const errorController = require('./errorController');
 
 exports.deleteOneCloth = async (req, res, next) => {

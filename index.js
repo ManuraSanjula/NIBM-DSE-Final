@@ -17,7 +17,6 @@ const reviewRouter = require('./Routes/ReviewRoute');
 const cartRouter = require('./Routes/CartRoute');
 const orderRouter = require('./Routes/OrderRoute');
 const ClothHutRouter = require('./Routes/ClothHutRoute');
-const ClothHutReviewRouter = require('./Routes/ClothHutreviewRoute');
 
 const init = () => {
     
@@ -50,7 +49,6 @@ const init = () => {
     });
     app.use('/api/v1/shop', ClothRoute);
     app.use('/api/v1/ClothHut', ClothHutRouter);
-    app.use('/api/v1/ClothHut/review', ClothHutReviewRouter);
     app.use('/api/v1/user', userRouter);
     app.use('/api/v1/shop/Cloth/review', reviewRouter);
     app.use('/api/v1/user/cart', cartRouter);
@@ -64,12 +62,7 @@ const init = () => {
     })
 
     mongoose
-        .connect(DB, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true,
-            useFindAndModify: false
-        })
+        .connect(DB)
         .then(() => {
             console.log('\x1b[36m%s\x1b[0m', 'Mongo DB Live')
         });

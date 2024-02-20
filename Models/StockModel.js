@@ -5,10 +5,6 @@ const stockSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Cloths',
     },
-    order: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Orders',
-    },
     prerequisites:{
         type: [{
             name: String,
