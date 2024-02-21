@@ -8,10 +8,22 @@ const EmployeesSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isManager:{
+        type: Boolean,
+        default: false
+    },
+    isOwner:{
+        type: Boolean,
+        default: false
+    },
     JoinDate: {
         type: Date,
         default: Date.now
     },
+    toOrderToBeAvailable: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Orders'
+    }],
     toTargetOrder: [
         {
             type: mongoose.Schema.ObjectId,

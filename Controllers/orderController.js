@@ -30,6 +30,7 @@ async function setDeliveryJob(orderItem, req) {
     }
 
     await EmployeeModel.findByIdAndUpdate(oneDEmp._id, oneDEmp);
+    // after notify the DeliveryPerson
 }
 
 exports.success_fully_confirm_order = async (req, res, next)=>{
@@ -47,10 +48,8 @@ exports.success_fully_confirm_order = async (req, res, next)=>{
                 message: 'Your Order have not confirmed by management yet'
             })
         }
-        if(orderItem.paymentOnline){
-            orderItem.paymentOnline = true;
+        if(orderItem.paymentOnline)
             orderItem.successfullyPayed = true;
-        }
 
         if(orderItem.HomeDelivery)
             await setDeliveryJob(orderItem, req);
@@ -194,9 +193,27 @@ exports.checkOutAll = async (req, res, next) => {
     }
 }
 
+let setOrdersToAvailable = async (newOrder) => {
+    const emp = EmployeeModel.find({ isManager: true });
+    const oneMEmp = emp[Math.floor(Math.random() * emp.length)];
+
+    if (oneMEmp.toOrderToBeAvailable == undefined || oneMEmp.toOrderToBeAvailable == null || oneMEmp.toOrderToBeAvailable.length <= 0) {
+        oneMEmp.toOrderToBeAvailable = [];
+        oneMEmp.toOrderToBeAvailable.push(newOrder._id);
+    } else {
+        oneMEmp.toOrderToBeAvailable.push(newOrder._id);
+
+    await EmployeeModel.findByIdAndUpdate(oneMEmp._id, oneMEmp);
+
+    // after notify the manager
+}
+
 exports.createOrder = async (req, res, next) => {
     try {
         const newOrder = await orderModel.create(req.body)
+
+        await setOrdersToAvailable(newOrder)
+
         return res.status(201).json({
             size: newOrder.length,
             status: 'success',
@@ -244,5 +261,6 @@ exports.getOneOrder = async (req, res, next) => {
         })
     } catch (error) {
         errorController(req, res, err)
+    }
     }
 }

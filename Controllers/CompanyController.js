@@ -48,11 +48,15 @@ exports.deleteEmployee = factory.deleteOne(EmployeeModel);
 
 async function createAnEmployee(id, salary, type){
     let isDeliveryPerson = false;
+    let isManager = false;
     if(type == 'Delivery')
         isDeliveryPerson = true;
+    if(type == 'Manager')
+        isManager = true;
     let employee = await EmployeeModel.create({
         user: id,
         isDeliveryPerson,
+        isManager,
         isNew: true,
         salary,
     })
@@ -67,7 +71,11 @@ exports.confirmOrder = async (req, res)=>{
 
         // send a email to the user that saying stock is available for the order
 
-        await OrderModel.findByIdAndUpdate(order._id, order)
+        order = await OrderModel.findByIdAndUpdate(order._id, order)
+        return res.status(200).json({
+            status: 'success',
+            data: order
+        });
     }catch(err){
         errorController(req, res, err)
     }
@@ -83,7 +91,11 @@ exports.FireAnEmployee = async (req, res) => {
                 user.role = 'user'
     
                 await UserModel.findByIdAndUpdate(user._id, user);
-                await EmployeeModel.findByIdAndUpdate(emp._id, emp);
+                const emp = await EmployeeModel.findByIdAndUpdate(emp._id, emp);
+                return res.status(200).json({
+                    status: 'success',
+                    data: emp
+                });
             }else{
                 return res.status(401).json({
                     status: 'fail',
@@ -106,10 +118,12 @@ exports.hireAnEmployee = async (req, res)=>{
         let user = UserModel.findById(req.params.id);
         if(user){
             user.role = req.query.typeEmp;
-            if(createAnEmployee(user._id, req.query.salary,user.role))
+            const emp = createAnEmployee(user._id, req.query.salary,user.role)
+            await UserModel.findByIdAndUpdate(user._id, user);
+            if(emp)
                 return res.status(200).json({
                     status: 'success',
-                    data: refund
+                    data: emp
                 });
             else
                 return res.status(500).json({

@@ -19,6 +19,9 @@ const shipmentSchema = new mongoose.Schema({
     dilverPerson:{
         type: mongoose.Schema.ObjectId,
         ref: 'User',
+    },
+    feedback: {
+        type: String,
     }
 });
 
