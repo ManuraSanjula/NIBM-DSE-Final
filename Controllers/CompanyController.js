@@ -6,14 +6,14 @@ const RefundsModel = require('../Models/RefundModel');
 const OrderModel = require('../Models/OrderModel');
 const EmployeeModel = require('../Models/EmployeesModel'); // Company
 const ClothModel = require('../Models/ClothModel'); // Company
-const CartModel = require('../Models/CartModel');
+const CartModel = require('../Models/cartModel');
 const factory = require('./handlerFactory');
 const errorController = require('./ErrorController');
 
 exports.getAllUsers = factory.getAll(UserModel);
 exports.getUser = factory.getOne(UserModel);
-exports.updateUser = factory.updateOne(User);
-exports.deleteUser = factory.deleteOne(User);
+exports.updateUser = factory.updateOne(UserModel);
+exports.deleteUser = factory.deleteOne(UserModel);
 
 exports.getStocks = factory.getAll(StocksModel);
 exports.getOneStock = factory.getOne(StocksModel);
@@ -57,14 +57,14 @@ async function createAnEmployee(id, salary, type){
         user: id,
         isDeliveryPerson,
         isManager,
-        isNew: true,
+        isNewEmployee: true,
         salary,
     })
     if(employee)
         return employee
 }
 
-exports.confirmOrder = async (req, res)=>{
+exports.confirmOrder = async (req, res, next)=>{
     try{
         let order = OrderModel.findById(req.params.id)
         order.orderIsConfirmed = true;
@@ -81,7 +81,7 @@ exports.confirmOrder = async (req, res)=>{
     }
 }
 
-exports.FireAnEmployee = async (req, res) => {
+exports.FireAnEmployee = async (req, res,next) => {
     try{
         let user = UserModel.findById(req.params.id);
         if(user){
@@ -113,7 +113,7 @@ exports.FireAnEmployee = async (req, res) => {
     }
 }
 
-exports.hireAnEmployee = async (req, res)=>{
+exports.hireAnEmployee = async (req, res,next)=>{
     try {
         let user = UserModel.findById(req.params.id);
         if(user){

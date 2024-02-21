@@ -9,6 +9,12 @@ const errorController = require('./errorController');
 
 exports.refunds = async (req, res, next) => {
   try {
+    if(!req.user){
+      return res.status(401).json({
+        status: 'fail',
+        message: 'No User Found'
+      });
+    }
     const user = await User.findOne(req.user);
     if (!user) {
       return res.status(401).json({
@@ -30,6 +36,12 @@ exports.refunds = async (req, res, next) => {
 
 exports.requestRefunds = async (req, res, next) => {
   try {
+    if(!req.user){
+      return res.status(401).json({
+        status: 'fail',
+        message: 'No User Found'
+      });
+    }
     const user = await User.findOne(req.user);
     if (!user) {
       return res.status(401).json({
@@ -81,14 +93,31 @@ function getRandomInt(max) {
 
 exports.resizePhoto = async (req, res, next) => {
   if (req.files) {
-    if (req.files.photo) {
-      req.body.photo = `user-${getRandomInt(1999191919191)}-${Date.now()}-cover.jpeg`;
-      await sharp(req.files.photo[0].buffer)
-        .resize(2000, 1333)
+
+    if (req.files.photo && req.files.photo.length > 0) {
+      const fileName = `user-${getRandomInt(1999191919191)}-${Date.now()}-cover.jpeg`;      
+      try {
+       const fs = require('fs');
+
+       sharp(req.files.photo[0].buffer)
+        .resize(500, 500)
         .toFormat('jpeg')
         .jpeg({ quality: 90 })
-        .toFile(`public/img/users/${req.body.photo}`);
+        .toBuffer((err, data, info) => {
+            fs.writeFile(fileName, data, { flag: 'w' }, function() {
+                
+            });
+        });
+
+        req.file = fileName;
+        console.log(`File ${fileName} saved successfully.`);
+      } catch (error) {
+        console.error(`Error saving file ${fileName}:`, error);
+      }
+    } else {
+      console.error("No photo found in request.");
     }
+    
 
     if (req.files.evidence) {
       req.body.evidence = [];
@@ -96,13 +125,30 @@ exports.resizePhoto = async (req, res, next) => {
         req.files.evidence.map(async (file, i) => {
           const filename = `evidence-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
 
-          await sharp(file.buffer)
-            .resize(2000, 1333)
-            .toFormat('jpeg')
-            .jpeg({ quality: 90 })
-            .toFile(`public/img/evidence/${file}`);
+          // await sharp(file.buffer)
+          //   .resize(2000, 1333)
+          //   .toFormat('jpeg')
+          //   .jpeg({ quality: 90 })
+          //   .toFile(`public/img/evidence/${file}`);
 
-          req.body.evidence.push(filename);
+          try {
+            const fs = require('fs');
+       
+            sharp(file.buffer)
+              .resize(2000, 1333)
+              .toFormat('jpeg')
+              .jpeg({ quality: 90 })
+              .toBuffer((err, data, info) => {
+                fs.writeFile(fileName, data, { flag: 'w' }, function() {
+                 req.body.evidence.push(filename);
+                });
+               });
+       
+            console.log(`File ${fileName} saved successfully.`);
+          }catch (error) {
+            console.error(`Error saving file ${fileName}:`, error);
+          }
+
         })
       );
     }
@@ -139,7 +185,7 @@ exports.updateMe = async (req, res, next) => {
 
     // 2) Filtered out unwanted fields names that are not allowed to be updated
     const filteredBody = filterObj(req.body, 'name', 'email');
-    if (req.file) filteredBody.photo = req.file.filename;
+    if (req.file) filteredBody.photo = req.file;
 
     // 3) Update user document
     const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {

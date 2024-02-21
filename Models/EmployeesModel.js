@@ -34,7 +34,7 @@ const EmployeesSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Shipments'
     }],
-    isNew:{
+    isNewEmployee:{
         type: Boolean,
         default: true
     },

@@ -16,7 +16,6 @@ const userRouter = require('./Routes/All/UserRoute');
 const reviewRouter = require('./Routes/Customer/ReviewRoute');
 const cartRouter = require('./Routes/Customer/CartRoute');
 const orderRouter = require('./Routes/Customer/OrderRoute');
-
 const companyRouter = require('./Routes/Company/CompanyRoute')
 
 const init = () => {
@@ -48,9 +47,9 @@ const init = () => {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         next();
     });
+    app.use('/api/v1/user', userRouter);
     app.use('/api/v1/shop', ClothRoute);
     app.use('/api/v1', companyRouter);
-    app.use('/api/v1/user', userRouter);
     app.use('/api/v1/shop/Cloth/review', reviewRouter);
     app.use('/api/v1/user/cart', cartRouter);
     app.use('/api/v1/user/order', orderRouter);

@@ -74,17 +74,19 @@ const signToken = (id, type = '') => {
 
 
 const createSendToken = async (user, statusCode, res,req) => {
-  const emailToken = signToken(user._id, 'email');
   const token = signToken(user._id);
-  const url = `${req.protocol}://${req.get('host')}/api/v1/user/confrimEmail?user=${emailToken}&userId=${user._id.toString()}`;
-  await new Email(user, url).sendWelcome();
+
+  if(req){
+    const emailToken = signToken(user._id, 'email');
+    const url = `${req.protocol}://${req.get('host')}/api/v1/user/confrimEmail?user=${emailToken}&userId=${user._id.toString()}`;
+    await new Email(user, url).sendWelcome();
+  }
+
   const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true
-  };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+    expires: new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)), // 365 days in milliseconds
+    httpOnly: true,
+    secure: true
+};
 
   res.cookie('jwt', token, cookieOptions);
 
@@ -324,7 +326,12 @@ exports.restrictTo = (...roles) => {
 
 exports.forgotPassword = async (req, res, next) => {
   try {
-  
+    if(!req.body.email){
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Missing email address in request body',
+      })
+    }
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
       return res.status(404).json({
@@ -341,7 +348,7 @@ exports.forgotPassword = async (req, res, next) => {
     try {
       const resetURL = `${req.protocol}://${req.get(
         'host'
-      )}/api/v1/user/resetPassword/${resetToken}`;
+      )}/api/v1/user/resetPasswordweb/${resetToken}?token=${resetToken}`;
       await new Email(user, resetURL).sendPasswordReset();
 
       res.status(200).json({
@@ -369,6 +376,13 @@ exports.forgotPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
   try {
    
+    if(!req.body.password || !req.body.passwordConfirm){
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Missing password or confirm password in request body',
+      })
+    }
+
     const hashedToken = crypto
       .createHash('sha256')
       .update(req.params.token)
@@ -379,7 +393,6 @@ exports.resetPassword = async (req, res, next) => {
       passwordResetExpires: { $gt: Date.now() }
     });
 
-  
     if (!user) {
       return res.status(400).json({
         status: 'fail',
@@ -395,7 +408,7 @@ exports.resetPassword = async (req, res, next) => {
 
     createSendToken(user, 200, res);
   } catch (err) {
-    errorController(req, res, error)
+    errorController(req, res, err)
     // return res.status(500).json({
     //   status: 'fail',
     //   message: error.message,
@@ -406,6 +419,13 @@ exports.resetPassword = async (req, res, next) => {
 
 exports.registerEmail = async (req, res, next) => {
   try {
+    if(!req.user.id)
+    {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'user id not found',
+      })
+    }
     const user = await User.findById(req.user.id);
     const token = signToken(user._id, 'email');
     const url = `${req.protocol}://${req.get('host')}/api/v1/user/confrimEmail?user=${token}&userId=${newUser._id.toString()}`;
@@ -422,6 +442,13 @@ exports.registerEmail = async (req, res, next) => {
 exports.updatePassword = async (req, res, next) => {
   try {
    
+    if(!req.body.password || !req.body.passwordConfirm || !req.body.passwordCurrent){
+      return res.status(401).json({
+        status: 'fail',
+        message: 'Missing password or confirm password in request body',
+      })
+    }
+
     const user = await User.findById(req.user.id).select('+password');
     if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
       return res.status(401).json({
@@ -436,7 +463,7 @@ exports.updatePassword = async (req, res, next) => {
   
     createSendToken(user, 200, res);
   } catch (err) {
-    errorController(req, res, error)
+    errorController(req, res, err)
     // return res.status(401).json({
     //   status: 'fail',
     //   message: 'Cound not find User'

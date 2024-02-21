@@ -3,6 +3,14 @@ const userController = require('../../Controllers/UserController');
 const authController = require('../../Controllers/AuthController');
 
 const router = express.Router();
+router.get('/resetPasswordweb/:resetToken', (req, res) => {
+    const resetURL = `${req.protocol}://${req.get(
+        'host'
+      )}/api/v1/user/resetPassword/${req.params.resetToken}`;
+    res.status(200).render('email/passwordResetWeb',{
+        resetURL: resetURL
+    });
+});
 
 router.get('/confrimEmail', authController.conEmail);
 router.get('/registerEmail', authController.registerEmail);
@@ -14,7 +22,7 @@ router.get('/logout', authController.logout);
 router.get('/likes', authController.protect, authController.addLikes);
 
 router.post('/forgotPassword', authController.forgotPassword);
-router.patch('/resetPassword/:token', authController.resetPassword);
+router.post('/resetPassword/:token', authController.resetPassword);
 
 // Protect all routes after this middleware
 router.use(authController.protect);
@@ -30,5 +38,6 @@ router.patch(
     userController.updateMe
 );
 router.delete('/deleteMe', userController.deleteMe);
+
 
 module.exports = router;

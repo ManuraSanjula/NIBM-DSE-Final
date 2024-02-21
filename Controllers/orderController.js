@@ -208,12 +208,11 @@ let setOrdersToAvailable = async (newOrder) => {
     // after notify the manager
 }
 
+
 exports.createOrder = async (req, res, next) => {
     try {
         const newOrder = await orderModel.create(req.body)
-
         await setOrdersToAvailable(newOrder)
-
         return res.status(201).json({
             size: newOrder.length,
             status: 'success',

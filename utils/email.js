@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const pug = require('pug');
 const htmlToText = require('html-to-text');
+const { convert }= require('html-to-text');
 
 module.exports = class Email {
   constructor(user, url) {
@@ -23,8 +24,7 @@ module.exports = class Email {
     }
 
     return nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      service: 'gmail',
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD
@@ -43,11 +43,11 @@ module.exports = class Email {
 
     // 2) Define email options
     const mailOptions = {
-      from: 'w.m.manurasanjula12345@gmail.com',
+      from: 'w.m.manurasanjula2003@gmail.com',
       to: this.to,
       subject,
       html,
-      text: htmlToText.fromString(html)
+      text: convert(html)
     };
 
     // 3) Create a transport and send email

@@ -6,18 +6,20 @@ const authController = require('../../Controllers/AuthController');
 router.use(authController.protect);
 
 router.route('/').
-    post(orderController.checkData, orderController.createOrder)
-    .get(orderController.getAllOrder);
+    post(orderController.checkData, (req, res) => {
+        return orderController.createOrder(req, res);
+    })
+    .get((req, res) => orderController.getAllOrder(req, res));
 
 router.route('/chekoutAll').get(orderController.checkOutAll)
 
 router.route('/:id').
-    get(orderController.getOneOrder);
+    get((req, res) => orderController.getOneOrder(req, res));
 
 router.route('/:id/getInvoice').
-    get(orderController.getInvoice);
+    get((req, res) => orderController.getInvoice(req, res));
 
 
-router.get('/:id/confrimRecive', orderController.confrimRecive)
+router.get('/:id/confrimRecive', (req, res)=> orderController.confrimRecive(req, res))
 
 module.exports = router
