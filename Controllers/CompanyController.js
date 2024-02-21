@@ -105,8 +105,8 @@ exports.hireAnEmployee = async (req, res)=>{
     try {
         let user = UserModel.findById(req.params.id);
         if(user){
-            user.role = req.params.typeEmp;
-            if(createAnEmployee(user._id, req.params.salary,user.role))
+            user.role = req.query.typeEmp;
+            if(createAnEmployee(user._id, req.query.salary,user.role))
                 return res.status(200).json({
                     status: 'success',
                     data: refund

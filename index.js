@@ -11,12 +11,13 @@ const path = require('path');
 const cluster = require('cluster');
 const os = require('os');
 
-const ClothRoute = require('./Routes/ClothRoute');
-const userRouter = require('./Routes/UserRoute');
-const reviewRouter = require('./Routes/ReviewRoute');
-const cartRouter = require('./Routes/CartRoute');
-const orderRouter = require('./Routes/OrderRoute');
-const ClothHutRouter = require('./Routes/ClothHutRoute');
+const ClothRoute = require('./Routes/All/ClothRoute');
+const userRouter = require('./Routes/All/UserRoute');
+const reviewRouter = require('./Routes/Customer/ReviewRoute');
+const cartRouter = require('./Routes/Customer/CartRoute');
+const orderRouter = require('./Routes/Customer/OrderRoute');
+
+const companyRouter = require('./Routes/Company/CompanyRoute')
 
 const init = () => {
     
@@ -48,7 +49,7 @@ const init = () => {
         next();
     });
     app.use('/api/v1/shop', ClothRoute);
-    app.use('/api/v1/ClothHut', ClothHutRouter);
+    app.use('/api/v1', companyRouter);
     app.use('/api/v1/user', userRouter);
     app.use('/api/v1/shop/Cloth/review', reviewRouter);
     app.use('/api/v1/user/cart', cartRouter);
