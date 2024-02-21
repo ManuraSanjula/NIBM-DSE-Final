@@ -52,12 +52,7 @@ const ClothSchema = new Schema({
     }
 });
 
-ClothSchema.pre(/^find/, function (next) {
-    this.populate({
-        path: 'ClothHuts',
-    })
-    next();
-}); 
+
 ClothSchema.pre('save', function (next) {
     this.slug = slugify(this.name, { lower: true });
     next();

@@ -61,6 +61,13 @@ const EmployeesSchema = new mongoose.Schema({
     }
 });
 
+EmployeesSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: ['totalShipments','toTargetOrder','toOrderToBeAvailable'],
+    })
+    next();
+}); 
+
 const Employees = mongoose.model('Employees', EmployeesSchema);
 
 module.exports = Employees;

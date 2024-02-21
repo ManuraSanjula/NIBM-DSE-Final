@@ -147,3 +147,88 @@ exports.getCarts = factory.getAll(CartModel);
 exports.getOneCart = factory.getOne(CartModel);
 exports.updateCart = factory.updateOne(CartModel);
 exports.deleteCart = factory.deleteOne(CartModel);
+
+
+exports.allOrdersByDId = async (req, res, next) => {
+    const emp = EmployeeModel.findById(req.params.emp_id)
+    let toTargetOrder = []
+    for(let i = 0; i < emp.toTargetOrder.length; i++){
+        let order = await OrderModel.findById(emp.toTargetOrder[i])
+        toTargetOrder.push(order)
+    }
+    return res.status(200).json({
+        status: 'success',
+        data: toTargetOrder
+    });
+}
+exports.allShipmentByDId = async (req, res, next) => {
+    const emp = EmployeeModel.findById(req.params.emp_id)
+    let totalShipments = []
+    for(let i = 0; i < emp.totalShipments.length; i++) {
+        let order = await ShipmentsModel.findById(emp.totalShipments[i])
+        totalShipments.push(order)
+    }
+    return res.status(200).json({
+        status: 'success',
+        data: totalShipments
+    });
+}
+exports.AllPendingOrdersByMId = async (req, res, next) => {
+    const emp = EmployeeModel.findById(req.params.emp_id)
+    let allPendingOrdersNotConfirmed = [];
+    for(let i = 0; i < emp.toOrderToBeAvailable.length; i++) {
+        let order = await OrderModel.findById(emp.toOrderToBeAvailable[i])
+        allPendingOrdersNotConfirmed.push(order);
+    }
+    return res.status(200).json({
+        status: 'success',
+        data: allPendingOrdersNotConfirmed
+    });
+}
+
+exports.AllPendingOrdersNotConfirmed = async (req, res, next) => {
+    const emp = EmployeeModel.findById(req.params.emp_id)
+    let allPendingOrdersNotConfirmed = [];
+    for(let i = 0; i < emp.toOrderToBeAvailable.length; i++) {
+       let order = await OrderModel.findById(emp.toOrderToBeAvailable[i])
+       if(!order.orderIsConfirmed){
+            allPendingOrdersNotConfirmed.push(order);
+       }
+    }
+
+    return res.status(200).json({
+        status: 'success',
+        data: allPendingOrdersNotConfirmed
+    });
+}
+
+
+exports.AllOrdersNotDeliverdByDId = async (req, res, next) => {
+    const emp = EmployeeModel.findById(req.params.emp_id)
+    let toTargetOrder = [];
+    for(let i = 0; i < emp.toTargetOrder.length; i++) {
+       let order = await OrderModel.findById(emp.toTargetOrder[i])
+        if(!order.delivered){
+            toTargetOrder.push(order);
+        }
+    }
+
+    return res.status(200).json({
+        status: 'success',
+        data: toTargetOrder
+    });
+}
+
+exports.allShipmentNotDeliverdByDId = async (req, res, next) => {
+    const emp = EmployeeModel.findById(req.params.emp_id)
+    let totalShipments = []
+    for(let i = 0; i < emp.totalShipments.length; i++) {
+        let shipment = await ShipmentsModel.findById(emp.totalShipments[i])
+        if(shipment.dilivered)
+            totalShipments.push(shipment)
+    }
+    return res.status(200).json({
+        status: 'success',
+        data: totalShipments
+    });
+}
