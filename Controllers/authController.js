@@ -92,7 +92,6 @@ exports.conEmail = async (req, res, next) => {
 
 const signToken = (id, type = '') => {
   if (type === 'email') {
-    console.log(type)
     return jwt.sign({ id }, process.env.JWT_SECRET, {
       expiresIn: '600s'
     });
@@ -177,8 +176,6 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
-    console.log(email, password)
     if (!email || !password) {
       return res.status(400).json({
         status: "fail",
@@ -241,21 +238,12 @@ exports.addLikes = async (req, res) => {
 
     return res.status(200).json({ status: 'success' });
   } catch (error) {
-    // console.log(err)
-    // return res.status(500).json({ status: 'fail', message: error.message, });
     errorController(req, res, error)
   }
 };
 
 exports.protect = async (req, res, next) => {
   try {
-    if (!req.query.userId) {
-      return res.status(401).json({
-        status: 'fail',
-        message: 'No Found UserId in QueryParam',
-      })
-    }
-  
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
@@ -272,12 +260,7 @@ exports.protect = async (req, res, next) => {
     }
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
     const currentUser = await User.findById(decoded.id);
-    if (req.query.userId !== decoded.id) {
-      return res.status(401).json({
-        status: 'fail',
-        message: 'Wrong Token',
-      })
-    }
+
     if (!currentUser) {
       return res.status(401).json({
         status: 'fail',

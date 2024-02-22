@@ -66,6 +66,10 @@ const init = () => {
         })
     })
 
+    app.all('*', (req, res, next) => {
+         res.render('error')
+    });
+
     mongoose
         .connect(DB)
         .then(() => {
