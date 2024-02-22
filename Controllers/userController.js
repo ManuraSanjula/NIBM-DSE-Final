@@ -123,6 +123,7 @@ exports.resizePhoto = async (req, res, next) => {
       req.body.evidence = [];
       await Promise.all(
         req.files.evidence.map(async (file, i) => {
+          
           const filename = `evidence-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
 
           // await sharp(file.buffer)
@@ -140,10 +141,10 @@ exports.resizePhoto = async (req, res, next) => {
               .jpeg({ quality: 90 })
               .toBuffer((err, data, info) => {
                 fs.writeFile(fileName, data, { flag: 'w' }, function() {
-                 req.body.evidence.push(filename);
+                 
                 });
                });
-       
+               req.body.evidence.push(filename);
             console.log(`File ${fileName} saved successfully.`);
           }catch (error) {
             console.error(`Error saving file ${fileName}:`, error);

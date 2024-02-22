@@ -17,6 +17,7 @@ const reviewRouter = require('./Routes/Customer/ReviewRoute');
 const cartRouter = require('./Routes/Customer/CartRoute');
 const orderRouter = require('./Routes/Customer/OrderRoute');
 const companyRouter = require('./Routes/Company/CompanyRoute')
+const homeRoute = require('./Routes/Home/HomeRoute')
 
 const init = () => {
     
@@ -25,7 +26,8 @@ const init = () => {
     app.use(cookieParser());
 
     app.use(express.json({ limit: '4000kb' }));
-
+    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static(__dirname));
 
     app.use(function (error, req, res, next) {
         if (error.message === "invalid json") {
@@ -47,6 +49,7 @@ const init = () => {
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
         next();
     });
+    app.use('/',homeRoute)
     app.use('/api/v1/user', userRouter);
     app.use('/api/v1/shop', ClothRoute);
     app.use('/api/v1', companyRouter);

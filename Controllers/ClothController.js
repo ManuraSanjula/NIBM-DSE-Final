@@ -51,29 +51,51 @@ exports.resizeTourImages = async (req, res, next) => {
     try {
 
         if (req.files) {
-            if (req.files.coverImg) {
-                req.body.coverImg = `Cloth-${Math.floor(Date.now() + Date.now() + Math.random() * 8892829229)}-${Date.now()}-cover.jpeg`;
-                await sharp(req.files.coverImg[0].buffer)
-                    .resize(2000, 1333)
-                    .toFormat('jpeg')
-                    .jpeg({ quality: 90 })
-                    .toFile(`public/img/Cloths/${req.body.coverImg}`);
+            if (req.files.coverImg &&req.files.coverImg.length > 0) {
+                const fileName = `Cloth-${Math.floor(Date.now() + Date.now() + Math.random() * 8892829229)}-${Date.now()}-cover.jpeg`;
+                try {
+                    const fs = require('fs');
+                    sharp(req.files.coverImg[0].buffer)
+                     .toFormat('jpeg')
+                     .toBuffer((err, data, info) => {
+                         fs.writeFile(fileName, data, { flag: 'w' }, function() {
+                             
+                         });
+                     });
+             
+                     req.body.coverImg = fileName;
+                     console.log(`File ${fileName} saved successfully.`);
+                } catch (error) {
+                    console.error(`Error saving file ${fileName}:`, error);
+                }
             }
-            if (req.files.img) {
+            if (req.files.img && req.files.img.length <= 3) {
                 req.body.img = [];
                 await Promise.all(
                     req.files.img.map(async (file, i) => {
-                        const filename = `Cloth-${Math.floor(Date.now() + Date.now() + Math.random() * 8892829229)}-${Date.now()}-${i + 1}.jpeg`;
+                        const fileName = `Cloth-${Math.floor(Date.now() + Date.now() + Math.random() * 8892829229)}-${Date.now()}-${i + 1}.jpeg`;
+                        try {
+                            const fs = require('fs');
+                            sharp(file.buffer)
+                              .toFormat('jpeg')
+                              .toBuffer((err, data, info) => {
+                                fs.writeFile(fileName, data, { flag: 'w' }, function() {
+                                    
+                                });
+                               });
+                            req.body.img.push(fileName);
+                            console.log(`File ${fileName} saved successfully.`);
+                          }catch (error) {
+                            console.error(`Error saving file ${fileName}:`, error);
+                          }
 
-                        await sharp(file.buffer)
-                            .resize(2000, 1333)
-                            .toFormat('jpeg')
-                            .jpeg({ quality: 90 })
-                            .toFile(`public/img/Cloths/${filename}`);
-
-                        req.body.img.push(filename);
                     })
                 );
+            }else{
+                return res.status(400).json({
+                    status: 'failed',
+                    message: 'Only 3 images Allowed'
+                })
             }
         }
         next();
@@ -132,9 +154,9 @@ exports.getAllCloths = async (req, res, next) => {
             })
         }
         return res.status(200).json({
-            size: result.length,
+            size: newData.length,
             status: 'success',
-            data: result,
+            data: newData,
         })
     } catch (err) {
         errorController(req, res, err)

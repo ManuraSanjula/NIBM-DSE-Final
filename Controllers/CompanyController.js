@@ -49,9 +49,9 @@ exports.deleteEmployee = factory.deleteOne(EmployeeModel);
 async function createAnEmployee(id, salary, type){
     let isDeliveryPerson = false;
     let isManager = false;
-    if(type == 'Delivery')
+    if(type === 'employee-dilivery')
         isDeliveryPerson = true;
-    if(type == 'Manager')
+    if(type === 'sub-admin')
         isManager = true;
     let employee = await EmployeeModel.create({
         user: id,
@@ -126,7 +126,7 @@ exports.hireAnEmployee = async (req, res,next)=>{
                     data: emp
                 });
             else
-                return res.status(500).json({
+                return res.status(400).json({
                     status: 'error',
                 });
         }else
