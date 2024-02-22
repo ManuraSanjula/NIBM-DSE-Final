@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     Likes: [String],
     photo: {
         type: String,
-        default: 'default.jpg'
+        default: '/img/users/default.jpg'
     },
     role: {
         type: String,

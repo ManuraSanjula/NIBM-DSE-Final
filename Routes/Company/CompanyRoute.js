@@ -6,7 +6,8 @@ const authController = require('../../Controllers/AuthController');
 router.route('/shipement/:id').
     get(companyController.getShipment)
    .post(authController.restrictTo('employee-dilivery'),companyController.updateShipment);
-
+   
+router.use(authController.protect)
 router.route('/company/employee-diliver/:emp_id/AllOrders',authController.restrictTo('employee-dilivery'), companyController.allOrdersByDId)  
 router.route('/company/employee-diliver/:emp_id/AllShipments',authController.restrictTo('employee-dilivery'), companyController.allShipmentByDId)
 

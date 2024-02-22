@@ -12,7 +12,7 @@ Router.route('/Cloths').
 Router.get('/Cloths/slug/:slugName',ClothControler.getOneClothBySlug)
 
 Router.route('/Cloths/:id').
-    get(ClothControler.getOneCloth)
+     get(ClothControler.getOneCloth)
     .put(authController.protect, authController.restrictTo('admin'),
         ClothControler.uploadTourImages,
         ClothControler.resizeTourImages,

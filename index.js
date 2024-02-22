@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const cluster = require('cluster');
 const os = require('os');
+var cors = require ('cors')
 
 const ClothRoute = require('./Routes/All/ClothRoute');
 const userRouter = require('./Routes/All/UserRoute');
@@ -24,6 +25,7 @@ const init = () => {
     app.set('view engine', 'pug');
     app.set('views', path.join(__dirname, 'views'));
     app.use(cookieParser());
+    app.use (cors())
 
     app.use(express.json({ limit: '4000kb' }));
     app.use(express.static(path.join(__dirname, 'public')));
