@@ -18,7 +18,7 @@ const reviewRouter = require('./Routes/Customer/ReviewRoute');
 const cartRouter = require('./Routes/Customer/CartRoute');
 const orderRouter = require('./Routes/Customer/OrderRoute');
 const companyRouter = require('./Routes/Company/CompanyRoute')
-const homeRoute = require('./Routes/Home/HomeRoute')
+const homeRoute = require('./Routes/All/UIRoute')
 
 const init = () => {
     
