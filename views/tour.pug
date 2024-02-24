@@ -20,7 +20,7 @@ block content
 
     .heading-box
       h1.heading-primary
-        span= `${cloth.name} cloth`
+        span= `${cloth.name} Cloth`
 
   section.section-description
     .overview-box
@@ -31,7 +31,7 @@ block content
           +overviewBox('Rating', `${cloth.ratingsAverage} / 5`, 'star')
           
     .description-box
-      h2.heading-secondary.ma-bt-lg= `About ${cloth.name} cloth`
+      h2.heading-secondary.ma-bt-lg= `About ${cloth.name} Cloth`
       - const parapraphs = cloth.description.split('\n');
       each p in parapraphs
         p.description__text= p
@@ -40,22 +40,71 @@ block content
     each img, i in cloth.img
       .picture-box
         img.picture-box__img(src=`${img}`, alt=`Cloth ${i + 1}`, class=`picture-box__img--${i + 1}`)
-    
+
+  section.section-book
+    .row
+      .book
+        .book__form
+          form.form(action="#" method="POST")
+            .u-margin-bottom-medium
+              h2.heading-secondary
+                | Your Comments now
+            .form__group
+              input.form__input(type="text", placeholder="Rating", id="rating", required)
+              label.form__label(for="rating") Rating
+            .form__group
+              textarea.form__input(type="comment", placeholder="Comment", id="comment", required)
+              label.form__label(for="comment") Comment
+
+            .form__group
+              button.btn.btn--green Next step →
+
   section.section-reviews
     .reviews
       each review in cloth.review
         if(review)
           +reviewCard(review)
 
+
+
   section.section-cta
-    .cta
-      .cta__img.cta__img--logo
-        img(src='/img/logo-white.png', alt='Nacloths logo')
-      .cta__content
-        h2.heading-secondary What are you waiting for?
-        p.cta__text= `${cloth.price} In LKR Book Your Cloth Today AT Chilaw Cloth Store`
-        
-        if user
-          button.btn.btn--green.span-all-rows#book-cloth(data-cloth-id=`${cloth._id}`) Book cloth now!
-        else
-          a.btn.btn--green.span-all-rows(href='/login') Log in to book cloth
+      .cta
+        .cta__img.cta__img--logo
+          img(src='/img/logo-white.png', alt='Nacloths logo')
+        .cta__content
+          h2.heading-secondary What are you waiting for?
+          p.cta__text= `${cloth.price} In LKR Book Your Cloth Today AT Chilaw Cloth Store`
+          if(user && user.role === 'user-customer')
+            button.btn.btn--green.span-all-rows#book-cloth(data-cloth-id=`${cloth._id}`,data-cloth-price=`${cloth.price}`) Book Cloth now!
+          else
+            a.btn.btn--green.span-all-rows(href='/login') Log in to book Cloth
+
+        p(style="margin-top: 16px").heading-secondary_cus
+          strong Pay Online Or Later
+        .form__group.u-margin-bottom-medium(style="margin-top: 16px")
+          .form__radio-group
+            input.form__radio-input(type="radio", id="online", name="pay")
+            label.form__radio-label(for="online")
+              span.form__radio-button
+              | Pay Online
+
+          .form__radio-group
+            input.form__radio-input(type="radio", id="later", name="pay")
+            label.form__radio-label(for="later")
+              span.form__radio-button
+              | Pay Later
+
+        p(style="margin-top: 16px").heading-secondary_cus
+          strong Home Delivery Or Not
+        .form__group.u-margin-bottom-medium(style="margin-top: 16px")
+          .form__radio-group
+            input.form__radio-input(type="radio", id="home", name="how")
+            label.form__radio-label(for="home")
+              span.form__radio-button
+              | Home Delivery
+
+          .form__radio-group
+            input.form__radio-input(type="radio", id="store", name="how")
+            label.form__radio-label(for="store")
+              span.form__radio-button
+              | Pick At Store

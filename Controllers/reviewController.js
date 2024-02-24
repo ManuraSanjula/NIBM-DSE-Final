@@ -3,9 +3,9 @@ const errorController = require('./errorController');
 const UserModel = require('../Models/UserModel');
 const ClothModel = require('../Models/ClothModel')
 
-exports.setTourUserIds = (req, res, next) => {
+exports.setClothUserIds = (req, res, next) => {
   // Allow nested routes
-  if (!req.body.tour) req.body.tour = req.params.tourId;
+  if (!req.body.Cloth) req.body.Cloth = req.params.clothId;
   if (!req.body.user) req.body.user = req.user.id;
   next();
 };

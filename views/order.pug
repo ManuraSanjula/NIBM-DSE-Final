@@ -1,0 +1,67 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+        link(rel='stylesheet' href='/css/style.css')
+        link(rel='stylesheet' href='/css/style2.css')
+        link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
+        link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+        title ClothStore | #{title}
+    body
+        include _header
+        main.main
+            .card-container
+                each order in orders
+                    .card
+                        .card__header
+                            .card__picture
+                                .card__picture-overlay &nbsp;
+                                img.card__picture-img(src=`/${order.Cloth.coverImg}`, alt=`${order.Cloth.name}`)
+                            h3.heading-tertirary
+                                span= order.Cloth.name
+                        .card__details
+                            if(order.orderIsSuccesfullyConfirmed)
+                                p.card__text=`Order Is Successfully Confirmed `
+                            else
+                                p.card__text=`Order Is Not Successfully Confirmed `
+
+                            if(order.orderIsConfirmed)
+                                p.card__text=`Order Is Confirmed By The Management `
+                            else
+                                p.card__text=`Order Is Not Confirmed By The Management`
+
+                            if(order.HomeDelivery)
+                                p.card__text=`HomeDelivery Order`
+                            else
+                                p.card__text=`Not A HomeDelivery Order`
+
+                            if(order.paymentOnline)
+                                p.card__text=`Payment Online`
+                            else
+                                p.card__text=`Payment is not a Online`
+
+                            if(order.successfullyPayed)
+                                p.card__text=`Order Is Payed`
+                            else
+                                p.card__text=`Order Is Still not payed`
+
+                            if(order.confrimRecive)
+                                p.card__text=`Order Receive Confirmation By The Customer`
+                            else
+                                p.card__text=`Order Not Receive Confirmation By The Customer`
+
+                            if(order.confrimRecive)
+                                p.card__text=`Order Is Delivered`
+                            else
+                                p.card__text=`Order Is Not Delivered Yet`
+
+                            p.card__text=`Order At ${order.orderAt}`
+
+                        .card__footer
+                            p
+                                span.card__footer-value= `LKR ${order.price}`
+                            p
+                                span.card__footer-value= `Quantity X ${order.quantity}`
+                            a.btn.btn--green.btn--small(href=`/${order.Cloth._id}`) Details
+        include _footer

@@ -30,5 +30,5 @@ export const sigin = (name, email, password, confirmPassword)=>{
                 }, 1500);
             }
         })
-        .catch((error) => console.error(error));
+        .catch((error) => showAlert('error', error.response.data.message));
 }

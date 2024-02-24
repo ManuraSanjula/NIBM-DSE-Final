@@ -35,7 +35,7 @@ async function setDeliveryJob(orderItem, req) {
 
 exports.success_fully_confirm_order = async (req, res, next)=>{
     try{
-        const orderItem = await orderModel.findOne({ user: req.user, _id: req.params.id });
+        let orderItem = await orderModel.findOne({ user: req.user, _id: req.params.id });
         if (!orderItem) {
             return res.status(400).json({
                 status: 'fail',
@@ -153,6 +153,7 @@ exports.confrimRecive = async (req, res, next) => {
 }
 
 exports.checkData = (req, res, next) => {
+    req.body.user = req.user;
     if (!req.body.hasOwnProperty('user') || !req.body.hasOwnProperty('Cloth')) {
         return res.status(400).json({
             status: 'failed',
@@ -162,50 +163,17 @@ exports.checkData = (req, res, next) => {
     return next();
 }
 
-exports.checkOutAll = async (req, res, next) => {
-    try {
-        if (!req.user._id) {
-            return res.status(400).json({
-                status: 'fail',
-                data: null,
-                message: 'UserID Missing  '
-            })
-        }
-        const allCart = await CartModel.find({ user: req.user })
-        const allOrder = [];
-
-        let price = 0;
-
-        allCart.forEach(async cart => {
-            const currentCart = { ...cart._doc };
-            delete currentCart._id
-            delete currentCart.createdAt;
-            price += currentCart.price
-            const newOrder = await (await orderModel.create(currentCart)).toJSON();
-            allOrder.push(newOrder)
-        })
-        return res.status(200).json({
-            status: 'success',
-            price: price,
-        })
-    } catch (err) {
-        errorController(req, res, err)
-    }
-}
-
 let setOrdersToAvailable = async (newOrder) => {
     const emp = EmployeeModel.find({ isManager: true });
     const oneMEmp = emp[Math.floor(Math.random() * emp.length)];
 
-    if (oneMEmp.toOrderToBeAvailable == undefined || oneMEmp.toOrderToBeAvailable == null || oneMEmp.toOrderToBeAvailable.length <= 0) {
+    if (oneMEmp.toOrderToBeAvailable === undefined || oneMEmp.toOrderToBeAvailable == null || oneMEmp.toOrderToBeAvailable.length <= 0) {
         oneMEmp.toOrderToBeAvailable = [];
         oneMEmp.toOrderToBeAvailable.push(newOrder._id);
     } else {
         oneMEmp.toOrderToBeAvailable.push(newOrder._id);
 
     await EmployeeModel.findByIdAndUpdate(oneMEmp._id, oneMEmp);
-
-    // after notify the manager
 }
 
 
@@ -222,28 +190,6 @@ exports.createOrder = async (req, res, next) => {
         errorController(req, res, err)
     }
 }
-
-
-exports.getAllOrder = async (req, res, next) => {
-    try {
-        if (!req.user._id) {
-            return res.status(400).json({
-                status: 'fail',
-                data: null,
-                message: 'UserID Missing  '
-            })
-        }
-        const orderItem = await orderModel.find({ user: req.user._id });
-        return res.status(200).json({
-            size: orderItem.length,
-            status: 'success',
-            data: orderItem,
-        })
-    } catch (error) {
-        errorController(req, res, err)
-    }
-}
-
 exports.getOneOrder = async (req, res, next) => {
     try {
         if (!req.user._id || !req.params.id) {

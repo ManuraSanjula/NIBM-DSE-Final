@@ -10,7 +10,7 @@ router
   .route('/')
   .get(reviewController.getAllReviews)
   .post(
-    reviewController.setTourUserIds,
+    reviewController.setClothUserIds,
     reviewController.createReview
   );
 

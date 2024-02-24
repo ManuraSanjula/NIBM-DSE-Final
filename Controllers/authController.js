@@ -250,7 +250,6 @@ exports.protect = async (req, res, next) => {
     } else if (req.cookies.jwt) {
       token = req.cookies.jwt;
     }
-
     if (!token) {
       return res.status(401).json({
         status: 'fail',
@@ -273,7 +272,6 @@ exports.protect = async (req, res, next) => {
         message: 'User recently changed password! Please log in again.',
       })
     }
-
     req.user = currentUser;
     res.locals.user = currentUser;
     next();

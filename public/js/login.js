@@ -37,7 +37,9 @@ export const login = async (email, password) => {
 export const logout = async () => {
   try {
     deleteCookie("jwt");
-    location.reload(true);
+    window.setTimeout(() => {
+      location.assign('/');
+    }, 1500);
   } catch (err) {
     console.log(err.response);
     showAlert('error', 'Error logging out! Try again.');

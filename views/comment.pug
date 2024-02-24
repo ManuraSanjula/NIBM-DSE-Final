@@ -1,0 +1,29 @@
+extends base
+
+block append head
+    script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
+    link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
+
+block content
+    main.main
+        .card-container
+
+            each comment in comments
+                .card
+                    .card__header
+                        .card__picture
+                            .card__picture-overlay &nbsp;
+                            img.card__picture-img(src=`/${comment.Cloth.coverImg}`, alt=`${comment.Cloth.name}`)
+                        h3.heading-tertirary
+                            span= comment.Cloth.name
+                    .card__footer
+                        p
+                            span.card__footer-text Review is
+                            |
+                            span.card__footer-value= ` ${comment.review}`
+                        p.card__ratings
+                            each star in [1, 2, 3, 4, 5]
+                                svg.reviews__star(class=`reviews__star--${comment.rating >= star ? 'active' : 'inactive'}`)
+                                    use(xlink:href='/img/icons.svg#icon-star')
+
+                        a.btn.btn--green.btn--small(href=`/${comment.Cloth._id}`) Details

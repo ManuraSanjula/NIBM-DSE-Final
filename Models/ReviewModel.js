@@ -38,18 +38,13 @@ const reviewSchema = new mongoose.Schema(
 reviewSchema.index({ Cloth: 1, user: 1 }, { unique: true });
 
 reviewSchema.pre(/^find/, function (next) {
-  // this.populate({
-  //   path: 'Cloth',
-  //   select: 'name'
-  // }).populate({
-  //   path: 'user',
-  //   select: 'name photo'
-  // });
-
   this.populate({
     path: 'user',
     select: 'name photo'
-  });
+  }).populate({
+    path: 'Cloth',
+    select: 'name coverImg'
+  })
   next();
 });
 
@@ -82,12 +77,11 @@ reviewSchema.statics.calcAverageRatings = async function (ClothId) {
 };
 
 reviewSchema.post('save',async function () {
-  // this points to current review
-  const Cloth = await Cloth.findById(this.Cloth);
-  const arry = Cloth['review'];
+  const cloth = await Cloth.findById(this.Cloth);
+  const arry = cloth['review'];
   arry.push(this._id);
-  Cloth['review'] = arry
-  Cloth.save()
+  cloth['review'] = arry
+  cloth.save()
   this.constructor.calcAverageRatings(this.Cloth);
 });
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const EmployeesSchema = new mongoose.Schema({
-    user: {
+    user_id: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
     },
@@ -62,9 +62,6 @@ const EmployeesSchema = new mongoose.Schema({
 });
 
 EmployeesSchema.pre(/^find/, function (next) {
-    this.populate({
-        path: ['totalShipments','toTargetOrder','toOrderToBeAvailable'],
-    })
     next();
 }); 
 

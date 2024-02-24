@@ -54,10 +54,11 @@ const init = () => {
     app.use('/',homeRoute)
     app.use('/api/v1/user', userRouter);
     app.use('/api/v1/shop', ClothRoute);
-    app.use('/api/v1', companyRouter);
     app.use('/api/v1/shop/Cloth/review', reviewRouter);
     app.use('/api/v1/user/cart', cartRouter);
     app.use('/api/v1/user/order', orderRouter);
+    app.use('/api/v1', companyRouter);
+
 
     app.use((req, res, next) => {
         return res.status(404).json({
@@ -90,6 +91,7 @@ const init = () => {
     process.on('unhandledRejection', err => {
         console.log('UNHANDLED REJECTION! 💥 Shutting down...');
         console.log(err.name, err.message);
+        console.log(err);
         server.close(() => {
             process.exit(1);
         });

@@ -1,0 +1,22 @@
+extends base
+
+block append head
+    script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
+    link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
+
+block content
+    main.main
+        .card-container
+
+            each order in orders
+                .card
+                    .card__header
+                        .card__picture
+                            .card__picture-overlay &nbsp;
+                            img.card__picture-img(src=`/${order.Cloth.coverImg}`, alt=`${order.Cloth.name}`)
+                        h3.heading-tertirary
+                            span= order.Cloth.name
+
+                    .card__footer
+                        a.btn.btn--green.btn--small(href=`/${order._id}`) Accept
+                        a.btn.btn--red.btn--small(href=`/${order._id}`) Reject

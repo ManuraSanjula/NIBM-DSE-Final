@@ -1,0 +1,61 @@
+doctype html
+html
+    head
+        block head
+            meta(charset='UTF-8')
+            meta(name='viewport' content='width=device-width, initial-scale=1.0')
+            link(rel='stylesheet' href='/css/style.css')
+            link(rel='stylesheet' href='/css/style2.css')
+            link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
+            link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
+            title ClothStore | #{title}
+
+    body
+        // HEADER
+        include _header
+
+        // CONTENT
+        block content
+            section.section-book-cus
+                .row
+                    .book
+                        .book__form
+                            form#promo.form(action="#" method="POST")
+                                .u-margin-bottom-medium
+                                .form__group
+                                    input.form__input(type="text", placeholder="Employee ID", id="id", required)
+                                    label.form__label(for="id") Employee ID
+                                .form__group
+                                    input.form__input(type="text", placeholder="Salary", id="salary", required)
+                                    label.form__label(for="salary") Salary
+
+                                .form__group.u-margin-bottom-medium
+                                    .form__radio-group
+                                        input.form__radio-input(type="radio", id="sub-admin", name="type")
+                                        label.form__radio-label(for="sub-admin")
+                                            span.form__radio-button
+                                            | Sub-admin
+
+                                    .form__radio-group
+                                        input.form__radio-input(type="radio", id="employee", name="type")
+                                        label.form__radio-label(for="employee")
+                                            span.form__radio-button
+                                            | Employee
+                                    .form__group
+                                        .form__group
+                                    .form__radio-group()
+                                        input.form__radio-input(type="radio", id="employee-dilivery", name="type")
+                                        label.form__radio-label(for="employee-dilivery")
+                                            span.form__radio-button
+                                            | Employee-Delivery
+
+
+                                .form__group
+                                    button.btn.btn--green Next step →
+
+        // FOOTER
+        include _footer
+
+
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js')
+        script(src='/js/promteEmp.js')

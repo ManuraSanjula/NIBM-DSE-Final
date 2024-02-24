@@ -8,10 +8,10 @@ router.route('/shipement/:id').
    .post(authController.restrictTo('employee-dilivery'),companyController.updateShipment);
    
 router.use(authController.protect)
-router.route('/company/employee-diliver/:emp_id/AllOrders',authController.restrictTo('employee-dilivery'), companyController.allOrdersByDId)  
-router.route('/company/employee-diliver/:emp_id/AllShipments',authController.restrictTo('employee-dilivery'), companyController.allShipmentByDId)
+router.get('/company/employee-diliver/:emp_id/AllOrders',authController.restrictTo('employee-dilivery'), companyController.allOrdersByDId)
+router.get('/company/employee-diliver/:emp_id/AllShipments',authController.restrictTo('employee-dilivery'), companyController.allShipmentByDId)
 
-router.route('/company/manger/:emp_id/allPendingOrders',authController.restrictTo('sub-admin'), companyController.AllPendingOrders)   
+router.get('/company/manger/:emp_id/allPendingOrders',authController.restrictTo('sub-admin'), companyController.AllPendingOrdersByMId)
 router.get('/company/confirmOrderByManager/:id',authController.restrictTo('sub-admin'),companyController.confirmOrder)
 
 router.use(authController.protect,authController.restrictTo('admin'));
@@ -27,15 +27,15 @@ router.get('/company/admin/hireAnEmployee/:id', companyController.hireAnEmployee
 router.get('/company/admin/fireAnEmployee/:id', companyController.FireAnEmployee)
 
 
-router.route('/company/admin/AllPendingOrders/:emp_id',companyController.AllPendingOrders)  // specific delivery manager
-router.route('/company/admin/AllPendingOrdersNotConfirmed/:emp_id', companyController.AllPendingOrdersNotConfirmed)  // specific manager
+// router.get('/company/admin/AllPendingOrders/:emp_id',companyController.AllPendingOrders)  // specific delivery manager
+router.get('/company/admin/AllPendingOrdersNotConfirmed/:emp_id', companyController.AllPendingOrdersNotConfirmed)  // specific manager
 
 
 router.use(authController.protect,authController.restrictTo('admin','sub-admin'));
-router.route('/company/admin/AllOrders/:emp_id', companyController.allOrdersByDId)   // specific delivery person
-router.route('/company/admin/AllShipments/:emp_id',companyController.allShipmentByDId)  // specific delivery person
-router.route('/company/AllOrdersNotDeliverd/:emp_id', companyController.allShipmentNotDeliverdByDId)  // specific delivery person
-router.route('/company/AllShipmentsNotDeliverd/:emp_id', companyController.AllOrdersNotDeliverdByDId) // specific delivery person
+router.get('/company/admin/AllOrders/:emp_id', companyController.allOrdersByDId)   // specific delivery person
+router.get('/company/admin/AllShipments/:emp_id',companyController.allShipmentByDId)  // specific delivery person
+router.get('/company/AllOrdersNotDeliverd/:emp_id', companyController.allShipmentNotDeliverdByDId)  // specific delivery person
+router.get('/company/AllShipmentsNotDeliverd/:emp_id', companyController.AllOrdersNotDeliverdByDId) // specific delivery person
 
 router.route('/company/getAllUser')
     .get(companyController.getAllUsers)

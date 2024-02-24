@@ -54,7 +54,7 @@ async function createAnEmployee(id, salary, type){
     if(type === 'sub-admin')
         isManager = true;
     let employee = await EmployeeModel.create({
-        user: id,
+        user_id: id,
         isDeliveryPerson,
         isManager,
         isNewEmployee: true,
@@ -66,7 +66,7 @@ async function createAnEmployee(id, salary, type){
 
 exports.confirmOrder = async (req, res, next)=>{
     try{
-        let order = OrderModel.findById(req.params.id)
+        let order = await OrderModel.findById(req.params.id)
         order.orderIsConfirmed = true;
 
         // send a email to the user that saying stock is available for the order
@@ -85,7 +85,7 @@ exports.FireAnEmployee = async (req, res,next) => {
     try{
         let user = UserModel.findById(req.params.id);
         if(user){
-            let emp = EmployeeModel.find({user: user._id});
+            let emp = await EmployeeModel.find({user: user._id});
             if(emp){
                 emp.isFired = true;
                 user.role = 'user'
@@ -115,10 +115,14 @@ exports.FireAnEmployee = async (req, res,next) => {
 
 exports.hireAnEmployee = async (req, res,next)=>{
     try {
-        let user = UserModel.findById(req.params.id);
+        if(!req.params.id || !req.query.salary || !req.query.typeEmp)
+            return res.status(400).json({
+                status: 'error',
+            });
+        let user = await UserModel.findById(req.params.id);
         if(user){
             user.role = req.query.typeEmp;
-            const emp = createAnEmployee(user._id, req.query.salary,user.role)
+            const emp = await createAnEmployee(req.params.id, req.query.salary,user.role)
             await UserModel.findByIdAndUpdate(user._id, user);
             if(emp)
                 return res.status(200).json({
@@ -134,7 +138,7 @@ exports.hireAnEmployee = async (req, res,next)=>{
                 status: 'error',
             });
     }catch(err){
-        errorController(req, res, error)
+        errorController(req, res, err)
     }
 }
 
@@ -150,7 +154,7 @@ exports.deleteCart = factory.deleteOne(CartModel);
 
 
 exports.allOrdersByDId = async (req, res, next) => {
-    const emp = EmployeeModel.findById(req.params.emp_id)
+    const emp = await EmployeeModel.findById(req.params.emp_id)
     let toTargetOrder = []
     for(let i = 0; i < emp.toTargetOrder.length; i++){
         let order = await OrderModel.findById(emp.toTargetOrder[i])
@@ -162,7 +166,7 @@ exports.allOrdersByDId = async (req, res, next) => {
     });
 }
 exports.allShipmentByDId = async (req, res, next) => {
-    const emp = EmployeeModel.findById(req.params.emp_id)
+    const emp = await EmployeeModel.findById(req.params.emp_id)
     let totalShipments = []
     for(let i = 0; i < emp.totalShipments.length; i++) {
         let order = await ShipmentsModel.findById(emp.totalShipments[i])
@@ -174,20 +178,20 @@ exports.allShipmentByDId = async (req, res, next) => {
     });
 }
 exports.AllPendingOrdersByMId = async (req, res, next) => {
-    const emp = EmployeeModel.findById(req.params.emp_id)
-    let allPendingOrdersNotConfirmed = [];
+    const emp = await EmployeeModel.findOne({ user_id : req.user._id} )
+    let allPendingOrdersConfirmed = [];
     for(let i = 0; i < emp.toOrderToBeAvailable.length; i++) {
         let order = await OrderModel.findById(emp.toOrderToBeAvailable[i])
-        allPendingOrdersNotConfirmed.push(order);
+        allPendingOrdersConfirmed.push(order);
     }
     return res.status(200).json({
         status: 'success',
-        data: allPendingOrdersNotConfirmed
+        data: allPendingOrdersConfirmed
     });
 }
 
 exports.AllPendingOrdersNotConfirmed = async (req, res, next) => {
-    const emp = EmployeeModel.findById(req.params.emp_id)
+    const emp = await EmployeeModel.findById(req.params.emp_id)
     let allPendingOrdersNotConfirmed = [];
     for(let i = 0; i < emp.toOrderToBeAvailable.length; i++) {
        let order = await OrderModel.findById(emp.toOrderToBeAvailable[i])
@@ -204,7 +208,7 @@ exports.AllPendingOrdersNotConfirmed = async (req, res, next) => {
 
 
 exports.AllOrdersNotDeliverdByDId = async (req, res, next) => {
-    const emp = EmployeeModel.findById(req.params.emp_id)
+    const emp = await EmployeeModel.findById(req.params.emp_id)
     let toTargetOrder = [];
     for(let i = 0; i < emp.toTargetOrder.length; i++) {
        let order = await OrderModel.findById(emp.toTargetOrder[i])
@@ -220,7 +224,7 @@ exports.AllOrdersNotDeliverdByDId = async (req, res, next) => {
 }
 
 exports.allShipmentNotDeliverdByDId = async (req, res, next) => {
-    const emp = EmployeeModel.findById(req.params.emp_id)
+    const emp = await EmployeeModel.findById(req.params.emp_id)
     let totalShipments = []
     for(let i = 0; i < emp.totalShipments.length; i++) {
         let shipment = await ShipmentsModel.findById(emp.totalShipments[i])
