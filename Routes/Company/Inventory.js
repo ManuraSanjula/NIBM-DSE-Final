@@ -6,11 +6,23 @@ const EmployeeModel = require("../../Models/EmployeesModel");
 const UserModel = require("../../Models/UserModel");
 const OrderModel = require("../../Models/OrderModel");
 const ClothInv = require("../../Models/ClothInventoryModel");
-const {promisify} = require("util");
-const jwt = require("jsonwebtoken");
-const User = require("../../Models/UserModel");
-const errorController = require("../../Controllers/ErrorController");
+const ReviewModel = require("../../Models/ReviewModel")
 const helper_web = require('../../helpers/helper_web')
+
+Router.get('/inventory-cus/:id/edit',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
+    const order = await OrderModel.findById(req.params.id);
+    res.status(200).render('Company/edit_user_order',{
+        title: 'Chilaw Sri Lanka',
+        order
+    });
+})
+Router.get('/customer-detail/:id',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
+    const customer = await UserModel.findById(req.params.id);
+    res.status(200).render('Company/user-detail',{
+        title: 'Chilaw Sri Lanka',
+        customer
+    });
+})
 Router.get('/promoteEmp',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin'),async (req, res) => {
     res.status(200).render('Company/promoteEmp',{
         title: 'Chilaw Sri Lanka',
@@ -21,6 +33,27 @@ Router.get('/inventory-emp',authController.isLoggedIn ,helper_web.protect, helpe
     res.status(200).render('Company/employee-management',{
         title: 'Chilaw Sri Lanka',
         employees
+    });
+})
+Router.get('/inventory-cus/accept-order',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
+    const orders = await OrderModel.find({orderIsConfirmed: false})
+    res.status(200).render('Company/customer-management-pending',{
+        title: 'Chilaw Sri Lanka',
+        orders
+    });
+})
+Router.get('/inventory-cus/orders',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
+    const orders = await OrderModel.find().populate({ path: 'user' })
+    res.status(200).render('Company/customer-management-order',{
+        title: 'Chilaw Sri Lanka',
+        orders
+    });
+})
+Router.get('/inventory-cus/reviews',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
+    const reviews = await ReviewModel.find().populate({ path: 'user' })
+    res.status(200).render('Company/customer-management-reviews',{
+        title: 'Chilaw Sri Lanka',
+        reviews
     });
 })
 Router.get('/inventory-cu',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {

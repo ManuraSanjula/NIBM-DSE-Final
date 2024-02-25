@@ -10,10 +10,6 @@ html(lang="en")
         //- partial:index.partial.html
         #mnu.msidenav
             .logo iX
-            .searchbar
-                input.search
-                button.sbtn
-                    i.fa.fa-search(aria-hidden="true")
             .spacer
             a(href="/inventory/inventory-cu")
                 button.mbtn
@@ -35,10 +31,6 @@ html(lang="en")
                     |  Cloth Inventory
         .sidenav
             .logo IN
-            .searchbar
-                input.search
-                button.sbtn
-                    i.fa.fa-search(aria-hidden="true")
             .spacer
             a(href="/inventory/inventory-cu")
                 button.mbtn
@@ -66,14 +58,18 @@ html(lang="en")
                         i.fa.fa-bars(aria-hidden="true")
             .page-title Inventory
             .page-desc View and manage customer
-                if(customers)
-                    each customer in customers
+                if(orders)
+                    each order in orders
                         .content-bar
-                            a(href=`/inventory/customer-detail/${customer._id}`)
-                                .itemnum=customer._id
-                            .itemtitle=customer.name
-                            .itemstock= customer.emailConfrim ? "Email Verified" : "Email Not Verified"
-                            .itemprice=customer.email
+                            .itemnum=order._id
+                            .itemtitle=order.Cloth.name
+                            .itemstock=order.Cloth._id + " -- Cloth Id"
+                            .itemprice=order.user.name
+                            .btncontainer
+                                button#Reject.cbbtn
+                                    i.fa.fa-ban(aria-hidden="true")
+                                button#Accept._id.cbbtn
+                                    i.fa.fa-check(aria-hidden="true")
 
     script.
         var mnu = document.getElementById("mnu");

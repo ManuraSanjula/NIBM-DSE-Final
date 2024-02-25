@@ -66,14 +66,14 @@ html(lang="en")
                         i.fa.fa-bars(aria-hidden="true")
             .page-title Inventory
             .page-desc View and manage customer
-                if(customers)
-                    each customer in customers
+                if(orders)
+                    each order in orders
                         .content-bar
-                            a(href=`/inventory/customer-detail/${customer._id}`)
-                                .itemnum=customer._id
-                            .itemtitle=customer.name
-                            .itemstock= customer.emailConfrim ? "Email Verified" : "Email Not Verified"
-                            .itemprice=customer.email
+                            a(href=`/inventory/inventory-cus/${order._id}/edit`)
+                                .itemnum=order._id
+                            .itemtitle=order.user.name
+                            .itemstock=order.orderIsConfirmed ? "Order is Confirmed" : "Order Not Yet Confirmed"
+                            .itemstock=order.successfullyPayed ? "Customer successfully payed:" : "Customer successfully not payed"
 
     script.
         var mnu = document.getElementById("mnu");

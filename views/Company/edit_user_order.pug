@@ -1,0 +1,161 @@
+doctype html
+html(lang="en", dir="ltr")
+    head
+        meta(charset="utf-8")
+        title ClothStore | #{title}
+        meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(name="description", content="Responsive Account Form Without Media")
+        meta(name="author", content="Shift Media")
+        title Responsive Account Form Without Media | Shift Media
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css")
+    body
+        header
+        form#user_order_form(action="#", method="post")
+            h1 Edit the user Order
+            fieldset
+                label
+                    | Order ID
+                    br
+                    input(type="text", name="order_id", placeholder="User ID", value=`${order._id}`, required)
+                    br
+                label
+                    | User ID
+                    br
+                    input(type="text", name="user_id", placeholder="User ID", value=`${order.user._id}`, required)
+                    br
+                label
+                    | User Name
+                    br
+                    input(type="text", name="user_name", placeholder="User Name", value=`${order.user.name}`, required)
+                    br
+                label
+                    | Cloth ID
+                    br
+                    input(type="text", name="cloth_id", placeholder="Cloth ID", value=`${order.Cloth._id}`, required)
+                    br
+                label
+                    | Cloth Name
+                    br
+                    input(type="text", name="cloth_id", placeholder="Cloth ID", value=`${order.Cloth.name}`, required)
+                    br
+                label
+                    | Price
+                    br
+                    input(type="text", name="price", value=`${order.price}`, required)
+                    br
+                label
+                    | Quantity
+                    br
+                    input(type="text", name="quantity", value=`${order.quantity}`, required)
+                    br
+                fieldset.delivered
+                    legend Delivered Or Not
+                    label
+                        input(type="radio", name="delivered-value")
+                        | Delivered
+                    label
+                        input(type="radio", name="delivered-value")
+                        | Not Delivered
+                fieldset.orderIsConfirmed
+                    legend Order Is Confirmed Or Not
+                    if(!order.orderIsConfirmed)
+                        label
+                            input(type="radio", name="orderIsConfirmed-value" )
+                            | Order Is Confirmed
+                        label
+                            input(type="radio", name="orderIsConfirmed-value", checked=`true` )
+                            | Order Is Not Confirmed
+                    else
+                        label
+                            input(type="radio", name="orderIsConfirmed-value", checked=`true` )
+                            | Order Is Confirmed
+                        label
+                            input(type="radio", name="orderIsConfirmed-value")
+                            | Order Is Not Confirmed
+                fieldset.orderIsSuccesfullyConfirmed
+                    legend Order Is Succesfully Confirmed Or Not
+                    if(!order.orderIsConfirmed)
+                        label
+                            input(type="radio", name="orderIsSuccesfullyConfirmed-value",  )
+                            | Order Is Succesfully Confirmed
+                        label
+                            input(type="radio", name="orderIsSuccesfullyConfirmed-value", checked=`true` )
+                            | Order Is Succesfully Not Confirmed
+                    else
+                        label
+                            input(type="radio", name="orderIsSuccesfullyConfirmed-value", checked=`true` )
+                            | Order Is Succesfully Confirmed
+                        label
+                            input(type="radio", name="orderIsSuccesfullyConfirmed-value", )
+                            | Order Is Succesfully Not Confirmed
+                fieldset.confrimRecive
+                    legend Order Is Recive Or Not
+                    if(!order.orderIsConfirmed)
+                        label
+                            input(type="radio", name="confrimRecive-value")
+                            | Order Is Recived
+                        label
+                            input(type="radio", name="confrimRecive-value", checked=`true`, )
+                            | Order Not Recived
+                    else
+                        label
+                            input(type="radio", name="confrimRecive-value", checked=`true` )
+                            | Order Is Recived
+                        label
+                            input(type="radio", name="confrimRecive-value",)
+                            | Order Not Recived
+                fieldset.HomeDelivery
+                    legend Order Is HomeDelivery Or Not
+                    if(!order.HomeDelivery)
+                        label
+                            input(type="radio", name="HomeDelivery-value", )
+                            | Order Is HomeDelivery
+                        label
+                            input(type="radio", name="HomeDelivery-value", checked=`true` )
+                            | Order Is Pick from Strore
+                    else
+                        label
+                            input(type="radio", name="HomeDelivery-value", checked=`true` )
+                            | Order Is HomeDelivery
+                        label
+                            input(type="radio", name="HomeDelivery-value")
+                            | Order Is Pick from Strore
+                fieldset.paymentOnline
+                    legend Order Is paymentOnline Or Not
+                    if(!order.paymentOnline)
+                        label
+                            input(type="radio", name="paymentOnline-value",)
+                            | Payment Method Is Online
+                        label
+                            input(type="radio", name="paymentOnline-value", checked=`true`)
+                            | Payment Method Is Cash
+                    else
+                        label
+                            input(type="radio", name="paymentOnline-value", checked=`true`)
+                            | Payment Method Is Online
+                        label
+                            input(type="radio", name="paymentOnline-value")
+                            | Payment Method Is Cash
+                fieldset.successfullyPayed
+                    if(!order.successfullyPayed)
+                        legend Order Is success fully Payed Or Not
+                        label
+                            input(type="radio", name="successfullyPayed-value")
+                            | Successfully Payed
+                        label
+                            input(type="radio", name="successfullyPayed-value",  checked=`true`)
+                            | Not Successfully Payed
+                    else
+                        legend Order Is success fully Payed Or Not
+                            label
+                                input(type="radio", name="successfullyPayed-value", checked=`true`)
+                                | Successfully Payed
+                            label
+                                input(type="radio", name="successfullyPayed-value")
+                                | Not Successfully Payed
+            footer
+                button Create
+// partial
+script(src="/js/company/bundle.js")
