@@ -165,6 +165,35 @@ body {
   text-transform: uppercase;
   font-weight: 300;
 }
+
+.text_error {
+  font-size: 2.75rem;
+  text-align: right;
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  width: 70%;
+  z-index: 10;
+}
+
+.heading-primary,
+.text_error {
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+
+.heading-primary span,
+.text_error span{
+  padding: 1rem 1.5rem;
+  line-height: 1;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background-image: -webkit-gradient(linear,left top,right bottom,from(#db1313),to(#ff170052))
+}
+
+
 .heading-primary span,
 .heading-tertirary span {
   padding: 1rem 1.5rem;
@@ -193,7 +222,7 @@ body {
 }
 
 .heading-tertirary {
-  font-size: 2.75rem;
+  font-size: 2.15rem;
   text-align: right;
   position: absolute;
   bottom: 1rem;
@@ -1170,6 +1199,13 @@ body {
   -webkit-clip-path: polygon(0 0, 100% 0%, 100% 83%, 0% 98%);
   clip-path: polygon(0 0, 100% 0%, 100% 83%, 0% 98%);
   height: 22rem;
+}
+.card__picture-overlay__error {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to right bottom, #db1313, #ff170052);
+  opacity: 0.7;
 }
 .card__picture-overlay {
   position: absolute;

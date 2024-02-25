@@ -62,6 +62,10 @@ const EmployeesSchema = new mongoose.Schema({
 });
 
 EmployeesSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'user_id',
+        select: 'name'
+    })
     next();
 }); 
 

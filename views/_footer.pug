@@ -2,28 +2,27 @@ footer.footer
   if user
     if user.role === 'employee-dilivery'
       ul.footer__nav
-        li: a(href='/order') CheckDelivery Shipment
-        li: a(href='#') Get Check Delivery Orders
-        li: a(href='#') Shipment Details
+        li: a(href='/shipment/:shipment') CheckDelivery Shipment
+        li: a(href='/inventory/cus-orders/:id') Get Check Delivery Orders
+        li: a(href='/shipment') Shipment Details
+        li: a(href='/inventory/cus-orders') Customer Orders
     else if user.role === 'sub-admin'
       ul.footer__nav
-        li: a(href='/orders-pending') Get All Pending Orders
-        li: a(href='#') Order Confirms
-        li: a(href='#') Track Shipments
-        li: a(href='#') Inventory Details
+        li: a(href='/inventory/track-shipments') Track Shipments
+        li: a(href='/inventory/home') Inventory Management
+        li: a(href='/inventory/inventory-emp') Employee Management-All
+        li: a(href='/inventory/inventory-cu') Customer Management
     else if user.role === 'admin'
       ul.footer__nav
-        li: a(href='#') Details of Employee
-        li: a(href='/order') Get All Employees
-        li: a(href='#') Update Employee
-        li: a(href='/hireAnEmployee') Hire An Employee
-        li: a(href='#') Fire An Employee
-        li: a(href='/order') Get All Pending Orders
-        li: a(href='/order') Get All Pending Orders Not Confirmed
-        li: a(href='/order') Add Products
-        li: a(href='/order') Update Products
-        li: a(href='/order') Delete Products
-        li: a(href='#') Inventory Details
+        li: a(href='/inventory/inventory-emp') Employee Management-All
+        li: a(href='/inventory/inventory-cu') Customer Management
+        li: a(href='/annual') Annual Report
+        li: a(href='/inventory/home') Inventory Management
+    else if user.role === 'employee'
+      ul.footer__nav
+        li: a(href='/successful-payed') Accept Pick Up Orders
+        li: a(href='/inventory/cus-orders') Customer Orders
+        li: a(href='/inventory/home') Inventory Management
     else
       ul.footer__nav
         li: a(href='/order') My Orders

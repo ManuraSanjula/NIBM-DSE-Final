@@ -1,0 +1,100 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        title ClothStore | #{title}
+        link(rel="stylesheet", href="/css/inventory-management.css")
+        link(href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap", rel="stylesheet")
+        link(rel="stylesheet", href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css")
+    body
+        //- partial:index.partial.html
+        #mnu.msidenav
+            .logo iX
+            .spacer
+            button.mbtn
+                |  Add Cloth
+            button.mbtn
+                |  Add Inventory
+            button.mbtn
+                |  Materials
+            button.mbtn
+                |  Add Materials
+            button.mbtn
+                |  Requesting Materials
+            button.mbtn
+                |  Pending Orders
+            button.mbtn
+                |  Orders Not Confirmed
+            button.mbtn
+                |  Orders That Confirmed
+            a(href="/inventory/inventory-emp")
+                button.mbtn
+                    |  Employee Inventory
+            a(href="/inventory/inventory-cu")
+                button.mbtn
+                    |  Customer Inventory
+
+        .sidenav
+            .logo IN
+            .spacer
+            button.mbtn
+                |  Add Cloth
+            button.mbtn
+                |  Add Inventory
+            button.mbtn
+                |  Materials
+            button.mbtn
+                |  Add Materials
+            button.mbtn
+                |  Requesting Materials
+            button.mbtn
+                |  Pending Orders
+            button.mbtn
+                |  Orders Not Confirmed
+            button.mbtn
+                |  Orders That Confirmed
+            a(href="/inventory/inventory-emp")
+                button.mbtn
+                    |  Employee Inventory
+            a(href="/inventory/inventory-cu")
+                button.mbtn
+                    |  Customer Inventory
+        .content-area
+            .mobilebar
+                .logo.sml iX
+                .mbh
+                    button.mnubtn(onclick="slideMenu()")
+                        i.fa.fa-bars(aria-hidden="true")
+            .page-title Inventory
+            .page-desc View and manage your stock
+             if(cloths)
+                 each cloth in cloths
+                    .content-bar
+                        .itemnum=cloth.intern_id
+                        .itemtitle=cloth.intern_name
+                        .itemprice=cloth.price
+                        .itemstock=cloth.availability
+                        .customerRequesting=cloth.user_count
+                        .btncontainer
+                            button#cloth._id.cbbtn
+                                i.fa.fa-trash-o(aria-hidden="true")
+                            button#cloth._id.cbbtn
+                                i.fa.fa-pencil(aria-hidden="true")
+
+        script.
+            var mnu = document.getElementById("mnu");
+            var mstate = false;
+
+            function slideMenu() {
+                mstate = !mstate;
+                if (mstate) {
+                    mnu.style.left = "0px";
+                    mnu.style.boxShadow = "100px 0px 300px 0px rgba(0,0,0,0.3)";
+                } else {
+                    mnu.style.left = "-250px";
+                    mnu.style.boxShadow = "0px 0px 00px 0px rgba(0,0,0,0.0)";
+                }
+            }
+
+    //- Code injected by live-server
+    script.

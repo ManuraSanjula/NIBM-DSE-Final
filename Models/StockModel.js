@@ -8,7 +8,6 @@ const stockSchema = new mongoose.Schema({
     prerequisites:{
         type: [{
             name: String,
-            values: Object,
             fullied: Boolean
         }]
     }

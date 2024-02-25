@@ -69,8 +69,6 @@ exports.confirmOrder = async (req, res, next)=>{
         let order = await OrderModel.findById(req.params.id)
         order.orderIsConfirmed = true;
 
-        // send a email to the user that saying stock is available for the order
-
         order = await OrderModel.findByIdAndUpdate(order._id, order)
         return res.status(200).json({
             status: 'success',

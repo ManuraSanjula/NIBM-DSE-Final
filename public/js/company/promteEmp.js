@@ -1,4 +1,22 @@
 const employeeForm = document.querySelector('#promo');
+const logOutBtn = document.querySelector('.nav__el--logout');
+
+function deleteCookie(name) {
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+const logout = async () => {
+    try {
+        deleteCookie("jwt");
+        window.setTimeout(() => {
+            location.assign('/');
+        }, 1500);
+    } catch (err) {
+        console.log(err.response);
+        showAlert('error', 'Error logging out! Try again.');
+    }
+};
+if(logOutBtn) logOutBtn.addEventListener('click', logout)
+
 const showAlert = (type, msg) => {
     hideAlert();
     const markup = `<div class="alert alert--${type}">${msg}</div>`;

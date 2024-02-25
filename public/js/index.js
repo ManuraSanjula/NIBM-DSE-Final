@@ -3,7 +3,6 @@ import { updateSettings } from './updateSettings'
 import { sigin } from './sigin'
 import { comment } from "./comment";
 import { createAOrder } from "./order";
-
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const bookcloth = document.querySelector('#book-cloth');
@@ -14,6 +13,7 @@ const commentForm = document.querySelector('.form');
 
 
 if (bookcloth) bookcloth.addEventListener('click', createAOrder);
+
 
 if(logOutBtn) logOutBtn.addEventListener('click', logout)
 

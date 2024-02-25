@@ -16,10 +16,18 @@ html(lang="en")
                     .card
                         .card__header
                             .card__picture
-                                .card__picture-overlay &nbsp;
-                                img.card__picture-img(src=`/${order.Cloth.coverImg}`, alt=`${order.Cloth.name}`)
-                            h3.heading-tertirary
-                                span= order.Cloth.name
+                                 if(order.orderIsConfirmed)
+                                    .card__picture-overlay &nbsp;
+                                    img.card__picture-img(src=`/${order.Cloth.coverImg}`, alt=`${order.Cloth.name}`)
+                                 else
+                                     .card__picture-overlay__error &nbsp;
+                                     img.card__picture-img(src=`/${order.Cloth.coverImg}`, alt=`${order.Cloth.name}`)
+                            if(order.orderIsConfirmed)
+                                h3.heading-tertirary
+                                    span= order.Cloth.name
+                            else
+                                h3.text_error
+                                    span= order.Cloth.name
                         .card__details
                             if(order.orderIsSuccesfullyConfirmed)
                                 p.card__text=`Order Is Successfully Confirmed `
@@ -63,5 +71,8 @@ html(lang="en")
                                 span.card__footer-value= `LKR ${order.price}`
                             p
                                 span.card__footer-value= `Quantity X ${order.quantity}`
-                            a.btn.btn--green.btn--small(href=`/${order.Cloth._id}`) Details
+                            if(order.orderIsConfirmed)
+                                a.btn.btn--green.btn--small(href=`/${order.Cloth._id}`) Details
+                            else
+                                a.btn.btn--red.btn--small(href=`/${order.Cloth._id}`) Details
         include _footer

@@ -1,0 +1,47 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        title CodePen - Email Template - Thanks for Subscribing!
+        link(rel="stylesheet", href="./style.css")
+        link(rel="stylesheet", href="https://use.fontawesome.com/releases/v5.3.1/css/all.css", integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU", crossorigin="anonymous")
+        meta(name="google-site-verification", content="OBHSOz2bJypVuqhse4EbUNPh6u4nlzaqmKaLoOryaqs")
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+        include _style2
+    body
+        main
+            .email-container
+                .email-body
+                    .banner
+                        h1 We Feel
+                            span the Love
+                    .email-content
+                        p Hi there!
+                        p Thank you for ordering. We're so excited to Your Order is Now Granted. Click here
+                        if(order.HomeDelivery)
+                            p Your Delivery Method is Home Delivery
+                        else
+                            p Your Delivery Method is pick from home
+                        if(order.paymentOnline)
+                            p Payment Method is Online.
+                            p Thank you for ordering. We're so excited to Your Order is Now Granted.
+                            p And Since Your Payment Method is online click the next button.
+                            a(href="http://127.0.0.1:3000/proceed-for-payment") Next
+                                i.fa.fa-arrow-circle-o-right
+                        else
+                            p Payment Method is Cash
+                            p Thank you for ordering. We're so excited to Your Order is Now Granted.
+                            p And Since Your Payment Cash You do not need to do anything.
+
+                        p if you want to change the behaviour of your order submit a ticket
+                        a(href="http://127.0.0.1:3000/ticket-order") Submit A Ticket
+                            i.fa.fa-ticket
+                        hr
+                        p Sincerely,
+                        p.sig Clothing Store
+                        p
+                            em Manura Sanjula.
+                            |
+                            | CEO
+        footer
+            p unsubscribe

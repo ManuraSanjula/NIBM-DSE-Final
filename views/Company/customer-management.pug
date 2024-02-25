@@ -1,0 +1,75 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        title ClothStore | #{title}
+        link(rel="stylesheet", href="/css/inventory-management.css")
+        link(href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap", rel="stylesheet")
+        link(rel="stylesheet", href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css")
+    body
+        //- partial:index.partial.html
+        #mnu.msidenav
+            .logo iX
+            .spacer
+            button.mbtn
+                |  Customer Orders
+            button.mbtn
+                |  Customer Reviews
+            button.mbtn
+                |  Pending Orders
+            a(href="/inventory/inventory-emp")
+                button.mbtn
+                    |  Employee Inventory
+            a(href="/inventory/home")
+                button.mbtn
+                    |  Cloth Inventory
+        .sidenav
+            .logo IN
+            .spacer
+            a(href="/inventory/inventory-cus")
+                button.mbtn
+                    | Customer Orders
+            a(href="/inventory/inventory-cus/order")
+                button.mbtn
+                    | Customer Reviews
+            button.mbtn
+                |  Pending Orders
+            a(href="/inventory/inventory-emp")
+                button.mbtn
+                    |  Employee Inventory
+            a(href="/inventory/home")
+                button.mbtn
+                    |  Cloth Inventory
+        .content-area
+            .mobilebar
+                .logo.sml iX
+                .mbh
+                    button.mnubtn(onclick="slideMenu()")
+                        i.fa.fa-bars(aria-hidden="true")
+            .page-title Inventory
+            .page-desc View and manage customer
+                if(customers)
+                    each customer in customers
+                        .content-bar
+                            .itemnum=customer._id
+                            .itemtitle=customer.name
+                            .itemstock=`email Confirm = ${customer.emailConfrim}`
+                            .itemprice=customer.email
+
+    script.
+        var mnu = document.getElementById("mnu");
+        var mstate = false;
+
+        function slideMenu() {
+            mstate = !mstate;
+            if (mstate) {
+                mnu.style.left = "0px";
+                mnu.style.boxShadow = "100px 0px 300px 0px rgba(0,0,0,0.3)";
+            } else {
+                mnu.style.left = "-250px";
+                mnu.style.boxShadow = "0px 0px 00px 0px rgba(0,0,0,0.0)";
+            }
+        }
+
+    //- Code injected by live-server
+    script.

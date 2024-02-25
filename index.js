@@ -18,7 +18,8 @@ const reviewRouter = require('./Routes/Customer/ReviewRoute');
 const cartRouter = require('./Routes/Customer/CartRoute');
 const orderRouter = require('./Routes/Customer/OrderRoute');
 const companyRouter = require('./Routes/Company/CompanyRoute')
-const homeRoute = require('./Routes/All/UIRoute')
+const homeRoute = require('./Routes/All/Customer')
+const homeRoute_in = require('./Routes/Company/Inventory')
 
 const init = () => {
     
@@ -52,10 +53,10 @@ const init = () => {
         next();
     });
     app.use('/',homeRoute)
+    app.use('/inventory',homeRoute_in)
     app.use('/api/v1/user', userRouter);
     app.use('/api/v1/shop', ClothRoute);
     app.use('/api/v1/shop/Cloth/review', reviewRouter);
-    app.use('/api/v1/user/cart', cartRouter);
     app.use('/api/v1/user/order', orderRouter);
     app.use('/api/v1', companyRouter);
 

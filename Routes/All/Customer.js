@@ -7,42 +7,16 @@ const commentModel = require("../../Models/ReviewModel");
 const employeeModel = require("../../Models/EmployeesModel")
 const EmployeeModel = require("../../Models/EmployeesModel");
 const OrderModel = require("../../Models/OrderModel");
-Router.get('/orders-pending',authController.isLoggedIn ,authController.protect,async (req, res) => {
-    const emp = await EmployeeModel.findOne({ user_id : req.user._id} )
+const helper_web = require('../../helpers/helper_web')
 
-    let allPendingOrdersConfirmed = [];
-    for(let i = 0; i < emp.toOrderToBeAvailable.length; i++) {
-        let order = await OrderModel.findById(emp.toOrderToBeAvailable[i])
-        if(order.orderIsConfirmed === false)
-            allPendingOrdersConfirmed.push(order);
-    }
-
-    res.status(200).render('getAllPendingOrders',{
-        title: 'Chilaw Sri Lanka',
-        orders: allPendingOrdersConfirmed
-    });
-})
-
-Router.get('/comments',authController.isLoggedIn ,authController.protect,async (req, res) => {
+Router.get('/comments',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
     const comments = await commentModel.find({ user: req.user._id });
-
     res.status(200).render('comment',{
         title: 'Chilaw Sri Lanka',
         comments
     });
 })
-
-Router.get('/hireAnEmployee',authController.isLoggedIn ,authController.protect, authController.restrictTo('admin'),async (req, res) => {
-    res.status(200).render('hireAnEmployee',);
-})
-
-Router.get('/promoteEmp',authController.isLoggedIn ,authController.protect, authController.restrictTo('admin'),async (req, res) => {
-    res.status(200).render('promoteEmp',{
-        title: 'Chilaw Sri Lanka',
-    });
-})
-
-Router.get('/order',authController.isLoggedIn ,authController.protect,async (req, res) => {
+Router.get('/order',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
     const orderItem = await orderModel.find({ user: req.user._id });
 
     res.status(200).render('order',{
@@ -51,8 +25,7 @@ Router.get('/order',authController.isLoggedIn ,authController.protect,async (req
     });
 })
 
-
-Router.get('/me',authController.isLoggedIn ,authController.protect,async (req, res) => {
+Router.get('/me',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
     res.status(200).render('account', {
         title: 'Your account',
     });
