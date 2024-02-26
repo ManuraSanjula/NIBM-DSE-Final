@@ -9,7 +9,11 @@ html(lang="en")
     body
         //- partial:index.partial.html
         #mnu.msidenav
-            .logo iX
+            .logo iN
+            .searchbar
+                input.search
+                button.sbtn
+                    i.fa.fa-search(aria-hidden="true")
             .spacer
             a(href="/inventory/inventory-cu")
                 button.mbtn
@@ -31,6 +35,10 @@ html(lang="en")
                     |  Cloth Inventory
         .sidenav
             .logo IN
+            .searchbar
+                input.search
+                button.sbtn
+                    i.fa.fa-search(aria-hidden="true")
             .spacer
             a(href="/inventory/inventory-cu")
                 button.mbtn

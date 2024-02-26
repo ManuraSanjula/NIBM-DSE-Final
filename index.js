@@ -15,7 +15,6 @@ var cors = require ('cors')
 const ClothRoute = require('./Routes/All/ClothRoute');
 const userRouter = require('./Routes/All/UserRoute');
 const reviewRouter = require('./Routes/Customer/ReviewRoute');
-const cartRouter = require('./Routes/Customer/CartRoute');
 const orderRouter = require('./Routes/Customer/OrderRoute');
 const companyRouter = require('./Routes/Company/CompanyRoute')
 const homeRoute = require('./Routes/All/Customer')

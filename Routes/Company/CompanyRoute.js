@@ -19,7 +19,7 @@ router.use(authController.protect,authController.restrictTo('admin'));
 router.route('/company/admin/getAllEmployees')
     .get(companyController.getAllEmployees)
 
-router.route('/company/admin/updateEmployee')
+router.route('/company/admin/updateEmployee/:id')
     .post(companyController.updateEmployee);
 router.get('/company/admin/getEmployee/:id', companyController.getEmployee) 
 router.delete('/company/admin/deleteEmployee/:id', companyController.deleteEmployee)

@@ -6,7 +6,6 @@ const RefundsModel = require('../Models/RefundModel');
 const OrderModel = require('../Models/OrderModel');
 const EmployeeModel = require('../Models/EmployeesModel'); // Company
 const ClothModel = require('../Models/ClothModel'); // Company
-const CartModel = require('../Models/cartModel');
 const factory = require('./handlerFactory');
 const errorController = require('./ErrorController');
 
@@ -144,12 +143,6 @@ exports.getCloths = factory.getAll(ClothModel);
 exports.getOneCloth = factory.getOne(ClothModel);
 exports.updateCloth = factory.updateOne(ClothModel);
 exports.deleteCloth = factory.deleteOne(ClothModel);
-
-exports.getCarts = factory.getAll(CartModel);
-exports.getOneCart = factory.getOne(CartModel);
-exports.updateCart = factory.updateOne(CartModel);
-exports.deleteCart = factory.deleteOne(CartModel);
-
 
 exports.allOrdersByDId = async (req, res, next) => {
     const emp = await EmployeeModel.findById(req.params.emp_id)

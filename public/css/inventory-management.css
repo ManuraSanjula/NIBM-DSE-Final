@@ -1,5 +1,5 @@
 body{
-    background: linear-gradient(#e2e8eb, #cdd5db) fixed;
+    background: linear-gradient(#7ad1ff, #3a99de) fixed;
     padding:40px;
     font-family: 'Rubik', sans-serif;
     margin:0;
@@ -24,7 +24,8 @@ body{
     transition-duration:500ms;
 }
 .content-area{
-    /* background-color: #f6f6fc; */
+    background-color: #f6f6fc;
+    position:fixed;
     width:calc(100vw - 340px);
     height:calc(100vh - 80px);
     margin-left:250px;

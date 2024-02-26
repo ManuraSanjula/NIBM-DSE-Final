@@ -5524,11 +5524,90 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var userOrderForm = document.getElementById("user_order_form");
-if (userOrderForm) userOrderForm.addEventListener('submit', /*#__PURE__*/function () {
+var userEmployeeForm = document.getElementById("user_employee_form");
+document.addEventListener('DOMContentLoaded', function () {
+  var lists = document.querySelectorAll('ul');
+  lists.forEach(function (list) {
+    var items = Array.from(list.children);
+    function handleClick(item, listId) {
+      var listItem = document.getElementById(item);
+      if (listItem) {
+        listItem.remove();
+        var index = items.findIndex(function (li) {
+          return li.id === item;
+        });
+        if (index !== -1) {
+          items.splice(index, 1);
+          items.map(function (li) {
+            var objectIds = li.textContent.match(/\w{24}/g);
+            console.log(objectIds);
+          });
+        }
+      }
+    }
+    list.addEventListener('click', function (event) {
+      if (event.target.tagName === 'BUTTON') {
+        var li = event.target.parentElement;
+        var item = li.id;
+        var listId = list.id;
+        handleClick(item, listId);
+      }
+    });
+  });
+});
+if (userEmployeeForm) userEmployeeForm.addEventListener('submit', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
-    var userOrderForm, userInput, orderInput, userNameInput, clothIdInput, priceInput, quantityInput, deliveredRadio, orderIsConfirmedRadio, orderIsSuccessfullyConfirmedRadio, confirmReceiveRadio, homeDeliveryRadio, paymentOnlineRadio, successfullyPayedRadio, data;
+    var userOrderForm, employeeIdInput, userIdInput, userNameInput, salaryInput, leavesInput, halfDaysInput, joinDateInput, toOrderToBeAvailableList, toTargetOrderList, totalShipmentsList, isDeliveryPersonRadio, isManagerRadio, isNewEmployeeRadio, isActiveRadio, isFiredRadio;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
+        case 0:
+          e.preventDefault();
+          userOrderForm = document.getElementById("user_employee_form");
+          employeeIdInput = document.querySelector("#user_employee_form input[name='employee_id']");
+          userIdInput = document.querySelector("#user_employee_form input[name='user_id']");
+          userNameInput = document.querySelector("#user_employee_form input[name='user_name']");
+          salaryInput = document.querySelector("#user_employee_form input[name='user_name']");
+          leavesInput = document.querySelector("#user_employee_form input[name='cloth_id']");
+          halfDaysInput = document.querySelector("#user_employee_form input[name='cloth_id']");
+          joinDateInput = document.querySelector("#user_employee_form input[name='price']");
+          toOrderToBeAvailableList = document.querySelector("#user_employee_form .toOrderToBeAvailable ul");
+          toTargetOrderList = document.querySelector("#user_employee_form .toTargetOrder ul");
+          totalShipmentsList = document.querySelector("#user_employee_form .totalShipments ul");
+          isDeliveryPersonRadio = document.querySelector("#user_employee_form input[name='isDeliveryPerson-value']");
+          isManagerRadio = document.querySelector("#user_employee_form input[name='isManager-value']");
+          isNewEmployeeRadio = document.querySelector("#user_employee_form input[name='isNewEmployee-value']");
+          isActiveRadio = document.querySelector("#user_employee_form input[name='isActive-value']");
+          isFiredRadio = document.querySelector("#user_employee_form input[name='isFired-value']");
+          console.log("Employee ID:", employeeIdInput.value);
+          console.log("User ID:", userIdInput.value);
+          console.log("User Name:", userNameInput.value);
+          console.log("Salary:", salaryInput.value);
+          console.log("Leaves:", leavesInput.value);
+          console.log("Half Days:", halfDaysInput.value);
+          console.log("Join Date:", joinDateInput.value);
+          console.log("To Order To Be Available:", toOrderToBeAvailableList.textContent);
+          console.log("To Target Order:", toTargetOrderList.textContent);
+          console.log("Total Shipments:", totalShipmentsList.textContent);
+          console.log("Is Delivery Person:", isDeliveryPersonRadio.checked);
+          console.log("Is Manager:", isManagerRadio.checked);
+          console.log("Is New Employee:", isNewEmployeeRadio.checked);
+          console.log("Is Active:", isActiveRadio.checked);
+          console.log("Is Fired:", isFiredRadio.checked);
+        case 32:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  }));
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+}());
+if (userOrderForm) userOrderForm.addEventListener('submit', /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(e) {
+    var userOrderForm, userInput, orderInput, userNameInput, clothIdInput, priceInput, quantityInput, deliveredRadio, orderIsConfirmedRadio, orderIsSuccessfullyConfirmedRadio, confirmReceiveRadio, homeDeliveryRadio, paymentOnlineRadio, successfullyPayedRadio, data;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
         case 0:
           e.preventDefault();
           userOrderForm = document.getElementById("user_order_form");
@@ -5545,19 +5624,6 @@ if (userOrderForm) userOrderForm.addEventListener('submit', /*#__PURE__*/functio
           homeDeliveryRadio = document.querySelector("#user_order_form input[name='HomeDelivery-value']");
           paymentOnlineRadio = document.querySelector("#user_order_form input[name='paymentOnline-value']");
           successfullyPayedRadio = document.querySelector("#user_order_form input[name='successfullyPayed-value']");
-          console.log("User ID:", userInput.value);
-          console.log("User ID:", orderInput.value);
-          console.log("User Name:", userNameInput.value);
-          console.log("Cloth ID:", clothIdInput.value);
-          console.log("Price:", priceInput.value);
-          console.log("Quantity:", quantityInput.value);
-          console.log("Delivered:", deliveredRadio.checked);
-          console.log("Order Is Confirmed:", orderIsConfirmedRadio.checked);
-          console.log("Order Is Successfully Confirmed:", orderIsSuccessfullyConfirmedRadio.checked);
-          console.log("Order Is Received:", confirmReceiveRadio.checked);
-          console.log("Home Delivery:", homeDeliveryRadio.checked);
-          console.log("Payment Online:", paymentOnlineRadio.checked);
-          console.log("Successfully Payed:", successfullyPayedRadio.checked);
           data = {
             "user": userInput.value,
             "Cloth": clothIdInput.value,
@@ -5571,16 +5637,16 @@ if (userOrderForm) userOrderForm.addEventListener('submit', /*#__PURE__*/functio
             "paymentOnline": paymentOnlineRadio.checked,
             "successfullyPayed": successfullyPayedRadio.checked
           };
-          _context.next = 31;
+          _context2.next = 18;
           return (0, _update_user_order.update)(data, orderInput.value);
-        case 31:
+        case 18:
         case "end":
-          return _context.stop();
+          return _context2.stop();
       }
-    }, _callee);
+    }, _callee2);
   }));
-  return function (_x) {
-    return _ref.apply(this, arguments);
+  return function (_x2) {
+    return _ref2.apply(this, arguments);
   };
 }());
 },{"./update_user_order":"update_user_order.js"}],"../../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -5608,7 +5674,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58320" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51128" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const {ObjectId} = require("mongodb");
 
 const ClothInventorySchema = new mongoose.Schema({
-    _id: {
+    cloth_id: {
         type: ObjectId,
         ref: 'Cloths'
     },
@@ -35,7 +35,7 @@ const ClothInventorySchema = new mongoose.Schema({
             ref: 'User'  
         }
     }]
-},{ _id: false });
+});
 
 const ClothInvent = mongoose.model('ClothInvent', ClothInventorySchema);
 module.exports = ClothInvent;

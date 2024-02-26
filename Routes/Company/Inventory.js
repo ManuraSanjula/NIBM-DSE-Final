@@ -28,8 +28,31 @@ Router.get('/promoteEmp',authController.isLoggedIn ,helper_web.protect, helper_w
         title: 'Chilaw Sri Lanka',
     });
 })
+
+Router.get('/inventory-emp/:id/edit',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
+    const employee = await EmployeeModel.findById(req.params.id);
+    res.status(200).render('Company/edit_employee_order',{
+        title: 'Chilaw Sri Lanka',
+        employee,
+        view: true
+    });
+})
+
+Router.get('/inventory-emp/:id/edit/1',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin'),async (req, res) => {
+    const employee = await EmployeeModel.findById(req.params.id);
+    res.status(200).render('Company/edit_employee_order',{
+        title: 'Chilaw Sri Lanka',
+        employee,
+        view: false
+    });
+})
+
 Router.get('/inventory-emp',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
-    const employees = await EmployeeModel.find().populate({ path: 'user_id' })
+    let employees = await EmployeeModel.find().populate({ path: 'user_id' })
+
+    if(req.user.role === 'sub-admin')
+        employees = await EmployeeModel.find({ isManager : false}).populate({ path: 'user_id' })
+
     res.status(200).render('Company/employee-management',{
         title: 'Chilaw Sri Lanka',
         employees

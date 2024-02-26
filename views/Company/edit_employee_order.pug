@@ -1,0 +1,170 @@
+doctype html
+html(lang="en", dir="ltr")
+    head
+        meta(charset="utf-8")
+        title ClothStore | #{title}
+        meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(name="description", content="Responsive Account Form Without Media")
+        meta(name="author", content="Shift Media")
+        title Responsive Account Form Without Media | Shift Media
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css")
+        script.
+            // function handleClick(item) {
+            //     const listItem = document.getElementById(item);
+            //     console.log(listItem)
+            //     if (listItem) {
+            //         listItem.remove();
+            //     }
+            // }
+    body
+        header
+        form#user_employee_form(action="#", method="post")
+            h1 Edit the employee
+            fieldset
+                label
+                    | Employee ID
+                    br
+                    input(type="text", name="employee_id", placeholder="Employee ID", value=`${employee._id}`, required)
+                    br
+                label
+                    | Employee User ID
+                    br
+                    input(type="text", name="user_id", placeholder="Employee User ID", value=`${employee.user_id._id}`, required)
+                    br
+                label
+                    | Employee User Name
+                    br
+                    input(type="text", name="user_id", placeholder="Employee User ID", value=`${employee.user_id.name}`, required)
+                    br
+                label
+                    | Salary
+                    br
+                    input(type="text", name="user_name", placeholder="Salary", value=`${employee.salary}`, required)
+                    br
+                label
+                    | Leaves
+                    br
+                    input(type="text", name="cloth_id", placeholder="Leaves", value=`${employee.leaves}`, required)
+                    br
+                label
+                    | Half Days
+                    br
+                    input(type="text", name="cloth_id", placeholder="Half Days", value=`${employee.half_days}`, required)
+                    br
+                label
+                    | JoinDate
+                    br
+                    input(type="text", name="price", placeholder="JoinDate" value=`${employee.JoinDate}`, required)
+                    br
+                fieldset.toOrderToBeAvailable
+                    | Employee To Order To Be Available ( Click the button if you want to delete the data )
+                    ul
+                        each item in employee.toOrderToBeAvailable
+                            li(id=item)
+                                | #{item}
+                                |
+                                button() Delete
+                fieldset.toTargetOrder
+                    | Employee To Target Order ( Click the button if you want to delete the data )
+                    ul
+                        each item in employee.toTargetOrder
+                            li(id=item)
+                                | #{item}
+                                |
+                                button() Delete
+                fieldset.totalShipments
+                    | Total Shipments ( Click the button if you want to delete the data )
+                    ul
+                        each item in employee.totalShipments
+                            li(id=item)
+                                | #{item}
+                                |
+                                button() Delete
+
+                fieldset.isDeliveryPerson
+                    legend employee Is DeliveryPerson Or Not
+                    if(!employee.isDeliveryPerson)
+                        label
+                            input(type="radio", name="isDeliveryPerson-value" )
+                            | employee Is DeliveryPerson
+                        label
+                            input(type="radio", name="isDeliveryPerson-value", checked=`true` )
+                            | employee Is Not DeliveryPerson
+                    else
+                        label
+                            input(type="radio", name="isDeliveryPerson-value", checked=`true` )
+                            | employee Is DeliveryPerson
+                        label
+                            input(type="radio", name="isDeliveryPerson-value")
+                            | employee Is Not DeliveryPerson
+                fieldset.isManager
+                    legend employee Is Manager Confirmed Or Not
+                    if(!employee.isManager)
+                        label
+                            input(type="radio", name="isManager-value",  )
+                            | employee Is Manager
+                        label
+                            input(type="radio", name="isManager-value", checked=`true` )
+                            | employee Is Not Manager
+                    else
+                        label
+                            input(type="radio", name="isManager-value", checked=`true` )
+                            | employee Is Manager
+                        label
+                            input(type="radio", name="isManager-value", )
+                            | employee Is Not Manager
+                fieldset.isNewEmployee
+                    legend employee Is NewEmployee Or Not
+                    if(!employee.isNewEmployee)
+                        label
+                            input(type="radio", name="isNewEmployee-value", )
+                            | employee Is new employee
+                        label
+                            input(type="radio", name="isNewEmployee-value", checked=`true` )
+                            | employee Is new employee
+                    else
+                        label
+                            input(type="radio", name="isNewEmployee-value", checked=`true` )
+                            | employee Is new employee
+                        label
+                            input(type="radio", name="isNewEmployee-value")
+                            | employee not new employee
+                fieldset.isActive
+                    legend employee isActive Or Not
+                    if(!employee.isActive)
+                        label
+                            input(type="radio", name="isActive-value",)
+                            | employee is active
+                        label
+                            input(type="radio", name="isActive-value", checked=`true`)
+                            | employee is not active
+                    else
+                        label
+                            input(type="radio", name="isActive-value", checked=`true`)
+                            | employee isActive
+                        label
+                            input(type="radio", name="isActive-value")
+                            | employee is not active
+                fieldset.isFired
+                    legend employee isActive Or Not
+                    if(!employee.isFired)
+                        label
+                            input(type="radio", name="isFired-value",)
+                            | employee is Fired
+                        label
+                            input(type="radio", name="isFired-value", checked=`true`)
+                            | employee is not Fired
+                    else
+                        label
+                            input(type="radio", name="isFired-value", checked=`true`)
+                            | employee isFired
+                        label
+                            input(type="radio", name="isFired-value")
+                            | employee is not Fired
+            if(!view)
+                footer
+                    button Create
+if(!view)
+    script(src="/js/company/bundle.js")

@@ -9,7 +9,11 @@ html(lang="en")
     body
         //- partial:index.partial.html
         #mnu.msidenav
-            .logo iX
+            .logo IN
+            .searchbar
+                input.search
+                button.sbtn
+                    i.fa.fa-search(aria-hidden="true")
             .spacer
             a(href="/inventory/promoteEmp")
                 button.mbtn
@@ -29,6 +33,10 @@ html(lang="en")
                     |  Cloth Inventory
         .sidenav
             .logo IN
+            .searchbar
+                input.search
+                button.sbtn
+                    i.fa.fa-search(aria-hidden="true")
             .spacer
             a(href="/inventory/promoteEmp")
                 button.mbtn
@@ -57,14 +65,16 @@ html(lang="en")
                 if(employees)
                     each employee in employees
                         .content-bar
-                            .itemnum=employee._id
+                            a(href=`/inventory/inventory-emp/${employee._id}/edit`)
+                              .itemnum=employee._id
                             .itemtitle=employee.user_id.name
                             .itemprice=employee.user_id._id
                             .btncontainer
                                 button#cloth._id.cbbtn
                                     i.fa.fa-trash-o(aria-hidden="true")
-                                button#cloth._id.cbbtn
-                                    i.fa.fa-pencil(aria-hidden="true")
+                                a(href=`/inventory/inventory-emp/${employee._id}/edit/1`)
+                                    button#cloth._id.cbbtn
+                                        i.fa.fa-pencil(aria-hidden="true")
 
     script.
         var mnu = document.getElementById("mnu");
