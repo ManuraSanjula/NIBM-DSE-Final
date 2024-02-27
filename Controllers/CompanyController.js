@@ -8,6 +8,7 @@ const EmployeeModel = require('../Models/EmployeesModel'); // Company
 const ClothModel = require('../Models/ClothModel'); // Company
 const factory = require('./handlerFactory');
 const errorController = require('./ErrorController');
+const Email = require("../utils/email")
 
 exports.getAllUsers = factory.getAll(UserModel);
 exports.getUser = factory.getOne(UserModel);
@@ -65,10 +66,12 @@ async function createAnEmployee(id, salary, type){
 
 exports.confirmOrder = async (req, res, next)=>{
     try{
-        let order = await OrderModel.findById(req.params.id)
-        order.orderIsConfirmed = true;
+        let order = await OrderModel.findById(req.params.order_id).populate({path : 'user'})
+        //order.orderIsConfirmed = true;
+        await OrderModel.findByIdAndUpdate(order._id, order)
 
-        order = await OrderModel.findByIdAndUpdate(order._id, order)
+        await new Email(order.user, `${req.protocol}://${req.get('host')}/proceed-for-payment`).send_order(order, "Grant the order");
+
         return res.status(200).json({
             status: 'success',
             data: order

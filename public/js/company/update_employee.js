@@ -12,7 +12,7 @@ function getCookie(cookieName) {
     return null;
 }
 
-export const update = async (data, id) => {
+export const update_employee = async (data, id) => {
     var myCookieValue = getCookie('jwt');
     try {
         const res = await axios({

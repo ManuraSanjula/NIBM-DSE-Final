@@ -26,7 +26,7 @@ html(lang="en")
                             p Payment Method is Online.
                             p Thank you for ordering. We're so excited to Your Order is Now Granted.
                             p And Since Your Payment Method is online click the next button.
-                            a(href="http://127.0.0.1:3000/proceed-for-payment") Next
+                            a(href=`http://127.0.0.1:3000/proceed-for-payment/${order._id}/${order.user.email}/1`) Next
                                 i.fa.fa-arrow-circle-o-right
                         else
                             p Payment Method is Cash

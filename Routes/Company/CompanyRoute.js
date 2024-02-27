@@ -12,7 +12,7 @@ router.get('/company/employee-diliver/:emp_id/AllOrders',authController.restrict
 router.get('/company/employee-diliver/:emp_id/AllShipments',authController.restrictTo('employee-dilivery'), companyController.allShipmentByDId)
 
 router.get('/company/manger/:emp_id/allPendingOrders',authController.restrictTo('sub-admin'), companyController.AllPendingOrdersByMId)
-router.get('/company/confirmOrderByManager/:id',authController.restrictTo('sub-admin'),companyController.confirmOrder)
+router.get('/company/confirmOrderByManager/:order_id',authController.restrictTo('sub-admin', 'admin'),companyController.confirmOrder)
 
 router.use(authController.protect,authController.restrictTo('admin'));
 

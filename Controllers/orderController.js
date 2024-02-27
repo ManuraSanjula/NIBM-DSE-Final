@@ -4,25 +4,96 @@ const Email = require('../utils/email');
 const errorController = require('./errorController');
 const EmployeeModel = require('../Models/EmployeesModel');
 const ShipementModel = require('../Models/ShipmentModel');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const UserModel = require("../Models/UserModel")
+function lkrToUsd(amountInLKR, exchangeRate) {
+    return amountInLKR / exchangeRate;
+}
+
+const exchangeRate = 0.005;
+
+exports.getCheckoutSession = async (req, res, next) => {
+    const order = await orderModel.findById(req.params.orderId).populate({path : "Cloth"});
+
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        success_url: `${req.protocol}://${req.get('host')}/success-purchase/${order._id}/${req.params.email}`,
+        cancel_url: `${req.protocol}://${req.get('host')}/success-cancel`,
+        customer_email: req.params.email,
+        client_reference_id: req.params.orderId,
+        line_items: [
+            {
+                price_data: {
+                    currency: 'lkr',
+                    product_data: {
+                        name: `${order.Cloth.name} order`,
+                        description: order.Cloth.description,
+                        images: [
+                            `${req.protocol}://${req.get('host')}/img/orders/${order.Cloth.coverImg}`
+                        ],
+                    },
+                    unit_amount: order.price * 10, // Amount in smallest currency unit (e.g., cents).
+                },
+                quantity: 1
+            }
+        ],
+        mode: 'payment',
+    });
+
+
+    // 3) Create session as response
+    res.status(200).json({
+        status: 'success',
+        session
+    });
+}
+
+const createBookingCheckout = async session => {
+    const order = session.client_reference_id;
+    const user = (await User.findOne({ email: session.customer_email })).id;
+    const price = session.display_items[0].amount / 100;
+    await Booking.create({ order, user, price });
+};
+
+exports.webhookCheckout = (req, res, next) => {
+    const signature = req.headers['stripe-signature'];
+
+    let event;
+    try {
+        event = stripe.webhooks.constructEvent(
+            req.body,
+            signature,
+            process.env.STRIPE_WEBHOOK_SECRET
+        );
+    } catch (err) {
+        return res.status(400).send(`Webhook error: ${err.message}`);
+    }
+
+    if (event.type === 'checkout.session.completed')
+        createBookingCheckout(event.data.object);
+
+    res.status(200).json({ received: true });
+};
 
 async function setDeliveryJob(orderItem, req) {
 
-    const emp = EmployeeModel.find({ isDeliveryPerson: true });
+    const emp = await EmployeeModel.find({ isDeliveryPerson: true });
     const oneDEmp = emp[Math.floor(Math.random() * emp.length)];
-    if (oneDEmp.toTargetOrder == undefined || oneDEmp.toTargetOrder == null || oneDEmp.toTargetOrder.length <= 0) {
+    if (oneDEmp.toTargetOrder === undefined || oneDEmp.toTargetOrder == null || oneDEmp.toTargetOrder.length <= 0) {
         oneDEmp.toTargetOrder = [];
         oneDEmp.toTargetOrder.push(orderItem._id);
     } else {
         oneDEmp.toTargetOrder.push(orderItem._id);
     }
+    const customer = await UserModel.findOne({email: req.params.email })
     const shipment = await ShipementModel.create({
-        user: req.user._id,
+        user: customer._id,
         order : orderItem._id,
         status:"pending",
         dilverPerson: oneDEmp._d
     })
 
-    if (oneDEmp.totalShipments == undefined || oneDEmp.totalShipments == null || oneDEmp.totalShipments.length <= 0) {
+    if (oneDEmp.totalShipments === undefined || oneDEmp.totalShipments == null || oneDEmp.totalShipments.length <= 0) {
         oneDEmp.totalShipments = [];
         oneDEmp.totalShipments.push(shipment._id);
     } else {
@@ -35,7 +106,7 @@ async function setDeliveryJob(orderItem, req) {
 
 exports.success_fully_confirm_order = async (req, res, next)=>{
     try{
-        let orderItem = await orderModel.findOne({ user: req.user, _id: req.params.id });
+        let orderItem = await orderModel.findById(req.params.id);
         if (!orderItem) {
             return res.status(400).json({
                 status: 'fail',
@@ -57,9 +128,7 @@ exports.success_fully_confirm_order = async (req, res, next)=>{
         orderItem.orderIsSuccesfullyConfirmed = true;
         orderItem = await orderModel.findByIdAndUpdate(orderItem._id, orderItem);
 
-        return res.status(200).json({
-            status: 'success',
-        })
+        return res.status(200).render('order_succes');
     }catch(err){
         errorController(req, res, err)
     }

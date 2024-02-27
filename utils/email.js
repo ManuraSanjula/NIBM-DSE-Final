@@ -32,6 +32,28 @@ module.exports = class Email {
     });
   }
 
+
+  async send_order(order, subject) {
+    // 1) Render HTML based on a pug template
+    const html = pug.renderFile(`${__dirname}/../views/email/orderGrant.pug`, {
+      firstName: this.firstName,
+      url: this.url,
+      order
+    });
+
+    // 2) Define email options
+    const mailOptions = {
+      from: 'w.m.manurasanjula2003@gmail.com',
+      to: this.to,
+      subject,
+      html,
+      text: convert(html)
+    };
+
+    // 3) Create a transport and send email
+    await this.newTransport().sendMail(mailOptions);
+  }
+
   // Send the actual email
   async send(template, subject) {
     // 1) Render HTML based on a pug template

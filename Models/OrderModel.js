@@ -63,7 +63,7 @@ orderSchema.pre(/^find/, function (next) {
         select: 'name description coverImg'
     }).populate({
         path: 'user',
-        select: 'name photo address coverImg'
+        select: 'name photo address coverImg email'
     });
     next();
 });
@@ -71,13 +71,11 @@ orderSchema.pre(/^find/, function (next) {
 orderSchema.pre('save', async function (next) {
     if (this.quantity === 1) {
         const Cloth = await ClothModel.findById(this.Cloth);
-        const Clothprice = Cloth.price;
-        this.price = Clothprice
+        this.price = Cloth.price
         next();
     } else {
         const Cloth = await ClothModel.findById(this.Cloth);
-        const Clothprice = Cloth.price * this.quantity;
-        this.price = Clothprice
+        this.price = Cloth.price * this.quantity
         next();
     }
 });

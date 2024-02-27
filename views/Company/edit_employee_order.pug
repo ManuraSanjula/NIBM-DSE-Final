@@ -46,12 +46,12 @@ html(lang="en", dir="ltr")
                 label
                     | Leaves
                     br
-                    input(type="text", name="cloth_id", placeholder="Leaves", value=`${employee.leaves}`, required)
+                    input(type="text", name="leaves", placeholder="Leaves", value=`${employee.leaves}`, required)
                     br
                 label
                     | Half Days
                     br
-                    input(type="text", name="cloth_id", placeholder="Half Days", value=`${employee.half_days}`, required)
+                    input(type="text", name="halfdays", placeholder="Half Days", value=`${employee.half_days}`, required)
                     br
                 label
                     | JoinDate
@@ -63,25 +63,22 @@ html(lang="en", dir="ltr")
                     ul
                         each item in employee.toOrderToBeAvailable
                             li(id=item)
-                                | #{item}
                                 |
-                                button() Delete
+                                button()=item
                 fieldset.toTargetOrder
                     | Employee To Target Order ( Click the button if you want to delete the data )
                     ul
                         each item in employee.toTargetOrder
                             li(id=item)
-                                | #{item}
                                 |
-                                button() Delete
+                                button()=item
                 fieldset.totalShipments
                     | Total Shipments ( Click the button if you want to delete the data )
                     ul
                         each item in employee.totalShipments
                             li(id=item)
-                                | #{item}
                                 |
-                                button() Delete
+                                button()=item
 
                 fieldset.isDeliveryPerson
                     legend employee Is DeliveryPerson Or Not
@@ -165,6 +162,6 @@ html(lang="en", dir="ltr")
                             | employee is not Fired
             if(!view)
                 footer
-                    button Create
+                    button Submit
 if(!view)
     script(src="/js/company/bundle.js")

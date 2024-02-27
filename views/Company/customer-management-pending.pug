@@ -75,10 +75,12 @@ html(lang="en")
                             .itemstock=order.Cloth._id + " -- Cloth Id"
                             .itemprice=order.user.name
                             .btncontainer
-                                button#Reject.cbbtn
-                                    i.fa.fa-ban(aria-hidden="true")
-                                button#Accept._id.cbbtn
-                                    i.fa.fa-check(aria-hidden="true")
+                                a(href="/inventory/inventory-emp")
+                                    button#Reject.cbbtn
+                                        i.fa.fa-ban(aria-hidden="true")
+                                a(href=`/api/v1/company/confirmOrderByManager/${order._id}`)
+                                    button#Accept._id.cbbtn
+                                        i.fa.fa-check(aria-hidden="true")
 
     script.
         var mnu = document.getElementById("mnu");

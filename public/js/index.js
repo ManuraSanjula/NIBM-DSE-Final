@@ -3,6 +3,8 @@ import { updateSettings } from './updateSettings'
 import { sigin } from './sigin'
 import { comment } from "./comment";
 import { createAOrder } from "./order";
+import { paynow } from "./paynow";
+
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const bookcloth = document.querySelector('#book-cloth');
@@ -11,6 +13,9 @@ const signUpForm = document.querySelector('.form--signup');
 const userPasswordForm = document.querySelector('.form-user-password');
 const commentForm = document.querySelector('.form');
 
+const paynowButton =document.getElementById('paynow')
+
+if (paynowButton) paynowButton.addEventListener('click',  paynow);
 
 if (bookcloth) bookcloth.addEventListener('click', createAOrder);
 

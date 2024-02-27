@@ -1,0 +1,30 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Centered Button with Bootstrap
+        link(rel='stylesheet' href='/css/style.css')
+        link(rel='stylesheet' href='/css/style2.css')
+        link(href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css", rel="stylesheet")
+        style.
+            /* Center the button */
+            .centered-button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+    body
+        .container
+            .row
+                .col
+                    .centered-button
+                        // Bootstrap Button
+                        button#paynow.btn.btn-primary.btn-lg(type="button") Pay Now
+        // Bootstrap JS (Optional, if you need JavaScript features)
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+        script(src='https://js.stripe.com/v3/')
+        script(src='/js/bundle.js')

@@ -4,11 +4,22 @@ const ClothModel = require('../../Models/ClothModel');
 const authController = require('../../Controllers/AuthController');
 const orderModel = require("../../Models/OrderModel");
 const commentModel = require("../../Models/ReviewModel");
-const employeeModel = require("../../Models/EmployeesModel")
-const EmployeeModel = require("../../Models/EmployeesModel");
 const OrderModel = require("../../Models/OrderModel");
 const helper_web = require('../../helpers/helper_web')
+const OrderController = require("../../Controllers/OrderController")
 
+
+Router.get('/proceed-for-payment/:orderId/:email/1',(req, res) => {
+    res.status(200).render('payment');
+})
+
+
+Router.get('/proceed-for-payment/:orderId/:email/2',OrderController.getCheckoutSession)
+
+Router.get('/success-purchase/:id/:email', OrderController.success_fully_confirm_order)
+Router.get('/success-cancel', async (req, res)=>{
+
+})
 Router.get('/comments',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
     const comments = await commentModel.find({ user: req.user._id });
     res.status(200).render('comment',{

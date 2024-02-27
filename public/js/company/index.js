@@ -1,4 +1,5 @@
 import { update } from './update_user_order'
+import { update_employee } from './update_employee'
 
 const userOrderForm = document.getElementById("user_order_form")
 const userEmployeeForm = document.getElementById("user_employee_form")
@@ -35,6 +36,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function splitStringByLength(string, length) {
+    const result = [];
+    for (let i = 0; i < string.length; i += length) {
+        result.push(string.substring(i, i + length));
+    }
+    return result;
+}
 
 
 if(userEmployeeForm)
@@ -46,8 +54,8 @@ if(userEmployeeForm)
         const userIdInput = document.querySelector("#user_employee_form input[name='user_id']");
         const userNameInput = document.querySelector("#user_employee_form input[name='user_name']");
         const salaryInput = document.querySelector("#user_employee_form input[name='user_name']");
-        const leavesInput = document.querySelector("#user_employee_form input[name='cloth_id']");
-        const halfDaysInput = document.querySelector("#user_employee_form input[name='cloth_id']");
+        const leavesInput = document.querySelector("#user_employee_form input[name='leaves']");
+        const halfDaysInput = document.querySelector("#user_employee_form input[name='halfdays']");
         const joinDateInput = document.querySelector("#user_employee_form input[name='price']");
         const toOrderToBeAvailableList = document.querySelector("#user_employee_form .toOrderToBeAvailable ul");
         const toTargetOrderList = document.querySelector("#user_employee_form .toTargetOrder ul");
@@ -58,25 +66,21 @@ if(userEmployeeForm)
         const isActiveRadio = document.querySelector("#user_employee_form input[name='isActive-value']");
         const isFiredRadio = document.querySelector("#user_employee_form input[name='isFired-value']");
 
-        console.log("Employee ID:", employeeIdInput.value);
-        console.log("User ID:", userIdInput.value);
-        console.log("User Name:", userNameInput.value);
-        console.log("Salary:", salaryInput.value);
-        console.log("Leaves:", leavesInput.value);
-        console.log("Half Days:", halfDaysInput.value);
-        console.log("Join Date:", joinDateInput.value);
-
-        console.log("To Order To Be Available:", toOrderToBeAvailableList.textContent);
-        console.log("To Target Order:", toTargetOrderList.textContent);
-        console.log("Total Shipments:", totalShipmentsList.textContent);
-
-        console.log("Is Delivery Person:", isDeliveryPersonRadio.checked);
-        console.log("Is Manager:", isManagerRadio.checked);
-        console.log("Is New Employee:", isNewEmployeeRadio.checked);
-        console.log("Is Active:", isActiveRadio.checked);
-        console.log("Is Fired:", isFiredRadio.checked);
-
-
+        const data = {
+            "user_id": userIdInput.value,
+            "isDeliveryPerson":  isDeliveryPersonRadio.checked,
+            "isManager": isManagerRadio.checked,
+            "toOrderToBeAvailable": splitStringByLength(toOrderToBeAvailableList.textContent, 24),
+            "toTargetOrder": splitStringByLength(toTargetOrderList.textContent, 24),
+            "totalShipments": splitStringByLength(totalShipmentsList.textContent, 24),
+            "isNewEmployee": isNewEmployeeRadio.checked,
+            "isActive": isActiveRadio.checked,
+            "salary": salaryInput.value,
+            "leaves": leavesInput.value,
+            "half_days": halfDaysInput.value,
+            "isFired": isFiredRadio.checked
+        }
+        await update_employee(data, employeeIdInput.value)
     })
 
 if(userOrderForm)
@@ -113,8 +117,4 @@ if(userOrderForm)
         }
 
         await update(data, orderInput.value)
-
-
-
-
     });
