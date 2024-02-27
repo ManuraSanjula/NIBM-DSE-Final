@@ -5869,9 +5869,9 @@ var signUpForm = document.querySelector('.form--signup');
 var userPasswordForm = document.querySelector('.form-user-password');
 var commentForm = document.querySelector('.form');
 var paynowButton = document.getElementById('paynow');
+if (logOutBtn) logOutBtn.addEventListener('click', _login.logout);
 if (paynowButton) paynowButton.addEventListener('click', _paynow.paynow);
 if (bookcloth) bookcloth.addEventListener('click', _order.createAOrder);
-if (logOutBtn) logOutBtn.addEventListener('click', _login.logout);
 if (loginForm) loginForm.addEventListener('submit', function (e) {
   e.preventDefault();
   var email = document.getElementById('email').value;
@@ -5994,7 +5994,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64983" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57205" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

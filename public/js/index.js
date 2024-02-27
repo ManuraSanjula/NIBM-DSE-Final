@@ -12,15 +12,11 @@ const userDataForm = document.querySelector('.form-user-data');
 const signUpForm = document.querySelector('.form--signup');
 const userPasswordForm = document.querySelector('.form-user-password');
 const commentForm = document.querySelector('.form');
-
 const paynowButton =document.getElementById('paynow')
 
-if (paynowButton) paynowButton.addEventListener('click',  paynow);
-
-if (bookcloth) bookcloth.addEventListener('click', createAOrder);
-
-
 if(logOutBtn) logOutBtn.addEventListener('click', logout)
+if (paynowButton) paynowButton.addEventListener('click',  paynow);
+if (bookcloth) bookcloth.addEventListener('click', createAOrder);
 
 if (loginForm)
     loginForm.addEventListener('submit', e => {

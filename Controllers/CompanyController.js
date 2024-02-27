@@ -67,10 +67,10 @@ async function createAnEmployee(id, salary, type){
 exports.confirmOrder = async (req, res, next)=>{
     try{
         let order = await OrderModel.findById(req.params.order_id).populate({path : 'user'})
-        //order.orderIsConfirmed = true;
+        order.orderIsConfirmed = true;
         await OrderModel.findByIdAndUpdate(order._id, order)
 
-        await new Email(order.user, `${req.protocol}://${req.get('host')}/proceed-for-payment`).send_order(order, "Grant the order");
+        await new Email(order.user, `${req.protocol}://${req.get('host')}/proceed-for-payment/${order._id}/${order.user.email}/1`).send_order(order, "Grant the order");
 
         return res.status(200).json({
             status: 'success',

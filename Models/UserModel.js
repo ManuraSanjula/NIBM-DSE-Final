@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         validate: [validator.isEmail, 'Please provide a valid email']
     },
-    Likes: [String],
     photo: {
         type: String,
         default: '/img/users/default.jpg'
