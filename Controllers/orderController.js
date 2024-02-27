@@ -126,6 +126,7 @@ exports.success_fully_confirm_order = async (req, res, next)=>{
             await setDeliveryJob(orderItem, req);
 
         orderItem.orderIsSuccesfullyConfirmed = true;
+        orderItem.successfullyPayed = true
         orderItem = await orderModel.findByIdAndUpdate(orderItem._id, orderItem);
 
         return res.status(200).render('order_succes');
