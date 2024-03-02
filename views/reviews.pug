@@ -15,26 +15,21 @@ block content
         ul.side-nav
           +navItem('/me', 'Me', 'settings')
           +navItem('/order', 'My Orders', 'briefcase')
-          +navItem('/reviews', 'My reviews', 'star')
-          +navItem(`/Billing`, 'Billing', 'credit-card', true)
+          +navItem('/reviews', 'My reviews', 'star', true)
+          +navItem(`/Billing`, 'Billing', 'credit-card')
       .user-view__content
         .user-view__form-container
-          h2.heading-secondary.ma-bt-md Your account settings
+          h2.heading-secondary.ma-bt-md Your Reviews
           
           //- WITHOUT API
           //- form.form.form-user-data(action='/submit-user-data' method='POST' enctype='multipart/form-data')
           
           //- WITH API
-          form.form(action="#" method="POST")
-            .content-bar
-              each review in reviews
-                if(review)
-                  .itemtitle=review.rating
-                  .itemstock=review._id
-                  .itemprice=review.review
-
+          each review in reviews
+            if(review)
+              +reviewCard(review)
+              
             .form__group.right
-              button.btn.btn--small.btn--green Save settings
               
         .line &nbsp;
         
