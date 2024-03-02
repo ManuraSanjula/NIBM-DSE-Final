@@ -30,10 +30,6 @@ const ClothSchema = new Schema({
         type: Number,
         default: 0
     },
-    coverImg: {
-        type: String,
-        default: 'coverImg.png'
-    },
     tags: [String],
     price: {
         default: 10,

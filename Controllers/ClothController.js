@@ -5,6 +5,11 @@ const multerStorage = multer.memoryStorage();
 const User = require('../Models/UserModel');
 const errorController = require('./errorController');
 
+const { uploadFile, getFileStream } = require('../utils/AWS_S3')
+const fs = require('fs')
+const util = require('util')
+const unlinkFile = util.promisify(fs.unlink)
+
 exports.deleteOneCloth = async (req, res, next) => {
     try {
         if (!req.params.id) {
@@ -51,6 +56,7 @@ exports.resizeTourImages = async (req, res, next) => {
     try {
 
         if (req.files) {
+            console.log(req.files.coverImg)
             if (req.files.coverImg &&req.files.coverImg.length > 0) {
                 const fileName = `Cloth-${Math.floor(Date.now() + Date.now() + Math.random() * 8892829229)}-${Date.now()}-cover.jpeg`;
                 try {
@@ -69,6 +75,7 @@ exports.resizeTourImages = async (req, res, next) => {
                     console.error(`Error saving file ${fileName}:`, error);
                 }
             }
+            console.log(req.files.img)
             if (req.files.img && req.files.img.length <= 3) {
                 req.body.img = [];
                 await Promise.all(
@@ -108,17 +115,21 @@ exports.resizeTourImages = async (req, res, next) => {
 };
 
 exports.insertOneCloth = async (req, res, next) => {
+    const img = []
+    const files = req.files
+    for (const file of files) {
+        const result = await uploadFile(file)
+        await unlinkFile(file.path)
+        img.push(result.Key)
+    }
     try {
+        req.body.img = img;
         const newData = await ClothModel.create(req.body);
         return res.status(201).json({
             status: 'success',
             data: newData,
         })
     } catch (err) {
-        // return res.status(500).json({
-        //     status: 'failed',
-        //     message: err.message
-        // })
         errorController(req, res, err)
     }
 }

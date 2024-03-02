@@ -9,6 +9,12 @@ const shipmentSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Orders',
     },
+    VehicleNumber:{
+        type: String
+    },
+    EstimateDate:{
+        type: String
+    },
     status: {
         type: String
     },

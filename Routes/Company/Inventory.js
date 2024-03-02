@@ -9,6 +9,14 @@ const ClothInv = require("../../Models/ClothInventoryModel");
 const ReviewModel = require("../../Models/ReviewModel")
 const helper_web = require('../../helpers/helper_web')
 
+
+Router.get('/add-cloth',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
+    const order = await OrderModel.findById(req.params.id);
+    res.status(200).render('Company/add_cloth',{
+        title: 'Chilaw Sri Lanka'
+    });
+})
+
 Router.get('/inventory-cus/:id/edit',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
     const order = await OrderModel.findById(req.params.id);
     res.status(200).render('Company/edit_user_order',{
@@ -31,7 +39,7 @@ Router.get('/promoteEmp',authController.isLoggedIn ,helper_web.protect, helper_w
 
 Router.get('/inventory-emp/:id/edit',authController.isLoggedIn ,helper_web.protect, helper_web.restrictTo('admin','sub-admin'),async (req, res) => {
     const employee = await EmployeeModel.findById(req.params.id);
-    res.status(200).render('Company/edit_employee_order',{
+    res.status(200).render('Company/edit_employee',{
         title: 'Chilaw Sri Lanka',
         employee,
         view: true

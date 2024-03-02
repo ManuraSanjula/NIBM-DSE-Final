@@ -8,6 +8,13 @@ const OrderModel = require("../../Models/OrderModel");
 const helper_web = require('../../helpers/helper_web')
 const OrderController = require("../../Controllers/OrderController")
 
+const { uploadFile, getFileStream } = require('../../utils/AWS_S3')
+
+Router.get('/image/:key',(req, res) => {
+  const key = req.params.key
+  const readStream = getFileStream(key)
+  readStream.pipe(res)
+})
 
 Router.get('/proceed-for-payment/:orderId/:email/1',(req, res) => {
     res.status(200).render('payment');

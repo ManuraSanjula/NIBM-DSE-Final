@@ -1,0 +1,118 @@
+doctype html
+html
+    head
+        style.
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+            }
+            .header {
+                background-color: #6c5ce7;
+                color: white;
+                padding: 20px;
+                font-size: 24px;
+                text-align: center;
+            }
+            .section {
+                background-color: white;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 1.5;
+            }
+            .highlight {
+                font-weight: bold;
+                color: #6c5ce7;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background-color: #f0f0f0;
+            }
+            .total {
+                text-align: right;
+                font-weight: bold;
+            }
+            .link {
+                color: #6c5ce7;
+                text-decoration: none;
+            }
+            .link:hover {
+                text-decoration: underline;
+            }
+            .address {
+                margin-top: 20px;
+            }
+            @media (max-width: 600px) {
+                .container {
+                    width: 100%;
+                }
+                .section {
+                    font-size: 14px;
+                }
+            }
+    body
+        .container
+            .header
+                | Thank you for your order
+            .section
+                | Your order has been received and is now being processed. Your order details are shown below for your reference:
+                br
+                br
+                | Order
+                span.highlight #1367
+                |  (July 12, 2018)
+                br
+                br
+                table
+                    tr
+                        th Product
+                        th Quantity
+                        th Price
+                    tr
+                        td Apple
+                        td 1
+                        td $0.25
+                    tr
+                        td.total(colspan='2') Subtotal:
+                        td $0.25
+                    tr
+                        td.total(colspan='2') Shipping:
+                        td $0.00 via Local pickup
+                    tr
+                        td(colspan='3')
+                            | • Broadway & Morris St., New York.
+                            br
+                            | •
+                            a.link(href="^5^") View on Google Maps
+                    tr
+                        td.total(colspan='2') Payment method:
+                        td Direct bank transfer
+                    tr
+                        td.total(colspan='2') Total:
+                        td $0.25 (includes $0.01 Tax)
+                .address
+                    | Billing address
+                    br
+                    br
+                    | Name Surname
+                    br
+                    | Street
+                    br
+                    | City
+                    br
+                    | Post code
+                    br
+                    | New York

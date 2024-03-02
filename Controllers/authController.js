@@ -6,6 +6,10 @@ const Email = require('../utils/email');
 const Cloth = require('../Models/ClothModel');
 const errorController = require('./ErrorController');
 
+const fs = require('fs')
+const util = require('util')
+const unlinkFile = util.promisify(fs.unlink)
+
 exports.isLoggedIn = async (req, res, next) => {
   if (req.cookies.jwt) {
     try {
@@ -68,7 +72,7 @@ exports.conEmail = async (req, res, next) => {
         message: 'The user belonging to this token does no longer exist.',
       })
     }
-    const user = await User.findByIdAndUpdate(decoded.id, { emailConfrim: true })
+    const user = await User.findByIdAndUpdate(currentUser._id, { emailConfrim: true })
     return res.status(200).json({
       status: 'okay',
       user
@@ -76,16 +80,6 @@ exports.conEmail = async (req, res, next) => {
 
   } catch (error) {
     errorController(req, res, error)
-    // if (error.message == 'jwt expired') {
-    //   return res.status(401).json({
-    //     status: "fail",
-    //     message: "token expired",
-    //   })
-    // }
-    // return res.status(500).json({
-    //   status: "fail",
-    //   message: error.message,
-    // })
   }
 }
 
@@ -134,19 +128,25 @@ const createSendToken = async (user, statusCode, res,req) => {
 
 exports.signup = async (req, res, next) => {
   try {
+    
     if (!req.body.name || !req.body.email || !req.body.password || !req.body.passwordConfirm) {
       return res.status(400).json({
         status: 'fail',
         message: 'Fill All Fields'
       })
     }
-
+    const existingUsersCount = await User.countDocuments();
+    let role = 'user-customer'
+    if (existingUsersCount === 0) {
+        role = 'admin'
+    }    
     const newUser = await User.create({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
-      photo: req.body.photo
+      photo: req.body.photo,
+      role
     });
     
     if (!newUser) {
@@ -156,18 +156,8 @@ exports.signup = async (req, res, next) => {
       })
     }
 
-    createSendToken(newUser, 201, res,req);
+    await createSendToken(newUser, 201, res,req);
   } catch (error) {
-    // if (error.code === 11000) {
-    //   return res.status(400).json({
-    //     status: 'fail',
-    //     message: 'User AllReady Exits given Email'
-    //   })
-    // }
-    // return res.status(500).json({
-    //   status: 'fail',
-    //   message: error.message,
-    // })
     errorController(req, res, error)
   }
 };
@@ -183,7 +173,7 @@ exports.login = async (req, res, next) => {
       });
     }
    
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email, emailConfrim: true }).select('+password');
 
     if (!user || !(await user.correctPassword(password, user.password))) {
       return res.status(401).json({
@@ -193,10 +183,6 @@ exports.login = async (req, res, next) => {
     }
     createSendToken(user, 200, res);
   } catch (err) {
-    // return res.status(401).json({
-    //   status: "fail",
-    //   message: error.message,
-    // });
     errorController(req, res, error)
   }
 };
@@ -336,10 +322,6 @@ exports.forgotPassword = async (req, res, next) => {
     }
   } catch (error) {
     errorController(req, res, error)
-    // return res.status(500).json({
-    //   status: 'fail',
-    //   message: error.message,
-    // })
   }
 };
 
@@ -379,10 +361,6 @@ exports.resetPassword = async (req, res, next) => {
     createSendToken(user, 200, res);
   } catch (err) {
     errorController(req, res, err)
-    // return res.status(500).json({
-    //   status: 'fail',
-    //   message: error.message,
-    // })
   }
 };
 
@@ -402,10 +380,6 @@ exports.registerEmail = async (req, res, next) => {
     await new Email(newUser, url).sendWelcome();
   } catch (error) {
     errorController(req, res, error)
-    // return res.status(401).json({
-    //   status: 'fail',
-    //   message: error.message
-    // })
   }
 }
 
@@ -434,9 +408,5 @@ exports.updatePassword = async (req, res, next) => {
     createSendToken(user, 200, res);
   } catch (err) {
     errorController(req, res, err)
-    // return res.status(401).json({
-    //   status: 'fail',
-    //   message: 'Cound not find User'
-    // })
   }
 };

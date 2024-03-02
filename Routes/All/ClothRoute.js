@@ -2,11 +2,13 @@ const express = require('express')
 const Router = express.Router();
 const authController = require('../../Controllers/AuthController');
 const ClothControler = require('../../Controllers/ClothController');
+const multer = require('multer');
+let upload = multer({ dest: 'uploads/' })
+
 
 Router.route('/Cloths').
     post(authController.protect, authController.restrictTo('admin'),
-        ClothControler.uploadTourImages,
-        ClothControler.resizeTourImages,
+        upload.array('img', 4),
         ClothControler.insertOneCloth
     )
 Router.get('/Cloths/slug/:slugName',ClothControler.getOneClothBySlug)
