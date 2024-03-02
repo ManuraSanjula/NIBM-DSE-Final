@@ -1,4 +1,5 @@
 extends base
+include _reviewCard
 
 mixin navItem(link, text, icon, active)
   li(class=`${active ? 'side-nav--active' : ''}`)
@@ -25,15 +26,13 @@ block content
           
           //- WITH API
           form.form(action="#" method="POST")
-            .u-margin-bottom-medium
-              .form__group
-                input.form__input(type="phoneNumber", placeholder="phoneNumber", id="phoneNumber", value=`${user.phoneNumber}` required)
-                label.form__label(for="phoneNumber") phoneNumber
-              .form__group
-                input.form__input(type="address", placeholder="Address", id="address", value=`${user.address}` required)
-                label.form__label(for="address") Address
+            .content-bar
+              each review in reviews
+                if(review)
+                  .itemtitle=review.rating
+                  .itemstock=review._id
+                  .itemprice=review.review
 
-              
             .form__group.right
               button.btn.btn--small.btn--green Save settings
               
