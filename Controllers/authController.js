@@ -128,7 +128,6 @@ const createSendToken = async (user, statusCode, res,req) => {
 
 exports.signup = async (req, res, next) => {
   try {
-    
     if (!req.body.name || !req.body.email || !req.body.password || !req.body.passwordConfirm) {
       return res.status(400).json({
         status: 'fail',
@@ -146,7 +145,9 @@ exports.signup = async (req, res, next) => {
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
       photo: req.body.photo,
-      role
+      role,
+      address: req.body.address,
+      phoneNumber: req.body.phoneNumber
     });
     
     if (!newUser) {

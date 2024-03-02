@@ -4,7 +4,7 @@ const ClothModel = require('../../Models/ClothModel');
 const authController = require('../../Controllers/AuthController');
 const orderModel = require("../../Models/OrderModel");
 const commentModel = require("../../Models/ReviewModel");
-const OrderModel = require("../../Models/OrderModel");
+const UserModel = require("../../Models/UserModel");
 const helper_web = require('../../helpers/helper_web')
 const OrderController = require("../../Controllers/OrderController")
 
@@ -46,6 +46,12 @@ Router.get('/order',authController.isLoggedIn ,helper_web.protect,async (req, re
 Router.get('/me',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
     res.status(200).render('account', {
         title: 'Your account',
+    });
+})
+Router.get('/Billing',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
+    res.status(200).render('BillingInfo', {
+        title: 'Your account',
+        // user
     });
 })
 

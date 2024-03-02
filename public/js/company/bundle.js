@@ -5655,6 +5655,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 var userOrderForm = document.getElementById("user_order_form");
 var userEmployeeForm = document.getElementById("user_employee_form");
 var add_cloth_form = document.getElementById("submitBtn");
+var showAlert = function showAlert(type, msg) {
+  hideAlert();
+  var markup = "<div class=\"alert alert--".concat(type, "\">").concat(msg, "</div>");
+  document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
+  window.setTimeout(hideAlert, 5000);
+};
+var hideAlert = function hideAlert() {
+  var el = document.querySelector('.alert');
+  if (el) el.parentElement.removeChild(el);
+};
 if (add_cloth_form) add_cloth_form.addEventListener('click', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
     var name, description, price, additionalImages, offer, formData;
@@ -5666,6 +5676,12 @@ if (add_cloth_form) add_cloth_form.addEventListener('click', /*#__PURE__*/functi
           price = parseFloat(document.querySelector('input[name="price"]').value);
           additionalImages = document.querySelector('input[name="images"]').files;
           offer = document.querySelector('input[name="offer"]').checked;
+          if (!(!name || !description || !price || !additionalImages || !offer)) {
+            _context.next = 7;
+            break;
+          }
+          return _context.abrupt("return", showAlert('error', "Missing required fields"));
+        case 7:
           formData = new FormData();
           formData.append('name', name);
           formData.append('description', description);
@@ -5677,9 +5693,9 @@ if (add_cloth_form) add_cloth_form.addEventListener('click', /*#__PURE__*/functi
           }
           formData.append('price', price);
           formData.append('offer', offer);
-          _context.next = 13;
+          _context.next = 15;
           return (0, _addCloth.addCloth)(formData);
-        case 13:
+        case 15:
         case "end":
           return _context.stop();
       }
@@ -5846,7 +5862,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54088" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51139" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

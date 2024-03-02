@@ -1,0 +1,43 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`img/icons.svg#icon-${icon}`)
+      | #{text}
+
+block content
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me', 'Me', 'settings')
+          +navItem('/order', 'My Orders', 'briefcase')
+          +navItem('#', 'My reviews', 'star')
+          +navItem(`/Billing/${user._id}`, 'Billing', 'credit-card', true)
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Your account settings
+          
+          //- WITHOUT API
+          //- form.form.form-user-data(action='/submit-user-data' method='POST' enctype='multipart/form-data')
+          
+          //- WITH API
+          form.form(action="#" method="POST")
+            .u-margin-bottom-medium
+              .form__group
+                input.form__input(type="phoneNumber", placeholder="phoneNumber", id="phoneNumber", value=`${user.phoneNumber}` required)
+                label.form__label(for="phoneNumber") phoneNumber
+              .form__group
+                input.form__input(type="address", placeholder="Address", id="address", value=`${user.address}` required)
+                label.form__label(for="address") Address
+
+              
+            .form__group.right
+              button.btn.btn--small.btn--green Save settings
+              
+        .line &nbsp;
+        
+        .user-view__form-container
+         

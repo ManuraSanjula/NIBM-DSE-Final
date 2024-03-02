@@ -47,8 +47,10 @@ if(signUpForm)
         const name = document.getElementById('name').value;
         const password = document.getElementById('password').value;
         const passwordConfirm = document.getElementById('passwordConfirm').value;
+        const address = document.getElementById('address').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
 
-        sigin(name, email, password, passwordConfirm)
+        sigin(name, email, password, passwordConfirm,address,phoneNumber)
     });
 
 if (userPasswordForm)
