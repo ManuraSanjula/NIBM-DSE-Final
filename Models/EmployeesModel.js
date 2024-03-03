@@ -4,9 +4,15 @@ const EmployeesSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'User',
     },
+    NIC: {
+        type: String
+    },
+    LicenceNumber:{
+        type: String
+    },
     isDeliveryPerson:{
         type: Boolean,
-        default: false
+        default: false,
     },
     isManager:{
         type: Boolean,

@@ -68,7 +68,7 @@ exports.conEmail = async (req, res, next) => {
         message: 'The user belonging to this token does no longer exist.',
       })
     }
-    const user = await User.findByIdAndUpdate(decoded.id, { emailConfrim: true })
+    const user = await User.findByIdAndUpdate(currentUser._id, { emailConfrim: true })
     return res.status(200).json({
       status: 'okay',
       user

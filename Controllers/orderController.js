@@ -180,7 +180,6 @@ exports.getInvoice = async (req, res, next) => {
             message:err.message
         })
     }
-
 };
 
 exports.confrimRecive = async (req, res, next) => {
@@ -275,7 +274,7 @@ exports.getOneOrder = async (req, res, next) => {
             data: orderItem,
         })
     } catch (error) {
-        errorController(req, res, err)
+        errorController(req, res, error)
     }
     }
 }
