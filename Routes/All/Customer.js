@@ -47,21 +47,6 @@ Router.get('/me',authController.isLoggedIn ,helper_web.protect,async (req, res) 
         title: 'Your account',
     });
 })
-
-Router.get('/reviews',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
-    const reviews = []
-    for(let i = 0; i < req.user.review.length; i++){
-        const review = await commentModel.findById(req.user.review[i]);
-        reviews.push(review);
-    }
-    res.status(200).render('reviews', {
-        title: 'Your account',
-        reviews,
-        rev: true
-    });
-})
-
-
 Router.get('/Billing',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
     res.status(200).render('BillingInfo', {
         title: 'Your account',
