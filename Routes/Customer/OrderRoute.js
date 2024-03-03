@@ -7,23 +7,31 @@ const errorController = require("../../Controllers/ErrorController");
 const EmployeeModel = require("../../Models/EmployeesModel");
 
 router.use(authController.protect);
-let setOrdersToAvailable = async (newOrder) => {
-    const emp = await EmployeeModel.find({ isManager: true });
-    const oneMEmp = emp[Math.floor(Math.random() * emp.length)];
-    if (!(oneMEmp.toOrderToBeAvailable === undefined || oneMEmp.toOrderToBeAvailable == null || oneMEmp.toOrderToBeAvailable.length <= 0)) {
-        oneMEmp.toOrderToBeAvailable.push(newOrder._id);
-        await EmployeeModel.findByIdAndUpdate(oneMEmp._id, oneMEmp);
-    } else {
-        oneMEmp.toOrderToBeAvailable = [];
-        oneMEmp.toOrderToBeAvailable.push(newOrder._id);
-        await EmployeeModel.findByIdAndUpdate(oneMEmp._id, oneMEmp);
+
+let setOrdersToAvailable = async (req,res,newOrder) => {
+    try{
+        const emp = await EmployeeModel.find({ isManager: true });
+        const oneMEmp = emp[Math.floor(Math.random() * emp.length)];
+        if (!(oneMEmp.toOrderToBeAvailable === undefined || oneMEmp.toOrderToBeAvailable == null || oneMEmp.toOrderToBeAvailable.length <= 0)) {
+            oneMEmp.toOrderToBeAvailable.push(newOrder._id);
+            await EmployeeModel.findByIdAndUpdate(oneMEmp._id, oneMEmp);
+        } else {
+            oneMEmp.toOrderToBeAvailable = [];
+            oneMEmp.toOrderToBeAvailable.push(newOrder._id);
+            await EmployeeModel.findByIdAndUpdate(oneMEmp._id, oneMEmp);
+        }
+    }catch (error) {
+        await orderModel.deleteOne(newOrder)
+        return res.status(error.statusCode).json({
+            msg: 'Something went wrong!',
+          });
     }
 }
 router.route('/').
     post(orderController.checkData, async (req, res,next) => {
         try {
             const newOrder = await orderModel.create(req.body)
-            await setOrdersToAvailable(newOrder)
+            await setOrdersToAvailable(req, res, newOrder)
             return res.status(201).json({
                 size: newOrder.length,
                 status: 'success',

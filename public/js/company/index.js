@@ -1,8 +1,49 @@
 import { update } from './update_user_order'
 import { update_employee } from './update_employee'
+import { addCloth } from './addCloth'
 
 const userOrderForm = document.getElementById("user_order_form")
 const userEmployeeForm = document.getElementById("user_employee_form")
+const add_cloth_form = document.getElementById("submitBtn")
+
+const showAlert = (type, msg) => {
+    hideAlert();
+    const markup = `<div class="alert alert--${type}">${msg}</div>`;
+    document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
+    window.setTimeout(hideAlert, 5000);
+};
+
+const hideAlert = () => {
+    const el = document.querySelector('.alert');
+    if (el) el.parentElement.removeChild(el);
+};
+
+if(add_cloth_form)
+    add_cloth_form.addEventListener('click', async(e)=> {
+        const name = document.querySelector('input[name="name"]').value;
+        const description = document.querySelector('textarea[name="description"]').value;
+        const price = parseFloat(document.querySelector('input[name="price"]').value);
+        const additionalImages = document.querySelector('input[name="images"]').files;
+        const offer = document.querySelector('input[name="offer"]').checked;
+
+        if(!name || !description || !price || !additionalImages || !offer){
+            return showAlert('error', `Missing required fields`);
+        }
+
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        if(additionalImages.length < 5){
+            formData.append('img', additionalImages[0]);
+            formData.append('img', additionalImages[1]);
+            formData.append('img', additionalImages[2]);
+            formData.append('img', additionalImages[3]);
+        }
+        formData.append('price', price);
+        formData.append('offer', offer);
+
+        await addCloth(formData)
+    });
 
 document.addEventListener('DOMContentLoaded', function() {
     const lists = document.querySelectorAll('ul');

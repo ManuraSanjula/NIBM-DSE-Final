@@ -5452,7 +5452,7 @@ var showAlert = exports.showAlert = function showAlert(type, msg) {
   document.querySelector('body').insertAdjacentHTML('afterbegin', markup);
   window.setTimeout(hideAlert, 5000);
 };
-},{}],"login.js":[function(require,module,exports) {
+},{}],"../login.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5540,7 +5540,7 @@ var logout = exports.logout = /*#__PURE__*/function () {
     return _ref2.apply(this, arguments);
   };
 }();
-},{"axios":"../../../node_modules/axios/index.js","./alerts":"../alerts.js"}],"updateSettings.js":[function(require,module,exports) {
+},{"axios":"../../../node_modules/axios/index.js","./alerts":"../alerts.js"}],"../updateSettings.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5612,14 +5612,16 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.sigin = void 0;
 var _alerts = require("./alerts");
-var sigin = exports.sigin = function sigin(name, email, password, confirmPassword) {
+var sigin = exports.sigin = function sigin(name, email, password, confirmPassword, address, phoneNumber) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   var raw = JSON.stringify({
     "name": name,
     "email": email,
     "password": password,
-    "passwordConfirm": confirmPassword
+    "passwordConfirm": confirmPassword,
+    "address": address,
+    "phoneNumber": phoneNumber
   });
   var requestOptions = {
     method: "POST",
@@ -5642,7 +5644,7 @@ var sigin = exports.sigin = function sigin(name, email, password, confirmPasswor
     return (0, _alerts.showAlert)('error', error.response.data.message);
   });
 };
-},{"./alerts":"../alerts.js"}],"comment.js":[function(require,module,exports) {
+},{"./alerts":"../alerts.js"}],"../comment.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5708,7 +5710,7 @@ var comment = exports.comment = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
-},{"axios":"../../../node_modules/axios/index.js","./alerts":"../alerts.js"}],"order.js":[function(require,module,exports) {
+},{"axios":"../../../node_modules/axios/index.js","./alerts":"../alerts.js"}],"../order.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5795,7 +5797,7 @@ var createAOrder = exports.createAOrder = /*#__PURE__*/function () {
     return _ref.apply(this, arguments);
   };
 }();
-},{"axios":"../../../node_modules/axios/index.js","./alerts":"../alerts.js"}],"paynow.js":[function(require,module,exports) {
+},{"axios":"../../../node_modules/axios/index.js","./alerts":"../alerts.js"}],"../paynow.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5888,7 +5890,7 @@ if (userDataForm) userDataForm.addEventListener('submit', function (e) {
 });
 if (signUpForm) signUpForm.addEventListener('submit', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
-    var email, name, password, passwordConfirm;
+    var email, name, password, passwordConfirm, address, phoneNumber;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -5898,8 +5900,10 @@ if (signUpForm) signUpForm.addEventListener('submit', /*#__PURE__*/function () {
           name = document.getElementById('name').value;
           password = document.getElementById('password').value;
           passwordConfirm = document.getElementById('passwordConfirm').value;
-          (0, _sigin.sigin)(name, email, password, passwordConfirm);
-        case 7:
+          address = document.getElementById('address').value;
+          phoneNumber = document.getElementById('phoneNumber').value;
+          (0, _sigin.sigin)(name, email, password, passwordConfirm, address, phoneNumber);
+        case 9:
         case "end":
           return _context.stop();
       }
@@ -5969,7 +5973,7 @@ if (commentForm) commentForm.addEventListener('submit', /*#__PURE__*/function ()
     return _ref3.apply(this, arguments);
   };
 }());
-},{"./login":"login.js","./updateSettings":"updateSettings.js","./sigin":"sigin.js","./comment":"comment.js","./order":"order.js","./paynow":"paynow.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./login":"../login.js","./updateSettings":"../updateSettings.js","./sigin":"sigin.js","./comment":"../comment.js","./order":"../order.js","./paynow":"../paynow.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5994,7 +5998,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57205" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59651" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

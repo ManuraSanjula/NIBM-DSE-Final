@@ -4,10 +4,16 @@ const ClothModel = require('../../Models/ClothModel');
 const authController = require('../../Controllers/AuthController');
 const orderModel = require("../../Models/OrderModel");
 const commentModel = require("../../Models/ReviewModel");
-const OrderModel = require("../../Models/OrderModel");
 const helper_web = require('../../helpers/helper_web')
 const OrderController = require("../../Controllers/OrderController")
 
+const { uploadFile, getFileStream } = require('../../utils/AWS_S3')
+
+Router.get('/image/:key',(req, res) => {
+  const key = req.params.key
+  const readStream = getFileStream(key)
+  readStream.pipe(res)
+})
 
 Router.get('/proceed-for-payment/:orderId/:email/1',(req, res) => {
     res.status(200).render('payment');
@@ -39,6 +45,12 @@ Router.get('/order',authController.isLoggedIn ,helper_web.protect,async (req, re
 Router.get('/me',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
     res.status(200).render('account', {
         title: 'Your account',
+    });
+})
+Router.get('/Billing',authController.isLoggedIn ,helper_web.protect,async (req, res) => {
+    res.status(200).render('BillingInfo', {
+        title: 'Your account',
+        // user
     });
 })
 

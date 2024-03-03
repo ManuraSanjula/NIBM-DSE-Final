@@ -6,6 +6,16 @@ html
       meta(name='viewport' content='width=device-width, initial-scale=1.0')
       link(rel='stylesheet' href='/css/style.css')
       link(rel='stylesheet' href='/css/style2.css')
+      if(edit)
+        style.
+          .user-view__form-container {
+            display: grid;
+            grid-template-columns: repeat(2, 0fr);
+            max-width: 68rem;
+            margin: 0 auto;
+            /* padding: 0 8rem; */
+            grid-gap: 10px;
+          }
       link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
       link(rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,300i,700')
       title ClothStore | #{title}

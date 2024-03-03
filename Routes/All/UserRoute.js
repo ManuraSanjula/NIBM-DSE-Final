@@ -1,6 +1,8 @@
 const express = require('express');
 const userController = require('../../Controllers/UserController');
 const authController = require('../../Controllers/AuthController');
+const multer = require('multer');
+let upload = multer({ dest: 'uploads/' })
 
 const router = express.Router();
 router.get('/resetPasswordweb/:resetToken', (req, res) => {
@@ -15,8 +17,7 @@ router.get('/resetPasswordweb/:resetToken', (req, res) => {
 router.get('/confrimEmail', authController.conEmail);
 router.get('/registerEmail', authController.registerEmail);
 
-router.post('/signup', userController.uploadImages,
-    userController.resizePhoto, authController.signup);
+router.post('/signup',authController.signup);
 router.post('/login', authController.login);
 router.get('/logout', authController.logout);
 router.get('/likes', authController.protect, authController.addLikes);
@@ -33,8 +34,7 @@ router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
 router.patch(
     '/updateMe',
-    userController.uploadImages,
-    userController.resizePhoto,
+    upload.single('photo'),
     userController.updateMe
 );
 router.delete('/deleteMe', userController.deleteMe);

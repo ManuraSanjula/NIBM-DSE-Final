@@ -28,6 +28,12 @@ html
           .form__group
             label.form__label(for="email") Email address
             input.form__input(id="email", type="email", placeholder="you@example.com", required)
+          .form__group
+            label.form__label(for="address") Your address
+            input.form__input(id="address", type="text", placeholder="Your address", required)
+          .form__group
+            label.form__label(for="phoneNumber") Phone Number
+            input.form__input(id="phoneNumber", type="phoneNumber", required)  
           .form__group.ma-bt-md
             label.form__label(for="password") Password
             input.form__input(id="password", type="password", placeholder="••••••••", required, minlength="8")

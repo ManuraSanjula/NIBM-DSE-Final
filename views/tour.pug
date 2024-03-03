@@ -17,7 +17,7 @@ block content
     section.section-header
       .header__hero
         .header__hero-overlay &nbsp;
-        img.header__hero-img(src=`${cloth.coverImg}`, alt=`${cloth.name}`)
+        img.header__hero-img(src=`/image/${cloth.img[0]}`, alt=`${cloth.name}`)
 
       .heading-box
         h1.heading-primary
@@ -40,7 +40,7 @@ block content
     section.section-pictures
       each img, i in cloth.img
         .picture-box
-          img.picture-box__img(src=`${img}`, alt=`Cloth ${i + 1}`, class=`picture-box__img--${i + 1}`)
+          img.picture-box__img(src=`/image/${img}`, alt=`Cloth ${i + 1}`, class=`picture-box__img--${i + 1}`)
     if(user && user.role === 'user-customer')
       section.section-book
         .row

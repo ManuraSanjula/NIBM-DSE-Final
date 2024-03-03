@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        default: '/img/users/default.jpg'
+        default: 'default.jpg'
     },
     role: {
         type: String,
@@ -60,6 +60,10 @@ const userSchema = new mongoose.Schema({
     address: {
         type: String,
         min: 20
+    },
+    phoneNumber:{
+        type: String,
+        min: 10
     }
 });
 

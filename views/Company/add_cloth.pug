@@ -1,0 +1,150 @@
+doctype html
+html(lang="en", dir="ltr")
+    head
+        meta(charset="utf-8")
+        title ClothStore | #{title}
+        meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(name="description", content="Responsive Account Form Without Media")
+        meta(name="author", content="Shift Media")
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css")
+        style.
+            .alert {
+                position: fixed;
+                top: 0;
+                left: 50%;
+                -webkit-transform: translateX(-50%);
+                transform: translateX(-50%);
+                z-index: 9999;
+                color: #fff;
+                font-size: 1.0rem;
+                font-weight: 400;
+                text-align: center;
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+                padding: 1.6rem 15rem;
+                -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+                box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+            }
+            .alert--success {
+                background-color: #20bf6b;
+            }
+            .alert--error {
+                background-color: #eb4d4b;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f8f9fa;
+            }
+            header {
+                background-color: #343a40;
+                color: #ffffff;
+                padding: 10px 0;
+                text-align: center;
+            }
+            form {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #ffffff;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            label {
+                display: block;
+                margin-bottom: 5px;
+            }
+            input[type="text"],
+            input[type="number"],
+            textarea {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+            input[type="file"] {
+                margin-bottom: 10px;
+            }
+            button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #ffffff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            .additional-images img {
+                max-width: 200px;
+                margin-bottom: 10px;
+            }
+            .delete-button {
+                background-color: #dc3545;
+            }
+            .delete-button:hover {
+                background-color: #c82333;
+            }
+    body
+        header
+            <h1>ClothStore</h1>
+        form#add_cloth_form(action="#" method="post" enctype="multipart/form-data")
+            fieldset
+                label
+                    | Cloth Name
+                    br
+                    input(type="text" name="name" placeholder="Cloth Name" required)
+                label
+                    | Description
+                    br
+                    textarea(name="description" placeholder="Description" rows="4" required)
+                label
+                    | Price
+                    br
+                    input(type="number" name="price" placeholder="Price" min="0" required)
+                label
+                    | Images
+                    br
+                    input(type="file" name="images" id="images" accept="image/*" multiple)
+                    br
+                    #imagePreviews
+                label
+                    | Offer
+                    br
+                    input(type="checkbox" name="offer")
+            footer
+                button#submitBtn(type="button") Create
+    script(src="/js/company/bundle.js")
+    script.
+        document.getElementById('images').addEventListener('change', function() {
+            const files = this.files;
+            const imagePreviews = document.getElementById('imagePreviews');
+            imagePreviews.innerHTML = '';
+
+            [...files].forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    img.style.maxWidth = '200px';
+                    img.style.marginBottom = '10px';
+                    imagePreviews.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+
+        document.querySelectorAll('.deleteImage').forEach(button => {
+            button.addEventListener('click', function() {
+                const imageId = this.getAttribute('data-id');
+                // Handle deletion of the image with id 'imageId'
+                // For example, remove the corresponding image preview from the DOM
+                this.parentElement.remove();
+            });
+        });

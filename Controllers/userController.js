@@ -7,6 +7,10 @@ const Email = require('../utils/email');
 const Cloth = require('../Models/ClothModel');
 const errorController = require('./errorController');
 
+const fs = require('fs')
+const util = require('util')
+const unlinkFile = util.promisify(fs.unlink)
+
 exports.refunds = async (req, res, next) => {
   try {
     if(!req.user){
@@ -173,22 +177,21 @@ exports.getMe = (req, res, next) => {
   req.params.id = req.user.id;
   next();
 };
+const { uploadFile, getFileStream } = require('../utils/AWS_S3')
 
 exports.updateMe = async (req, res, next) => {
   try {
-    // 1) Create error if user POSTs password data
+    const file = req.file
+    const result = await uploadFile(file)
+    await unlinkFile(file.path)
     if (req.body.password || req.body.passwordConfirm) {
       return res.status(400).json({
         status: 'fail',
         message: 'This route is not for password updates. Please use /updateMyPassword.',
       })
     }
-
-    // 2) Filtered out unwanted fields names that are not allowed to be updated
     const filteredBody = filterObj(req.body, 'name', 'email');
-    if (req.file) filteredBody.photo = req.file;
-
-    // 3) Update user document
+    filteredBody.photo = result.Key;
     const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
       new: true,
       runValidators: true

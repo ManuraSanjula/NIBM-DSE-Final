@@ -1,6 +1,6 @@
 import {showAlert} from "./alerts";
 
-export const sigin = (name, email, password, confirmPassword)=>{
+export const sigin = (name, email, password, confirmPassword, address, phoneNumber)=>{
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -8,7 +8,9 @@ export const sigin = (name, email, password, confirmPassword)=>{
         "name": name,
         "email": email,
         "password": password,
-        "passwordConfirm": confirmPassword
+        "passwordConfirm": confirmPassword,
+        "address": address,
+        "phoneNumber": phoneNumber
     });
 
     const requestOptions = {
